@@ -14,7 +14,389 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      collection_points: {
+        Row: {
+          address: string
+          capacity: number
+          contact_phone: string | null
+          created_at: string
+          current_load: number
+          id: string
+          is_active: boolean
+          lat: number
+          lng: number
+          name: string
+          updated_at: string
+          working_hours: string | null
+        }
+        Insert: {
+          address: string
+          capacity?: number
+          contact_phone?: string | null
+          created_at?: string
+          current_load?: number
+          id?: string
+          is_active?: boolean
+          lat: number
+          lng: number
+          name: string
+          updated_at?: string
+          working_hours?: string | null
+        }
+        Update: {
+          address?: string
+          capacity?: number
+          contact_phone?: string | null
+          created_at?: string
+          current_load?: number
+          id?: string
+          is_active?: boolean
+          lat?: number
+          lng?: number
+          name?: string
+          updated_at?: string
+          working_hours?: string | null
+        }
+        Relationships: []
+      }
+      credits_log: {
+        Row: {
+          amount: number
+          awarded_by: string | null
+          created_at: string
+          id: string
+          reason: string
+          reference_id: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          awarded_by?: string | null
+          created_at?: string
+          id?: string
+          reason: string
+          reference_id?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          awarded_by?: string | null
+          created_at?: string
+          id?: string
+          reason?: string
+          reference_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "credits_log_awarded_by_fkey"
+            columns: ["awarded_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "credits_log_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          is_read: boolean
+          message: string
+          meta: Json | null
+          title: string
+          type: Database["public"]["Enums"]["notification_type"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          message: string
+          meta?: Json | null
+          title: string
+          type?: Database["public"]["Enums"]["notification_type"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          message?: string
+          meta?: Json | null
+          title?: string
+          type?: Database["public"]["Enums"]["notification_type"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      redeems: {
+        Row: {
+          code: string
+          created_at: string
+          credits_used: number
+          expires_at: string
+          id: string
+          status: string
+          used_at: string | null
+          user_id: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          credits_used: number
+          expires_at?: string
+          id?: string
+          status?: string
+          used_at?: string | null
+          user_id: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          credits_used?: number
+          expires_at?: string
+          id?: string
+          status?: string
+          used_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "redeems_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reports: {
+        Row: {
+          address_text: string | null
+          assigned_worker_id: string | null
+          created_at: string
+          deadline: string
+          description: string
+          id: string
+          location_lat: number | null
+          location_lng: number | null
+          photo_urls: string[] | null
+          resolved_at: string | null
+          status: Database["public"]["Enums"]["report_status"]
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address_text?: string | null
+          assigned_worker_id?: string | null
+          created_at?: string
+          deadline?: string
+          description: string
+          id?: string
+          location_lat?: number | null
+          location_lng?: number | null
+          photo_urls?: string[] | null
+          resolved_at?: string | null
+          status?: Database["public"]["Enums"]["report_status"]
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address_text?: string | null
+          assigned_worker_id?: string | null
+          created_at?: string
+          deadline?: string
+          description?: string
+          id?: string
+          location_lat?: number | null
+          location_lng?: number | null
+          photo_urls?: string[] | null
+          resolved_at?: string | null
+          status?: Database["public"]["Enums"]["report_status"]
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reports_assigned_worker_id_fkey"
+            columns: ["assigned_worker_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scrap_dealers: {
+        Row: {
+          business_name: string
+          contact_phone: string | null
+          created_at: string
+          id: string
+          is_verified: boolean
+          license_number: string | null
+          rates: Json | null
+          service_area: string | null
+          updated_at: string
+          user_id: string
+          working_hours: string | null
+        }
+        Insert: {
+          business_name: string
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          is_verified?: boolean
+          license_number?: string | null
+          rates?: Json | null
+          service_area?: string | null
+          updated_at?: string
+          user_id: string
+          working_hours?: string | null
+        }
+        Update: {
+          business_name?: string
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          is_verified?: boolean
+          license_number?: string | null
+          rates?: Json | null
+          service_area?: string | null
+          updated_at?: string
+          user_id?: string
+          working_hours?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scrap_dealers_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      users: {
+        Row: {
+          address: string | null
+          avatar_url: string | null
+          created_at: string
+          credits: number
+          email: string
+          full_name: string | null
+          id: string
+          is_banned: boolean
+          kit_received: boolean
+          language: string
+          phone: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          credits?: number
+          email: string
+          full_name?: string | null
+          id: string
+          is_banned?: boolean
+          kit_received?: boolean
+          language?: string
+          phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          credits?: number
+          email?: string
+          full_name?: string | null
+          id?: string
+          is_banned?: boolean
+          kit_received?: boolean
+          language?: string
+          phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      workers: {
+        Row: {
+          created_at: string
+          current_lat: number | null
+          current_lng: number | null
+          id: string
+          is_active: boolean
+          last_location_update: string | null
+          learning_progress: number
+          updated_at: string
+          user_id: string
+          vehicle_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          current_lat?: number | null
+          current_lng?: number | null
+          id?: string
+          is_active?: boolean
+          last_location_update?: string | null
+          learning_progress?: number
+          updated_at?: string
+          user_id: string
+          vehicle_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          current_lat?: number | null
+          current_lng?: number | null
+          id?: string
+          is_active?: boolean
+          last_location_update?: string | null
+          learning_progress?: number
+          updated_at?: string
+          user_id?: string
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workers_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +405,19 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      notification_type:
+        | "report_update"
+        | "credit_award"
+        | "kit_distribution"
+        | "worker_assignment"
+        | "system"
+      report_status:
+        | "pending"
+        | "assigned"
+        | "in_progress"
+        | "resolved"
+        | "rejected"
+      user_role: "resident" | "worker" | "admin" | "scrap_dealer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +544,22 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      notification_type: [
+        "report_update",
+        "credit_award",
+        "kit_distribution",
+        "worker_assignment",
+        "system",
+      ],
+      report_status: [
+        "pending",
+        "assigned",
+        "in_progress",
+        "resolved",
+        "rejected",
+      ],
+      user_role: ["resident", "worker", "admin", "scrap_dealer"],
+    },
   },
 } as const
