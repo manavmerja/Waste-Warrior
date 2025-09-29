@@ -24,6 +24,7 @@ import { toast } from '@/hooks/use-toast';
 import ReportForm from '@/components/forms/ReportForm';
 import CreditsSystem from '@/components/features/CreditsSystem';
 import GreenChampionsLeaderboard from '@/components/features/GreenChampionsLeaderboard';
+import UserProfile from '@/components/features/UserProfile';
 
 export default function ResidentDashboard() {
   const { userProfile } = useAuth();
@@ -238,11 +239,12 @@ export default function ResidentDashboard() {
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="report">Report Waste</TabsTrigger>
           <TabsTrigger value="credits">Credits</TabsTrigger>
           <TabsTrigger value="leaderboard">Champions</TabsTrigger>
+          <TabsTrigger value="profile">Profile</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -407,6 +409,10 @@ export default function ResidentDashboard() {
 
         <TabsContent value="leaderboard" className="space-y-6">
           <GreenChampionsLeaderboard />
+        </TabsContent>
+
+        <TabsContent value="profile" className="space-y-6">
+          <UserProfile />
         </TabsContent>
       </Tabs>
     </div>
