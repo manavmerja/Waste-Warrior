@@ -1,0 +1,51 @@
+{
+  "dashboard": {
+    "welcome": "Welcome back, {{name}}! 🌱",
+    "welcomeSubtitle": "Ready to make a difference in your community today?",
+    "greenPoints": "Green Points",
+    "reportsLookup": "Reports Filed",
+    "kitStatus": "Kit Status",
+    "nextReward": "Next reward",
+    "pointsNeeded": "{{count}} points needed",
+    "resolvedThisMonth": "{{count}} resolved this month",
+    "ecoFriendlyKit": "Eco-friendly waste kit",
+    "received": "Received",
+    "pending": "Pending",
+    "overview": "Overview",
+    "reportWaste": "Report Waste",
+    "credits": "Credits",
+    "champions": "Champions",
+    "profile": "Profile",
+    "quickActions": "Quick Actions",
+    "recentReports": "Recent Reports",
+    "recentNotifications": "Recent Notifications",
+    "noReports": "No reports yet",
+    "startReporting": "Start by reporting waste in your area!",
+    "noNotifications": "No new notifications",
+    "notifyUpdates": "We'll notify you of any updates!",
+    "reportWasteAction": "Report Waste",
+    "reportWasteDesc": "Take photo and report waste in your area",
+    "findCollectionPoints": "Find Collection Points",
+    "findCollectionDesc": "Locate nearest waste collection centers",
+    "redeemRewards": "Redeem Rewards",
+    "redeemDesc": "Get your reward code!",
+    "learningCenter": "Learning Center",
+    "learningDesc": "Watch videos and learn about waste management"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "close": "Close"
+  },
+  "languages": {
+    "en": "English",
+    "hi": "हिंदी",
+    "gu": "ગુજરાતી",
+    "ta": "தமிழ்"
+  }
+}
