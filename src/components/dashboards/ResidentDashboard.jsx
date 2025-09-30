@@ -548,6 +548,4 @@ export default function ResidentDashboard() {
       </div>
     </SidebarProvider>
   );
-
-  );
 }
