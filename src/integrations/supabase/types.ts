@@ -59,6 +59,41 @@ export type Database = {
         }
         Relationships: []
       }
+      credit_audit_log: {
+        Row: {
+          action_type: string
+          amount: number
+          created_at: string
+          id: string
+          reason: string
+          user_id: string
+        }
+        Insert: {
+          action_type: string
+          amount: number
+          created_at?: string
+          id?: string
+          reason: string
+          user_id: string
+        }
+        Update: {
+          action_type?: string
+          amount?: number
+          created_at?: string
+          id?: string
+          reason?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "credit_audit_log_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       credits_log: {
         Row: {
           amount: number
@@ -98,6 +133,47 @@ export type Database = {
           {
             foreignKeyName: "credits_log_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      kits: {
+        Row: {
+          assigned_to: string | null
+          created_at: string
+          delivered_at: string | null
+          description: string | null
+          id: string
+          is_delivered: boolean
+          items: string | null
+          name: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string
+          delivered_at?: string | null
+          description?: string | null
+          id?: string
+          is_delivered?: boolean
+          items?: string | null
+          name: string
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string
+          delivered_at?: string | null
+          description?: string | null
+          id?: string
+          is_delivered?: boolean
+          items?: string | null
+          name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kits_assigned_to_fkey"
+            columns: ["assigned_to"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -194,6 +270,7 @@ export type Database = {
           deadline: string
           description: string
           id: string
+          is_verified: boolean | null
           location_lat: number | null
           location_lng: number | null
           photo_urls: string[] | null
@@ -202,6 +279,9 @@ export type Database = {
           title: string
           updated_at: string
           user_id: string
+          verification_notes: string | null
+          verified_at: string | null
+          worker_notes: string | null
         }
         Insert: {
           address_text?: string | null
@@ -210,6 +290,7 @@ export type Database = {
           deadline?: string
           description: string
           id?: string
+          is_verified?: boolean | null
           location_lat?: number | null
           location_lng?: number | null
           photo_urls?: string[] | null
@@ -218,6 +299,9 @@ export type Database = {
           title: string
           updated_at?: string
           user_id: string
+          verification_notes?: string | null
+          verified_at?: string | null
+          worker_notes?: string | null
         }
         Update: {
           address_text?: string | null
@@ -226,6 +310,7 @@ export type Database = {
           deadline?: string
           description?: string
           id?: string
+          is_verified?: boolean | null
           location_lat?: number | null
           location_lng?: number | null
           photo_urls?: string[] | null
@@ -234,6 +319,9 @@ export type Database = {
           title?: string
           updated_at?: string
           user_id?: string
+          verification_notes?: string | null
+          verified_at?: string | null
+          worker_notes?: string | null
         }
         Relationships: [
           {
@@ -312,6 +400,7 @@ export type Database = {
           full_name: string | null
           id: string
           is_banned: boolean
+          is_green_champion: boolean | null
           kit_received: boolean
           language: string
           phone: string | null
@@ -327,6 +416,7 @@ export type Database = {
           full_name?: string | null
           id: string
           is_banned?: boolean
+          is_green_champion?: boolean | null
           kit_received?: boolean
           language?: string
           phone?: string | null
@@ -342,6 +432,7 @@ export type Database = {
           full_name?: string | null
           id?: string
           is_banned?: boolean
+          is_green_champion?: boolean | null
           kit_received?: boolean
           language?: string
           phone?: string | null
