@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Map, MapPin, Users, Award, Coins, Package, Briefcase, FileText, CheckSquare, Download, LayoutDashboard } from 'lucide-react';
+import { Map, MapPin, Users, Award, Coins, Package, Briefcase, FileText, CheckSquare, Download, LayoutDashboard, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -14,6 +14,7 @@ const navigationItems = [
   { id: 'workers', label: 'Workers Management', icon: Briefcase },
   { id: 'reports', label: 'Report Monitoring', icon: FileText },
   { id: 'verification', label: 'Visit Verification', icon: CheckSquare },
+  { id: 'learning-progress', label: 'Learning Progress', icon: BookOpen },
   { id: 'export', label: 'Export Reports', icon: Download },
 ];
 

@@ -31,11 +31,13 @@ import CreditsSystem from '@/components/features/CreditsSystem';
 import GreenChampionsLeaderboard from '@/components/features/GreenChampionsLeaderboard';
 import UserProfile from '@/components/features/UserProfile';
 import LanguageSelector from '@/components/ui/language-selector';
+import LearningModules from '@/components/features/LearningModules';
 
 // Sidebar navigation items
 const navigationItems = [
   { id: 'overview', label: 'dashboard.overview', icon: Home },
   { id: 'report', label: 'dashboard.reportWaste', icon: Camera },
+  { id: 'learning', label: 'dashboard.learning', icon: FileText },
   { id: 'credits', label: 'dashboard.credits', icon: Coins },
   { id: 'leaderboard', label: 'dashboard.champions', icon: BarChart3 },
   { id: 'profile', label: 'dashboard.profile', icon: User },

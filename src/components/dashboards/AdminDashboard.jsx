@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import DashboardOverview from '@/components/admin/sections/DashboardOverview';
 import MapTracking from '@/components/admin/sections/MapTracking';
@@ -12,9 +13,12 @@ import WorkersManagement from '@/components/admin/sections/WorkersManagement';
 import ReportMonitoring from '@/components/admin/sections/ReportMonitoring';
 import VisitVerification from '@/components/admin/sections/VisitVerification';
 import ExportReports from '@/components/admin/sections/ExportReports';
+import LearningProgressManagement from '@/components/admin/sections/LearningProgressManagement';
+import LanguageSelector from '@/components/ui/language-selector';
 
 export default function AdminDashboard() {
   const [activeSection, setActiveSection] = useState('dashboard');
+  const { t } = useTranslation();
 
   const renderSection = () => {
     switch (activeSection) {
@@ -40,6 +44,8 @@ export default function AdminDashboard() {
         return <VisitVerification />;
       case 'export':
         return <ExportReports />;
+      case 'learning-progress':
+        return <LearningProgressManagement />;
       default:
         return <DashboardOverview />;
     }
@@ -53,6 +59,13 @@ export default function AdminDashboard() {
       />
       
       <div className="flex-1 overflow-auto">
+        {/* Top Bar with Language Selector */}
+        <div className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
+          <div className="flex justify-end items-center px-6 py-3">
+            <LanguageSelector />
+          </div>
+        </div>
+
         <motion.div
           key={activeSection}
           initial={{ opacity: 0, x: 20 }}
