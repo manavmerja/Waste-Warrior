@@ -501,6 +501,19 @@ export default function ResidentDashboard() {
             <UserProfile />
           </motion.div>
         );
+      case 'learning':
+        return (
+          <motion.div
+            key="learning"
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            transition={{ duration: 0.3 }}
+          >
+            <LearningModules />
+          </motion.div>
+        );
       default:
         return null;
     }
