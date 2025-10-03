@@ -20,7 +20,7 @@ export default function KitDistribution() {
     name: '',
     description: '',
     items: '',
-    userId: ''
+    userId: 'unassigned'
   });
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function KitDistribution() {
         name: formData.name,
         description: formData.description,
         items: formData.items,
-        assigned_to: formData.userId || null,
+        assigned_to: formData.userId === 'unassigned' ? null : formData.userId,
         is_delivered: false
       }]);
 
@@ -62,7 +62,7 @@ export default function KitDistribution() {
       toast.success('Kit created successfully');
       fetchKits();
       setOpen(false);
-      setFormData({ name: '', description: '', items: '', userId: '' });
+      setFormData({ name: '', description: '', items: '', userId: 'unassigned' });
     } else {
       toast.error('Failed to create kit');
     }
@@ -140,7 +140,7 @@ export default function KitDistribution() {
                       <SelectValue placeholder="Select a user" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Unassigned</SelectItem>
+                      <SelectItem value="unassigned">Unassigned</SelectItem>
                       {users.map(user => (
                         <SelectItem key={user.id} value={user.id}>
                           {user.full_name || user.email}
