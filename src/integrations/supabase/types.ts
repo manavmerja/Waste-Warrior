@@ -340,12 +340,18 @@ export type Database = {
           created_at: string
           deadline: string
           description: string
+          evidence_lat: number | null
+          evidence_lng: number | null
+          evidence_photo_url: string | null
+          evidence_timestamp: string | null
           id: string
           is_verified: boolean | null
           location_lat: number | null
           location_lng: number | null
           photo_urls: string[] | null
           resolved_at: string | null
+          segregation_done: boolean | null
+          segregation_verified: boolean | null
           status: Database["public"]["Enums"]["report_status"]
           title: string
           updated_at: string
@@ -360,12 +366,18 @@ export type Database = {
           created_at?: string
           deadline?: string
           description: string
+          evidence_lat?: number | null
+          evidence_lng?: number | null
+          evidence_photo_url?: string | null
+          evidence_timestamp?: string | null
           id?: string
           is_verified?: boolean | null
           location_lat?: number | null
           location_lng?: number | null
           photo_urls?: string[] | null
           resolved_at?: string | null
+          segregation_done?: boolean | null
+          segregation_verified?: boolean | null
           status?: Database["public"]["Enums"]["report_status"]
           title: string
           updated_at?: string
@@ -380,12 +392,18 @@ export type Database = {
           created_at?: string
           deadline?: string
           description?: string
+          evidence_lat?: number | null
+          evidence_lng?: number | null
+          evidence_photo_url?: string | null
+          evidence_timestamp?: string | null
           id?: string
           is_verified?: boolean | null
           location_lat?: number | null
           location_lng?: number | null
           photo_urls?: string[] | null
           resolved_at?: string | null
+          segregation_done?: boolean | null
+          segregation_verified?: boolean | null
           status?: Database["public"]["Enums"]["report_status"]
           title?: string
           updated_at?: string
@@ -560,6 +578,47 @@ export type Database = {
         }
         Relationships: []
       }
+      worker_notifications: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          message: string
+          report_id: string | null
+          title: string
+          type: string
+          worker_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message: string
+          report_id?: string | null
+          title: string
+          type?: string
+          worker_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message?: string
+          report_id?: string | null
+          title?: string
+          type?: string
+          worker_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "worker_notifications_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       workers: {
         Row: {
           created_at: string
@@ -612,7 +671,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      check_overdue_reports: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
     }
     Enums: {
       notification_type:
