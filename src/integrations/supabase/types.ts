@@ -479,6 +479,74 @@ export type Database = {
           },
         ]
       }
+      scrap_pickup_requests: {
+        Row: {
+          address: string
+          completed_at: string | null
+          contact_phone: string
+          created_at: string
+          dealer_id: string | null
+          id: string
+          location_lat: number | null
+          location_lng: number | null
+          notes: string | null
+          photo_urls: string[] | null
+          proposed_rate: number | null
+          resident_name: string
+          status: Database["public"]["Enums"]["pickup_request_status"]
+          updated_at: string
+          user_id: string
+          waste_type: string
+          waste_volume: number
+        }
+        Insert: {
+          address: string
+          completed_at?: string | null
+          contact_phone: string
+          created_at?: string
+          dealer_id?: string | null
+          id?: string
+          location_lat?: number | null
+          location_lng?: number | null
+          notes?: string | null
+          photo_urls?: string[] | null
+          proposed_rate?: number | null
+          resident_name: string
+          status?: Database["public"]["Enums"]["pickup_request_status"]
+          updated_at?: string
+          user_id: string
+          waste_type: string
+          waste_volume: number
+        }
+        Update: {
+          address?: string
+          completed_at?: string | null
+          contact_phone?: string
+          created_at?: string
+          dealer_id?: string | null
+          id?: string
+          location_lat?: number | null
+          location_lng?: number | null
+          notes?: string | null
+          photo_urls?: string[] | null
+          proposed_rate?: number | null
+          resident_name?: string
+          status?: Database["public"]["Enums"]["pickup_request_status"]
+          updated_at?: string
+          user_id?: string
+          waste_type?: string
+          waste_volume?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scrap_pickup_requests_dealer_id_fkey"
+            columns: ["dealer_id"]
+            isOneToOne: false
+            referencedRelation: "scrap_dealers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_learning_progress: {
         Row: {
           completed_at: string | null
@@ -683,6 +751,12 @@ export type Database = {
         | "kit_distribution"
         | "worker_assignment"
         | "system"
+      pickup_request_status:
+        | "pending"
+        | "accepted"
+        | "in_progress"
+        | "completed"
+        | "cancelled"
       report_status:
         | "pending"
         | "assigned"
@@ -823,6 +897,13 @@ export const Constants = {
         "kit_distribution",
         "worker_assignment",
         "system",
+      ],
+      pickup_request_status: [
+        "pending",
+        "accepted",
+        "in_progress",
+        "completed",
+        "cancelled",
       ],
       report_status: [
         "pending",
