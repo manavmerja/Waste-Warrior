@@ -97,6 +97,8 @@ export default function ScrapDealerDashboard() {
     }
   };
 
+  const fetchRequests = async () => {
+    if (!user || !dealerProfile) return;
 
     try {
       const { data, error } = await supabase
