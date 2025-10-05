@@ -61,6 +61,7 @@ export default function ScrapDealerDashboard() {
     { id: 'dashboard', label: t('dealer.dashboard'), icon: TrendingUp },
     { id: 'pickups', label: t('dealer.availablePickups'), icon: Package },
     { id: 'rates', label: t('dealer.ratesServices'), icon: DollarSign },
+    { id: 'history', label: t('dealer.history'), icon: FileText },
     { id: 'profile', label: t('dealer.profile'), icon: User },
   ];
 
@@ -254,12 +255,13 @@ export default function ScrapDealerDashboard() {
     >
       <div>
         <h2 className="text-3xl font-bold">{t('dealer.welcome')}, {dealerProfile?.business_name}!</h2>
-        <p className="text-muted-foreground mt-1">
-          {t('dealer.verificationStatus')}: {dealerProfile?.is_verified ? 
-            <Badge variant="success" className="ml-2">{t('dealer.verified')}</Badge> :
-            <Badge variant="secondary" className="ml-2">{t('dealer.pending')}</Badge>
+        <div className="flex items-center gap-2 mt-1">
+          <span className="text-muted-foreground">{t('dealer.verificationStatus')}:</span>
+          {dealerProfile?.is_verified ? 
+            <Badge variant="success">{t('dealer.verified')}</Badge> :
+            <Badge variant="secondary">{t('dealer.pending')}</Badge>
           }
-        </p>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -489,6 +491,175 @@ export default function ScrapDealerDashboard() {
     </motion.div>
   );
 
+  // History Section
+  const HistorySection = () => {
+    const completedRequests = requests.filter(r => r.status === 'completed');
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="space-y-6"
+      >
+        <div>
+          <h2 className="text-3xl font-bold">{t('dealer.history')}</h2>
+          <p className="text-muted-foreground mt-1">{t('dealer.completedPickups')}</p>
+        </div>
+
+        {completedRequests.length === 0 ? (
+          <Card>
+            <CardContent className="flex flex-col items-center justify-center py-12">
+              <FileText className="h-12 w-12 text-muted-foreground mb-4" />
+              <p className="text-muted-foreground">{t('dealer.noHistory')}</p>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card>
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>{t('dealer.date')}</TableHead>
+                    <TableHead>{t('dealer.resident')}</TableHead>
+                    <TableHead>{t('dealer.wasteType')}</TableHead>
+                    <TableHead>{t('dealer.volume')}</TableHead>
+                    <TableHead>{t('dealer.creditsEarned')}</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {completedRequests.map((request) => (
+                    <TableRow key={request.id}>
+                      <TableCell>
+                        {new Date(request.completed_at).toLocaleDateString()}
+                      </TableCell>
+                      <TableCell>{request.resident_name}</TableCell>
+                      <TableCell>{request.waste_type}</TableCell>
+                      <TableCell>{request.waste_volume} {t('dealer.kg')}</TableCell>
+                      <TableCell className="text-green-600 font-medium">
+                        +{Math.floor(request.waste_volume * 5)} {t('dealer.credits')}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        )}
+      </motion.div>
+    );
+  };
+
+  // Registration Form for new dealers
+  const RegistrationForm = () => {
+    const [formData, setFormData] = useState({
+      business_name: '',
+      license_number: '',
+      service_area: '',
+      contact_phone: '',
+      working_hours: '9:00 AM - 6:00 PM',
+    });
+
+    const handleRegister = async (e) => {
+      e.preventDefault();
+      
+      try {
+        const { error } = await supabase
+          .from('scrap_dealers')
+          .insert({
+            user_id: user.id,
+            ...formData,
+          });
+
+        if (error) throw error;
+
+        toast({
+          title: t('common.success'),
+          description: t('dealer.registrationSuccess'),
+        });
+
+        fetchDealerData();
+      } catch (error) {
+        toast({
+          title: t('common.error'),
+          description: error.message,
+          variant: 'destructive',
+        });
+      }
+    };
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-2xl mx-auto space-y-6"
+      >
+        <div className="text-center">
+          <h2 className="text-3xl font-bold">{t('dealer.registerAsDealer')}</h2>
+          <p className="text-muted-foreground mt-2">{t('dealer.completeRegistration')}</p>
+        </div>
+
+        <Card>
+          <CardContent className="pt-6">
+            <form onSubmit={handleRegister} className="space-y-4">
+              <div>
+                <Label htmlFor="business_name">{t('dealer.businessName')} *</Label>
+                <Input
+                  id="business_name"
+                  required
+                  value={formData.business_name}
+                  onChange={(e) => setFormData({ ...formData, business_name: e.target.value })}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="license_number">{t('dealer.licenseNumber')}</Label>
+                <Input
+                  id="license_number"
+                  value={formData.license_number}
+                  onChange={(e) => setFormData({ ...formData, license_number: e.target.value })}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="service_area">{t('dealer.serviceArea')} *</Label>
+                <Input
+                  id="service_area"
+                  required
+                  value={formData.service_area}
+                  onChange={(e) => setFormData({ ...formData, service_area: e.target.value })}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="contact_phone">{t('dealer.contactPhone')} *</Label>
+                <Input
+                  id="contact_phone"
+                  required
+                  type="tel"
+                  value={formData.contact_phone}
+                  onChange={(e) => setFormData({ ...formData, contact_phone: e.target.value })}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="working_hours">{t('dealer.workingHours')}</Label>
+                <Input
+                  id="working_hours"
+                  value={formData.working_hours}
+                  onChange={(e) => setFormData({ ...formData, working_hours: e.target.value })}
+                />
+              </div>
+
+              <Button type="submit" className="w-full">
+                {t('dealer.submitRegistration')}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </motion.div>
+    );
+  };
+
   const renderSection = () => {
     switch (activeSection) {
       case 'dashboard':
@@ -497,12 +668,23 @@ export default function ScrapDealerDashboard() {
         return <PickupsSection />;
       case 'rates':
         return <RatesSection />;
+      case 'history':
+        return <HistorySection />;
       case 'profile':
         return <ProfileSection />;
       default:
         return <DashboardSection />;
     }
   };
+
+  // Show registration form if dealer profile doesn't exist
+  if (!loading && !dealerProfile) {
+    return (
+      <div className="min-h-screen w-full bg-gradient-to-br from-background to-muted/20 p-6">
+        <RegistrationForm />
+      </div>
+    );
+  }
 
   return (
     <SidebarProvider>
