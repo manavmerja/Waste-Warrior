@@ -243,5 +243,40 @@
     "hi": "हिंदी",
     "gu": "ગુજરાતી",
     "ta": "தமிழ்"
+  },
+  "leaderboard": {
+    "title": "Green Champions Leaderboard",
+    "residents": "Residents",
+    "workers": "Workers",
+    "adminView": "Admin View",
+    "rank": "Rank",
+    "name": "Name",
+    "role": "Role",
+    "points": "Points",
+    "lastUpdated": "Last Updated",
+    "champion": "Champion",
+    "reports": "reports",
+    "thisMonth": "this month",
+    "totalReports": "Total Reports",
+    "greenChampions": "Green Champions",
+    "noChampions": "No champions yet! Be the first to make a difference.",
+    "motivationQuote": "Small acts, when multiplied by millions, can transform the world.",
+    "motivationAuthor": "Mahatma Gandhi",
+    "howItWorks": {
+      "title": "How the Green Champion Leaderboard Works",
+      "residentsTitle": "Residents earn points by:",
+      "residentsPoint1": "Requesting timely pickups (+20 pts)",
+      "residentsPoint2": "Segregating waste correctly (+30 pts)",
+      "residentsPoint3": "Referring a friend (+50 pts)",
+      "workersTitle": "Workers earn points by:",
+      "workersPoint1": "Completing pickups on time (+40 pts)",
+      "workersPoint2": "Maintaining 5-star service ratings (+30 pts)",
+      "workersPoint3": "Reporting completed pickups (+20 pts)",
+      "note": "Leaderboard resets automatically on the 1st of every month. Top performers receive a Green Champion Badge 🥇"
+    },
+    "badge": {
+      "title": "Green Champion Badge",
+      "description": "Green Champions are invited as Special Guests on important days like NSS Day and 26th January."
+    }
   }
 }

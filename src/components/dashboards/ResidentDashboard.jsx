@@ -28,7 +28,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import ReportForm from '@/components/forms/ReportForm';
 import CreditsSystem from '@/components/features/CreditsSystem';
-import GreenChampionsLeaderboard from '@/components/features/GreenChampionsLeaderboard';
+import LeaderboardDashboard from '@/components/features/LeaderboardDashboard';
 import UserProfile from '@/components/features/UserProfile';
 import LanguageSelector from '@/components/ui/language-selector';
 import LearningModules from '@/components/features/LearningModules';
@@ -485,7 +485,7 @@ export default function ResidentDashboard() {
             exit="exit"
             transition={{ duration: 0.3 }}
           >
-            <GreenChampionsLeaderboard />
+            <LeaderboardDashboard />
           </motion.div>
         );
       case 'profile':
