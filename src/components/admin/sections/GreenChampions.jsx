@@ -1,4 +1,4 @@
-import LeaderboardAdmin from '@/components/admin/LeaderboardAdmin';
+import { LeaderboardAdmin } from '@/components/modules/Leaderboard';
 
 export default function GreenChampions() {
   return <LeaderboardAdmin />;
