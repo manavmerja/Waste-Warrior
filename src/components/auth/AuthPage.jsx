@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAuth } from '@/hooks/useAuth';
 import { Recycle, Shield, Users, Truck } from 'lucide-react';
+import WasteWarriorLogo from '@/assets/waste-warrior.jpg'; // <-- CHANGE 1: NAYA LOGO IMPORT KIYA GAYA
 
 const roleOptions = [
   { value: 'resident', label: 'Resident', icon: Users, description: 'Report waste and earn rewards' },
@@ -61,13 +62,18 @@ export default function AuthPage() {
       >
         {/* Logo and Title */}
         <div className="text-center mb-8">
+          {/* <-- CHANGE 2: ICON KO IMG TAG SE REPLACE KIYA GAYA --> */}
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring" }}
-            className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-full mb-4"
+            className="inline-block mb-4"
           >
-            <Recycle className="w-8 h-8 text-primary-foreground" />
+            <img 
+              src={WasteWarriorLogo} 
+              alt="Waste Warrior Logo" 
+              className="w-16 h-16 rounded-full object-cover" 
+            />
           </motion.div>
           <h1 className="text-3xl font-bold text-foreground">Waste Warrior</h1>
           <p className="text-muted-foreground">Building cleaner communities together</p>

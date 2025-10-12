@@ -4,6 +4,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Recycle, Leaf, Users, Award, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import WasteWarriorLogo from '@/assets/waste-warrior.jpg';
+
 
 const Index = () => {
   const { user } = useAuth();
@@ -20,17 +22,20 @@ const Index = () => {
               transition={{ duration: 0.8 }}
               className="space-y-8"
             >
-              {/* Logo */}
-              <div className="flex justify-center">
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.2, type: "spring" }}
-                  className="inline-flex items-center justify-center w-20 h-20 bg-primary rounded-full shadow-lg"
-                >
-                  <Recycle className="w-10 h-10 text-primary-foreground" />
-                </motion.div>
-              </div>
+             {/* Logo */}
+<div className="flex justify-center">
+  <motion.div
+    initial={{ scale: 0 }}
+    animate={{ scale: 1 }}
+    transition={{ delay: 0.2, type: "spring" }}
+  >
+    <img 
+      src={WasteWarriorLogo} 
+      alt="Waste Warrior Logo" 
+      className="w-20 h-20" // Aap size yahan se adjust kar sakte hain
+    />
+  </motion.div>
+</div>
 
               {/* Title */}
               <div className="space-y-4">
