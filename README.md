@@ -1,4 +1,4 @@
-# ♻️ Waste Warrior: Lovable Scrap Management System 
+# ♻️ Waste Warrior: Wastes Management System 
 
 Welcome to the official repository for **Waste Warrior**, a complete digital scrap management platform designed for the **Smart India Hackathon (SIH)**. This project connects residents, workers, and administrators in an eco-friendly ecosystem to promote efficient waste management and recycling. 
 
@@ -77,6 +77,54 @@ If you want to run this project on your local machine, follow these simple steps
 
 --- 
 
+---
+
+## 🛡️ Our Branch Protection Workflow
+
+To keep our project stable and organized, the **`main`** branch is **protected**. This means no one can push code directly to it. All changes must be reviewed and approved by at least one other team member.
+
+### Why do we do this?
+
+Think of the `main` branch as the master blueprint of our project. It should **always** be working. By requiring reviews (Pull Requests), we can catch bugs early, improve code quality, and make sure everyone understands the changes being made.
+
+### Your Step-by-Step Workflow
+
+When you want to add a new feature or fix a bug, follow these steps every time:
+
+1.  **Get the Latest Code:** Before you start, make sure your local `main` branch is up-to-date.
+    ```sh
+    git pull origin main
+    ```
+
+2.  **Create a New Branch:** Create a new branch for your specific task. Name it something descriptive.
+    ```sh
+    # Example for a new feature
+    git checkout -b feature/resident-dashboard
+
+    # Example for a bug fix
+    git checkout -b fix/login-button-color
+    ```
+
+3.  **Write Your Code:** Make all your code changes on this new branch.
+
+4.  **Commit and Push Your Branch:** Save your work and push your new branch (not `main`!) to GitHub.
+    ```sh
+    git add .
+    git commit -m "Add feature: Created the basic layout for the resident dashboard"
+    git push origin feature/resident-dashboard
+    ```
+
+5.  **Create a Pull Request (PR):** Go to the GitHub repository. You will see a prompt to create a **Pull Request** from your new branch. Fill out the details and create the PR.
+
+6.  **Ask for a Review:** Ask a teammate to review your code. They can leave comments or request changes.
+
+7.  **Merge the PR:** Once your PR is **approved by at least one teammate**, you can merge it into the `main` branch. Your changes are now part of the main project!
+
+---
+
+
+
+
 ## 🔄 Keeping Your Code Up-to-Date 
 
 If a teammate has pushed new changes to GitHub, you will need to pull those changes to your local machine to stay in sync. 
@@ -91,6 +139,8 @@ If a teammate has pushed new changes to GitHub, you will need to pull those chan
     This command fetches all the new code and merges it into your local project. 
 
 --- 
+
+
 
 ##  Tailwind CSS v4 Setup 
 
@@ -119,6 +169,8 @@ This project uses Tailwind CSS v4. To set it up in a new Vite + React project, f
     ``` 
 
 --- 
+
+
 
 ## 👥 Made By 
 
