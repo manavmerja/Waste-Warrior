@@ -118,11 +118,28 @@ When you want to add a new feature or fix a bug, follow these steps every time:
 
 6.  **Ask for a Review:** Ask a teammate to review your code. They can leave comments or request changes.
 
-7.  **Merge the PR:** Once your PR is **approved by at least one teammate**, you can merge it into the `main` branch. Your changes are now part of the main project!
+7.  **Merge the PR:** Once your PR is **approved by at least TWO teammate**, you can merge it into the `main` branch. Your changes are now part of the main project!
 
 ---
 
 
+---
+
+## 💾 How Our Database Works (Supabase & .env)
+
+Our project uses a single, shared Supabase database. To connect to it, you need secret keys, which are managed in a special `.env` file.
+
+### What is the `.env` file?
+
+The `.env` file is a private file where we store our secret keys (like the database URL and password). When you run `npm run dev`, our code automatically reads the keys from this file and uses them to connect to the Supabase database.
+
+### Your Setup Steps:
+
+Good news! The `.env` file has **already been placed in the project's root directory**. The only step you need to take after cloning the project is to install the dependencies by running `npm install`. The project will then be ready to connect to our shared database automatically.
+
+> **⚠️ Important Warning:** We are all using the **same live database**. Any data you add, delete, or change (like creating a test user) will be instantly visible to everyone on the team. Please be careful and communicate with the team before making major data changes.
+
+---
 
 
 ## 🔄 Keeping Your Code Up-to-Date 
@@ -171,6 +188,13 @@ This project uses Tailwind CSS v4. To set it up in a new Vite + React project, f
 --- 
 
 
+---
+
+## 💬 A Final Note for the Team
+
+If you have any doubts or don't understand something, **always ask questions before making a mistake.** Clear communication is the key to our success. We're all here to help each other.
+
+---
 
 ## 👥 Made By 
 
