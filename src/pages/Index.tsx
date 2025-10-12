@@ -32,7 +32,7 @@ const Index = () => {
     <img 
       src={WasteWarriorLogo} 
       alt="Waste Warrior Logo" 
-      className="w-20 h-20" // Aap size yahan se adjust kar sakte hain
+      className="w-20 h-19" // Aap size yahan se adjust kar sakte hain
     />
   </motion.div>
 </div>

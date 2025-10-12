@@ -76,7 +76,7 @@ export default function AuthPage() {
             />
           </motion.div>
           <h1 className="text-3xl font-bold text-foreground">Waste Warrior</h1>
-          <p className="text-muted-foreground">Building cleaner communities together</p>
+          <p className="text-muted-foreground">Building cleaner communities togethers</p>
         </div>
 
         <Card className="border-border shadow-lg">
