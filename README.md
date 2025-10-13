@@ -163,34 +163,6 @@ If a teammate has pushed new changes to GitHub, you will need to pull those chan
 
 ---
 
-## Tailwind CSS v4 Setup
-
-This project uses Tailwind CSS v4. To set it up in a new Vite + React project, follow these steps:
-
-1.  **Install Tailwind CSS v4 and the Vite plugin by running the following command:**
-    ```sh
-    npm install tailwindcss @tailwindcss/vite
-    ```
-
-2.  **Add the Tailwind CSS plugin to your `vite.config.js` file:**
-    ```javascript
-    import { defineConfig } from 'vite'
-    import react from '@vitejs/plugin-react'
-    import tailwindcss from '@tailwindcss/vite'
-
-    export default defineConfig({
-      plugins: [
-        react(),
-        tailwindcss(),
-      ],
-    })
-    ```
-
-3.  **In your main CSS file (usually `src/index.css`), remove all existing code and add the following line:**
-    ```css
-    @import "tailwindcss";
-    ```
-
 ---
 
 ## 💬 A Final Note for the Team
