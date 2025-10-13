@@ -1,4 +1,6 @@
 # Logs
+
+
 logs
 *.log
 npm-debug.log*
@@ -22,3 +24,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+# Optional npm cache directory
+.npm
