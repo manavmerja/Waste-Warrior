@@ -311,31 +311,4 @@ const Index = () => {
   );
 };
 
-const features = [
-  {
-    icon: Users,
-    title: 'Community Driven',
-    description: 'Connect residents, workers, and administrators in one platform for better coordination.',
-    color: 'bg-primary/10 text-primary'
-  },
-  {
-    icon: Award,
-    title: 'Gamification',
-    description: 'Earn green points for reporting waste and redeem rewards to encourage participation.',
-    color: 'bg-warning/10 text-warning'
-  },
-  {
-    icon: Leaf,
-    title: 'Real-time tracking',
-    description: 'Track waste collection progress and get real-time updates on report status.',
-    color: 'bg-success/10 text-success'
-  },
-  {
-    icon: Recycle,
-    title: 'Eco-friendly',
-    description: 'Promote sustainable practices and connect with local scrap dealers for recycling.',
-    color: 'bg-info/10 text-info'
-  }
-];
-
 export default Index;
