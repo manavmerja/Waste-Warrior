@@ -253,26 +253,26 @@ export default function LeaderboardDashboard() {
           transition={{ delay: 0.4 }}
         >
           <Card className="shadow-2xl">
-            <div className="p-6 md:p-8">
-              <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
+            <div className="p-6 md:p-8 rounded-2xl bg-gradient-to-br from-background/40 via-background/20 to-primary/10 border border-primary/10 backdrop-blur supports-[backdrop-filter]:bg-background/30">
+              <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
                 <Trophy className="h-8 w-8 text-primary" />
                 {t('leaderboard.title')}
               </h2>
               
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid w-full grid-cols-2 mb-8 h-12 bg-muted/50 p-1">
+                <TabsList className="grid w-full grid-cols-2 mb-8 h-14 rounded-2xl bg-background/60 backdrop-blur p-1 border border-border/50">
                   <TabsTrigger 
                     value="residents" 
-                    className="gap-2 data-[state=active]:bg-background data-[state=active]:shadow-md rounded-lg transition-all"
+                    className="gap-2 rounded-xl transition-all font-semibold text-foreground data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-secondary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg"
                   >
-                    <Users className="h-4 w-4" />
+                    <Users className="h-5 w-5" />
                     <span className="font-semibold">{t('leaderboard.residents')}</span>
                   </TabsTrigger>
                   <TabsTrigger 
                     value="workers" 
-                    className="gap-2 data-[state=active]:bg-background data-[state=active]:shadow-md rounded-lg transition-all"
+                    className="gap-2 rounded-xl transition-all font-semibold text-foreground data-[state=active]:bg-gradient-to-r data-[state=active]:from-secondary data-[state=active]:to-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg"
                   >
-                    <Award className="h-4 w-4" />
+                    <Award className="h-5 w-5" />
                     <span className="font-semibold">{t('leaderboard.workers')}</span>
                   </TabsTrigger>
                 </TabsList>
