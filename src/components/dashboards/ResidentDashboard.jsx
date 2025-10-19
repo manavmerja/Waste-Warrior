@@ -47,14 +47,9 @@ const navigationItems = [
 ];
 
 function DashboardSidebar({ activeSection, onSectionChange, userProfile }) {
-  const { collapsed, setCollapsed } = useSidebar();
   const { signOut } = useAuth();
   const { t } = useTranslation();
-
-  // Set default collapsed state on mount
-  useEffect(() => {
-    setCollapsed(true);
-  }, [setCollapsed]);
+  const [collapsed, setCollapsed] = useState(true);
 
   return (
     <Sidebar 
