@@ -35,6 +35,7 @@ import { LeaderboardDashboard } from '@/components/modules/Leaderboard';
 import UserProfile from '@/components/features/UserProfile';
 import LanguageSelector from '@/components/ui/language-selector';
 import LearningModules from '@/components/features/LearningModules';
+import ecoIllustration from '@/assets/eco-conscious-illustration.png';
 
 // Sidebar navigation items
 const navigationItems = [
@@ -291,7 +292,7 @@ export default function ResidentDashboard() {
                 <div 
                   className="absolute inset-0 opacity-10 bg-no-repeat bg-right-bottom bg-contain"
                   style={{ 
-                    backgroundImage: `url(${require('@/assets/eco-conscious-illustration.png')})`,
+                    backgroundImage: `url(${ecoIllustration})`,
                   }}
                 />
                 <CardContent className="relative p-8 md:p-12">
