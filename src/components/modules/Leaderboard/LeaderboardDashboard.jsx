@@ -225,7 +225,8 @@ export default function LeaderboardDashboard() {
               >
                 {stats.totalUsers}
               </motion.div>
-              <p className="text-sm text-muted-foreground mt-2 font-medium">{t('leaderboard.greenChampions')}</p>
+              <p className="text-sm text-black mt-2 font-medium">{t('leaderboard.greenChampions')}</p>
+              
             </CardContent>
           </Card>
           
@@ -254,7 +255,7 @@ export default function LeaderboardDashboard() {
         >
           <Card className="shadow-2xl">
             <div className="p-6 md:p-8 rounded-2xl bg-gradient-to-br from-background/40 via-background/20 to-primary/10 border border-primary/10 backdrop-blur supports-[backdrop-filter]:bg-background/30">
-              <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
+              <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 bg-clip-text text-black bg-gradient-to-r from-primary to-secondary">
                 <Trophy className="h-8 w-8 text-primary" />
                 {t('leaderboard.title')}
               </h2>

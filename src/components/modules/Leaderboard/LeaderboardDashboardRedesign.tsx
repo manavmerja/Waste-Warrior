@@ -392,7 +392,7 @@ export default function LeaderboardDashboardRedesign() {
               >
                 {stats.totalUsers}
               </motion.div>
-              <p className="text-white/90 text-sm mt-2 font-semibold">{t('leaderboard.greenChampions')}</p>
+              <p className="text-black text-sm mt-2 font-semibold">{t('leaderboard.greenChampions')}</p>
             </CardContent>
           </Card>
           
