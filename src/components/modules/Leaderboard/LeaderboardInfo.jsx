@@ -12,7 +12,7 @@ export default function LeaderboardInfo() {
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.6 }}
     >
-      <Card className="bg-gradient-to-r from-primary to-secondary text-primary-foreground overflow-hidden shadow-xl">
+      <Card className="bg-gradient-to-r from-primary to-secondary text-black overflow-hidden shadow-xl">
         <CardContent className="p-6 md:p-8">
           <div className="flex items-start gap-4">
             <div className="flex-shrink-0">

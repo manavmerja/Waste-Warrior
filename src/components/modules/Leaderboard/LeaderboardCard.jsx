@@ -75,7 +75,7 @@ export default function LeaderboardCard({ user, rank, isCurrentUser, animationDe
         {/* Avatar */}
         <Avatar className="h-16 w-16 ring-2 ring-border shadow-md">
           <AvatarImage src={user.avatar_url} alt={user.full_name} />
-          <AvatarFallback className="bg-gradient-to-br from-primary to-secondary text-primary-foreground font-bold text-lg">
+          <AvatarFallback className="bg-gradient-to-br from-primary to-secondary text-black font-bold text-lg">
             {getInitials(user.full_name)}
           </AvatarFallback>
         </Avatar>
