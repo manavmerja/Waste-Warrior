@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
 */
@@ -30,6 +31,7 @@ All colors MUST be HSL.
     --accent: 210 20% 94%;
     --accent-foreground: 155 8% 15%;
 
+    
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
