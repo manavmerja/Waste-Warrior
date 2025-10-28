@@ -6,8 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, useSidebar, SidebarFooter } from '@/components/ui/sidebar';
 import { 
   Camera, 
   MapPin, 
@@ -21,10 +19,10 @@ import {
   Plus,
   Coins,
   BarChart3,
-  User,
-  Menu,
-  Home,
-  LogOut
+  Zap,
+  Users,
+  Sparkles,
+  Activity
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
@@ -33,99 +31,9 @@ import ReportForm from '@/components/forms/ReportForm';
 import CreditsSystem from '@/components/features/CreditsSystem';
 import { LeaderboardDashboard } from '@/components/modules/Leaderboard';
 import UserProfile from '@/components/features/UserProfile';
-import LanguageSelector from '@/components/ui/language-selector';
 import LearningModules from '@/components/features/LearningModules';
-import ecoIllustration from '@/assets/eco-conscious-illustration.png';
-
-// Sidebar navigation items
-const navigationItems = [
-  { id: 'overview', label: 'dashboard.overview', icon: Home },
-  { id: 'report', label: 'dashboard.reportWaste', icon: Camera },
-  { id: 'learning', label: 'dashboard.learning', icon: FileText },
-  { id: 'credits', label: 'dashboard.credits', icon: Coins },
-  { id: 'leaderboard', label: 'dashboard.champions', icon: BarChart3 },
-];
-
-function DashboardSidebar({ activeSection, onSectionChange, userProfile }) {
-  const { signOut } = useAuth();
-  const { t } = useTranslation();
-  const [collapsed, setCollapsed] = useState(true);
-
-  return (
-    <Sidebar 
-      className={collapsed ? "w-16" : "w-64"} 
-      collapsible
-      onMouseEnter={() => setCollapsed(false)}
-      onMouseLeave={() => setCollapsed(true)}
-      style={{ backgroundColor: '#1F2937' }}
-    >
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-white font-semibold">
-            {!collapsed && "Waste Warrior"}
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navigationItems.map((item) => (
-                <SidebarMenuItem key={item.id}>
-                  <SidebarMenuButton
-                    isActive={activeSection === item.id}
-                    onClick={() => onSectionChange(item.id)}
-                    className={`w-full justify-start gap-3 ${
-                      activeSection === item.id
-                        ? 'bg-[#00A86B] text-white hover:bg-[#00A86B]/90'
-                        : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                    }`}
-                  >
-                    <item.icon className="h-5 w-5 flex-shrink-0" />
-                    {!collapsed && (
-                      <span className="font-medium">{t(item.label)}</span>
-                    )}
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        
-        {/* Profile & Logout Section */}
-        <SidebarFooter className="mt-auto border-t border-gray-700 pt-4">
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                onClick={() => onSectionChange('profile')}
-                className="w-full justify-start gap-3 text-gray-300 hover:bg-gray-700 hover:text-white"
-              >
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={userProfile?.avatar_url} alt={userProfile?.full_name} />
-                  <AvatarFallback className="bg-[#00A86B] text-white">
-                    {userProfile?.full_name?.charAt(0) || 'U'}
-                  </AvatarFallback>
-                </Avatar>
-                {!collapsed && (
-                  <div className="flex flex-col items-start">
-                    <span className="font-medium text-sm text-white">{userProfile?.full_name || 'User'}</span>
-                    <span className="text-xs text-gray-400">{userProfile?.role || 'Resident'}</span>
-                  </div>
-                )}
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                onClick={signOut}
-                className="w-full justify-start gap-3 text-gray-300 hover:bg-red-600 hover:text-white"
-              >
-                <LogOut className="h-5 w-5 flex-shrink-0" />
-                {!collapsed && <span className="font-medium">Log Out</span>}
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>
-      </SidebarContent>
-    </Sidebar>
-  );
-}
+import DashboardLayout from '@/components/layout/DashboardLayout';
+import wasteIllustration from '@/assets/waste-management-illustration.png';
 
 export default function ResidentDashboard() {
   const { userProfile } = useAuth();
@@ -134,11 +42,19 @@ export default function ResidentDashboard() {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('overview');
+  const [stats, setStats] = useState({
+    totalReports: 0,
+    resolvedReports: 0,
+    pendingReports: 0,
+    totalCredits: 0,
+  });
 
   useEffect(() => {
-    fetchUserData();
-    setupRealtimeListeners();
-  }, []);
+    if (userProfile?.id) {
+      fetchUserData();
+      setupRealtimeListeners();
+    }
+  }, [userProfile]);
 
   const fetchUserData = async () => {
     try {
@@ -163,8 +79,19 @@ export default function ResidentDashboard() {
 
       if (notificationsError) throw notificationsError;
 
+      // Calculate stats
+      const totalReports = reportsData?.length || 0;
+      const resolvedReports = reportsData?.filter(r => r.status === 'resolved').length || 0;
+      const pendingReports = reportsData?.filter(r => r.status === 'pending').length || 0;
+
       setReports(reportsData || []);
       setNotifications(notificationsData || []);
+      setStats({
+        totalReports,
+        resolvedReports,
+        pendingReports,
+        totalCredits: userProfile?.credits || 0,
+      });
     } catch (error) {
       console.error('Error fetching data:', error);
       toast({
@@ -248,15 +175,144 @@ export default function ResidentDashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-64">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full"
-        />
-      </div>
+      <DashboardLayout activeSection={activeSection} onSectionChange={setActiveSection}>
+        <div className="flex items-center justify-center min-h-64">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="w-8 h-8 border-4 border-[#00A86B] border-t-transparent rounded-full"
+          />
+        </div>
+      </DashboardLayout>
     );
   }
+
+  const renderOverviewSection = () => (
+    <motion.div
+      key="overview"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="space-y-6"
+    >
+      {/* Welcome Banner */}
+      <Card className="relative overflow-hidden border-none bg-gradient-to-r from-[#00A86B] to-[#4F46E5] text-white shadow-2xl">
+        <div 
+          className="absolute inset-0 opacity-15 bg-no-repeat bg-right-bottom"
+          style={{ 
+            backgroundImage: `url(${wasteIllustration})`,
+            backgroundSize: '40%',
+          }}
+        />
+        <CardContent className="relative p-8 md:p-12">
+          <div className="max-w-2xl">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Welcome back, {userProfile?.full_name?.split(' ')[0] || 'Warrior'}! 🌱
+            </h1>
+            <h2 className="text-2xl md:text-3xl mb-6">
+              You have <span className="font-bold text-yellow-300">{userProfile?.credits || 0}</span> Green Points
+            </h2>
+            <Button 
+              size="lg"
+              onClick={() => setActiveSection('report')}
+              className="bg-white text-[#00A86B] hover:bg-gray-100 font-semibold shadow-lg"
+            >
+              <Camera className="mr-2 h-5 w-5" />
+              Report a Waste Issue
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[
+          { title: 'Total Reports', value: stats.totalReports, icon: FileText, color: 'bg-blue-100 text-blue-600' },
+          { title: 'Resolved', value: stats.resolvedReports, icon: CheckCircle, color: 'bg-green-100 text-green-600' },
+          { title: 'Pending', value: stats.pendingReports, icon: Clock, color: 'bg-yellow-100 text-yellow-600' },
+          { title: 'Green Points', value: stats.totalCredits, icon: Coins, color: 'bg-[#00A86B]/10 text-[#00A86B]' },
+        ].map((stat) => (
+          <Card key={stat.title} className="bg-white shadow-lg">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 font-medium">{stat.title}</p>
+                  <p className="text-3xl font-bold text-gray-900 mt-2">{stat.value}</p>
+                </div>
+                <div className={`p-3 rounded-full ${stat.color}`}>
+                  <stat.icon className="h-6 w-6" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Quick Actions & Activity Feeds */}
+      <Card className="bg-white shadow-lg">
+        <CardHeader>
+          <CardTitle className="flex items-center text-gray-900">
+            <Zap className="mr-2 h-5 w-5 text-[#F59E0B]" />
+            Quick Actions
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { icon: Camera, label: 'Report Waste', action: 'report', color: 'text-[#00A86B]' },
+              { icon: MapPin, label: 'Find Points', action: 'map', color: 'text-[#4F46E5]' },
+              { icon: Gift, label: 'Rewards', action: 'credits', color: 'text-[#F59E0B]' },
+              { icon: FileText, label: 'Learn', action: 'learning', color: 'text-[#14B8A6]' },
+            ].map((action) => (
+              <Button 
+                key={action.label}
+                className="h-auto flex-col space-y-3 p-6 border-2 bg-white hover:bg-gray-50" 
+                variant="outline"
+                onClick={() => setActiveSection(action.action)}
+              >
+                <action.icon className={`h-8 w-8 ${action.color}`} />
+                <span className="font-semibold text-gray-900">{action.label}</span>
+              </Button>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Activity Tabs */}
+      <Card className="bg-white shadow-lg">
+        <CardContent className="p-6">
+          <Tabs defaultValue="reports">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="reports">Recent Reports</TabsTrigger>
+              <TabsTrigger value="notifications">Notifications</TabsTrigger>
+            </TabsList>
+            <TabsContent value="reports" className="space-y-3">
+              {reports.map((report) => (
+                <div key={report.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex-1">
+                    <h4 className="font-medium text-gray-900 text-sm">{report.title}</h4>
+                    <p className="text-xs text-gray-500">{new Date(report.created_at).toLocaleDateString()}</p>
+                  </div>
+                  <Badge className={report.status === 'resolved' ? 'bg-[#22C55E]' : 'bg-[#F59E0B]'}>
+                    {report.status}
+                  </Badge>
+                </div>
+              ))}
+            </TabsContent>
+            <TabsContent value="notifications">
+              {notifications.map((n) => (
+                <div key={n.id} className="p-3 bg-blue-50 rounded-lg mb-2">
+                  <h4 className="font-medium text-sm">{n.title}</h4>
+                  <p className="text-xs text-gray-600">{n.message}</p>
+                </div>
+              ))}
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
 
   const renderActiveSection = () => {
     const sectionVariants = {
@@ -267,9 +323,7 @@ export default function ResidentDashboard() {
 
     switch (activeSection) {
       case 'overview':
-        return (
-          <motion.div
-            key="overview"
+        return renderOverviewSection();
             variants={sectionVariants}
             initial="hidden"
             animate="visible"
@@ -540,30 +594,10 @@ export default function ResidentDashboard() {
   };
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen w-full flex bg-[#F7FAFC]">
-        <DashboardSidebar 
-          activeSection={activeSection} 
-          onSectionChange={setActiveSection}
-          userProfile={userProfile}
-        />
-        
-        <div className="flex-1 flex flex-col">
-          {/* Header */}
-          <header className="sticky top-0 z-40 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-            <div className="flex h-16 items-center justify-end px-6">
-              <LanguageSelector />
-            </div>
-          </header>
-
-          {/* Main Content */}
-          <main className="flex-1 p-6">
-            <AnimatePresence mode="wait">
-              {renderActiveSection()}
-            </AnimatePresence>
-          </main>
-        </div>
-      </div>
-    </SidebarProvider>
+    <DashboardLayout activeSection={activeSection} onSectionChange={setActiveSection}>
+      <AnimatePresence mode="wait">
+        {renderActiveSection()}
+      </AnimatePresence>
+    </DashboardLayout>
   );
 }
