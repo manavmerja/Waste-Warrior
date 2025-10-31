@@ -145,7 +145,9 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
               {navigationLinks.map((link, index) => (
                 <motion.button
                   key={link.id}
-                  onClick={() => onSectionChange(link.id)}
+                  onClick={() => {console.log('Header buttorn clicked: ', link.id);
+                    onSectionChange(link.id);
+                  }}
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}

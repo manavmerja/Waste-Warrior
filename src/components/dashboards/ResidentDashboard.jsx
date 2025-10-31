@@ -35,13 +35,12 @@ import LearningModules from '@/components/features/LearningModules';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import wasteIllustration from '@/assets/waste-management-illustration.png';
 
-export default function ResidentDashboard() {
+export default function ResidentDashboard({activeSection, onSectionChange}) {
   const { userProfile } = useAuth();
   const { t } = useTranslation();
   const [reports, setReports] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeSection, setActiveSection] = useState('overview');
   const [stats, setStats] = useState({
     totalReports: 0,
     resolvedReports: 0,
@@ -173,19 +172,17 @@ export default function ResidentDashboard() {
   const creditsToNextReward = Math.max(0, 100 - (userProfile?.credits || 0));
   const creditsProgress = Math.min(100, ((userProfile?.credits || 0) / 100) * 100);
 
-  if (loading) {
-    return (
-      <DashboardLayout activeSection={activeSection} onSectionChange={setActiveSection}>
-        <div className="flex items-center justify-center min-h-64">
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-            className="w-8 h-8 border-4 border-[#00A86B] border-t-transparent rounded-full"
-          />
-        </div>
-      </DashboardLayout>
-    );
-  }
+ if (loading) {
+  return (
+    <div className="flex items-center justify-center min-h-64"> // Adjusted min-h for better centering
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+        className="w-8 h-8 border-4 border-[#00A86B] border-t-transparent rounded-full"
+      />
+    </div>
+  );
+}
 
   const renderOverviewSection = () => (
     <motion.div
@@ -215,7 +212,7 @@ export default function ResidentDashboard() {
             </h2>
             <Button 
               size="lg"
-              onClick={() => setActiveSection('report')}
+              onClick={() => onSectionChange('report')}
               className="bg-white text-[#00A86B] hover:bg-gray-100 font-semibold shadow-lg"
             >
               <Camera className="mr-2 h-5 w-5" />
@@ -269,7 +266,7 @@ export default function ResidentDashboard() {
                 key={action.label}
                 className="h-auto flex-col space-y-3 p-6 border-2 bg-white hover:bg-gray-50" 
                 variant="outline"
-                onClick={() => setActiveSection(action.action)}
+                onClick={() => onSectionChange(action.action)}
               >
                 <action.icon className={`h-8 w-8 ${action.color}`} />
                 <span className="font-semibold text-gray-900">{action.label}</span>
@@ -395,11 +392,10 @@ export default function ResidentDashboard() {
     }
   };
 
-  return (
-    <DashboardLayout activeSection={activeSection} onSectionChange={setActiveSection}>
-      <AnimatePresence mode="wait">
-        {renderActiveSection()}
-      </AnimatePresence>
-    </DashboardLayout>
+  // Inside ResidentDashboard (1).jsx - CORRECTED return statement
+return (
+    <AnimatePresence mode="wait"> 
+      {renderActiveSection()}
+    </AnimatePresence> 
   );
 }

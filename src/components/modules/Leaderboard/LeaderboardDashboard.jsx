@@ -278,15 +278,16 @@ export default function LeaderboardDashboard() {
                   </TabsTrigger>
                 </TabsList>
 
-                <AnimatePresence mode="wait">
-                  <TabsContent value="residents" className="mt-0">
-                    {renderLeaderboardList(residents)}
-                  </TabsContent>
+                // THIS IS THE CORRECTED CODE
+<AnimatePresence mode="wait">
+  <TabsContent key="residents" value="residents" className="mt-0">
+    {renderLeaderboardList(residents)}
+  </TabsContent>
 
-                  <TabsContent value="workers" className="mt-0">
-                    {renderLeaderboardList(workers)}
-                  </TabsContent>
-                </AnimatePresence>
+  <TabsContent key="workers" value="workers" className="mt-0">
+    {renderLeaderboardList(workers)}
+  </TabsContent>
+</AnimatePresence>
               </Tabs>
             </div>
           </Card>
