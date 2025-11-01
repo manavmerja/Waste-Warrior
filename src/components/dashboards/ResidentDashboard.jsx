@@ -34,6 +34,7 @@ import UserProfile from '@/components/features/UserProfile';
 import LearningModules from '@/components/features/LearningModules';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import wasteIllustration from '@/assets/waste-management-illustration.png';
+import teamSpiritIllustration from '@/assets/team-spirit-illustration.png';
 
 export default function ResidentDashboard({activeSection, onSectionChange}) {
   const { userProfile } = useAuth();
@@ -172,17 +173,17 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
   const creditsToNextReward = Math.max(0, 100 - (userProfile?.credits || 0));
   const creditsProgress = Math.min(100, ((userProfile?.credits || 0) / 100) * 100);
 
- if (loading) {
-  return (
-    <div className="flex items-center justify-center min-h-64"> // Adjusted min-h for better centering
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-        className="w-8 h-8 border-4 border-[#00A86B] border-t-transparent rounded-full"
-      />
-    </div>
-  );
-}
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-64 bg-gradient-to-b from-violet-50 to-cyan-50">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full"
+        />
+      </div>
+    );
+  }
 
   const renderOverviewSection = () => (
     <motion.div
@@ -196,58 +197,92 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
       {/* Welcome Banner */}
       <Card className="relative overflow-hidden border-none bg-gradient-to-r from-[#00A86B] to-[#4F46E5] text-white shadow-2xl">
         <div 
-          className="absolute inset-0 opacity-15 bg-no-repeat bg-right-bottom"
+          className="absolute inset-0 opacity-20 bg-no-repeat bg-right-bottom"
           style={{ 
-            backgroundImage: `url(${wasteIllustration})`,
-            backgroundSize: '40%',
+            backgroundImage: `url(${teamSpiritIllustration})`,
+            backgroundSize: '50%',
           }}
         />
         <CardContent className="relative p-8 md:p-12">
           <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Welcome back, {userProfile?.full_name?.split(' ')[0] || 'Warrior'}! 🌱
-            </h1>
-            <h2 className="text-2xl md:text-3xl mb-6">
-              You have <span className="font-bold text-yellow-300">{userProfile?.credits || 0}</span> Green Points
-            </h2>
-            <Button 
-              size="lg"
-              onClick={() => onSectionChange('report')}
-              className="bg-white text-[#00A86B] hover:bg-gray-100 font-semibold shadow-lg"
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-4xl md:text-5xl font-bold mb-4"
             >
-              <Camera className="mr-2 h-5 w-5" />
-              Report a Waste Issue
-            </Button>
+              Welcome back, {userProfile?.full_name?.split(' ')[0] || 'Warrior'}! 🌱
+            </motion.h1>
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-2xl md:text-3xl mb-6"
+            >
+              You have <span className="font-bold text-yellow-300">{userProfile?.credits || 0}</span> Green Points
+            </motion.h2>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <Button 
+                size="lg"
+                onClick={() => onSectionChange('report')}
+                className="bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white font-semibold shadow-lg"
+              >
+                <Camera className="mr-2 h-5 w-5" />
+                Report a Waste Issue
+              </Button>
+            </motion.div>
           </div>
         </CardContent>
       </Card>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <motion.div 
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          visible: {
+            transition: {
+              staggerChildren: 0.1
+            }
+          }
+        }}
+      >
         {[
-          { title: 'Total Reports', value: stats.totalReports, icon: FileText, color: 'bg-blue-100 text-blue-600' },
-          { title: 'Resolved', value: stats.resolvedReports, icon: CheckCircle, color: 'bg-green-100 text-green-600' },
-          { title: 'Pending', value: stats.pendingReports, icon: Clock, color: 'bg-yellow-100 text-yellow-600' },
-          { title: 'Green Points', value: stats.totalCredits, icon: Coins, color: 'bg-[#00A86B]/10 text-[#00A86B]' },
+          { title: 'Total Reports', value: stats.totalReports, icon: FileText, iconBg: 'bg-blue-100', iconColor: 'text-blue-600', gradient: 'from-blue-500 to-indigo-500' },
+          { title: 'Resolved', value: stats.resolvedReports, icon: CheckCircle, iconBg: 'bg-green-100', iconColor: 'text-green-600', gradient: 'from-green-500 to-emerald-500' },
+          { title: 'Pending', value: stats.pendingReports, icon: Clock, iconBg: 'bg-yellow-100', iconColor: 'text-yellow-600', gradient: 'from-yellow-500 to-orange-500' },
+          { title: 'Green Points', value: stats.totalCredits, icon: Coins, iconBg: 'bg-purple-100', iconColor: 'text-purple-600', gradient: 'from-purple-500 to-pink-500' },
         ].map((stat) => (
-          <Card key={stat.title} className="bg-white shadow-lg">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 font-medium">{stat.title}</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-2">{stat.value}</p>
+          <motion.div
+            key={stat.title}
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 }
+            }}
+          >
+            <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-600 font-medium">{stat.title}</p>
+                    <p className={`text-3xl font-bold bg-gradient-to-r bg-clip-text text-transparent ${stat.gradient} mt-2`}>{stat.value}</p>
+                  </div>
+                  <div className={`p-3 rounded-full ${stat.iconBg}`}>
+                    <stat.icon className={`h-6 w-6 ${stat.iconColor}`} />
+                  </div>
                 </div>
-                <div className={`p-3 rounded-full ${stat.color}`}>
-                  <stat.icon className="h-6 w-6" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       {/* Quick Actions & Activity Feeds */}
-      <Card className="bg-white shadow-lg">
+      <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
         <CardHeader>
           <CardTitle className="flex items-center text-gray-900">
             <Zap className="mr-2 h-5 w-5 text-[#F59E0B]" />
@@ -257,20 +292,27 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { icon: Camera, label: 'Report Waste', action: 'report', color: 'text-[#00A86B]' },
-              { icon: MapPin, label: 'Find Points', action: 'map', color: 'text-[#4F46E5]' },
-              { icon: Gift, label: 'Rewards', action: 'credits', color: 'text-[#F59E0B]' },
-              { icon: FileText, label: 'Learn', action: 'learning', color: 'text-[#14B8A6]' },
+              { icon: Camera, label: 'Report Waste', action: 'report', gradient: 'from-green-400 to-emerald-500', iconColor: 'text-green-600' },
+              { icon: MapPin, label: 'Find Points', action: 'map', gradient: 'from-indigo-400 to-purple-500', iconColor: 'text-indigo-600' },
+              { icon: Gift, label: 'Rewards', action: 'credits', gradient: 'from-orange-400 to-red-500', iconColor: 'text-orange-600' },
+              { icon: FileText, label: 'Learn', action: 'learning', gradient: 'from-teal-400 to-cyan-500', iconColor: 'text-teal-600' },
             ].map((action) => (
-              <Button 
+              <motion.div
                 key={action.label}
-                className="h-auto flex-col space-y-3 p-6 border-2 bg-white hover:bg-gray-50" 
-                variant="outline"
-                onClick={() => onSectionChange(action.action)}
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <action.icon className={`h-8 w-8 ${action.color}`} />
-                <span className="font-semibold text-gray-900">{action.label}</span>
-              </Button>
+                <Button 
+                  className="h-auto flex-col space-y-3 p-6 border-2 bg-gradient-to-br from-white to-gray-50 hover:shadow-lg transition-all w-full" 
+                  variant="outline"
+                  onClick={() => onSectionChange(action.action)}
+                >
+                  <div className={`p-3 rounded-full bg-gradient-to-br ${action.gradient}`}>
+                    <action.icon className="h-8 w-8 text-white" />
+                  </div>
+                  <span className="font-semibold text-gray-900">{action.label}</span>
+                </Button>
+              </motion.div>
             ))}
           </div>
         </CardContent>
@@ -285,25 +327,45 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
               <TabsTrigger value="notifications">Notifications</TabsTrigger>
             </TabsList>
             <TabsContent value="reports" className="space-y-3">
-              {reports.map((report) => (
-                <div key={report.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              {reports.length > 0 ? reports.map((report) => (
+                <motion.div 
+                  key={report.id} 
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="flex items-center justify-between p-3 bg-gradient-to-r from-white to-gray-50 rounded-lg hover:shadow-md transition-shadow"
+                >
                   <div className="flex-1">
                     <h4 className="font-medium text-gray-900 text-sm">{report.title}</h4>
                     <p className="text-xs text-gray-500">{new Date(report.created_at).toLocaleDateString()}</p>
                   </div>
-                  <Badge className={report.status === 'resolved' ? 'bg-[#22C55E]' : 'bg-[#F59E0B]'}>
+                  <Badge className={
+                    report.status === 'resolved' 
+                      ? 'bg-green-500 hover:bg-green-600' 
+                      : report.status === 'rejected'
+                      ? 'bg-red-500 hover:bg-red-600'
+                      : 'bg-yellow-400 hover:bg-yellow-500 text-gray-900'
+                  }>
                     {report.status}
                   </Badge>
-                </div>
-              ))}
+                </motion.div>
+              )) : (
+                <p className="text-center text-gray-500 py-4">No reports yet. Start reporting waste issues!</p>
+              )}
             </TabsContent>
             <TabsContent value="notifications">
-              {notifications.map((n) => (
-                <div key={n.id} className="p-3 bg-blue-50 rounded-lg mb-2">
-                  <h4 className="font-medium text-sm">{n.title}</h4>
+              {notifications.length > 0 ? notifications.map((n) => (
+                <motion.div 
+                  key={n.id} 
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg mb-2 hover:shadow-md transition-shadow"
+                >
+                  <h4 className="font-medium text-sm text-gray-900">{n.title}</h4>
                   <p className="text-xs text-gray-600">{n.message}</p>
-                </div>
-              ))}
+                </motion.div>
+              )) : (
+                <p className="text-center text-gray-500 py-4">No new notifications</p>
+              )}
             </TabsContent>
           </Tabs>
         </CardContent>
