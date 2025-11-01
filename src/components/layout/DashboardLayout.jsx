@@ -38,11 +38,11 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F7FAFC] flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-b from-violet-50 to-cyan-50 flex items-center justify-center">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-8 h-8 border-4 border-[#00A86B] border-t-transparent rounded-full"
+          className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full"
         />
       </div>
     );
@@ -62,7 +62,7 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
   ];
 
   return (
-    <div className="min-h-screen bg-[#F7FAFC] relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-violet-50 to-cyan-50 relative overflow-hidden">
       {/* Animated Background Layer */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <motion.div
@@ -75,7 +75,7 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
             repeat: Infinity,
             ease: "easeInOut"
           }}
-          className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-[#6D28D9]/10 to-transparent rounded-full blur-3xl"
+          className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-purple-500/20 to-transparent rounded-full blur-3xl"
         />
         <motion.div
           animate={{
@@ -87,7 +87,7 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
             repeat: Infinity,
             ease: "easeInOut"
           }}
-          className="absolute top-40 right-20 w-[500px] h-[500px] bg-gradient-to-br from-[#EF4444]/10 to-transparent rounded-full blur-3xl"
+          className="absolute top-40 right-20 w-[500px] h-[500px] bg-gradient-to-br from-red-500/20 to-transparent rounded-full blur-3xl"
         />
         <motion.div
           animate={{
@@ -99,7 +99,7 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
             repeat: Infinity,
             ease: "easeInOut"
           }}
-          className="absolute bottom-20 left-1/3 w-[400px] h-[400px] bg-gradient-to-br from-[#F97316]/10 to-transparent rounded-full blur-3xl"
+          className="absolute bottom-20 left-1/3 w-[400px] h-[400px] bg-gradient-to-br from-orange-500/20 to-transparent rounded-full blur-3xl"
         />
         
         {/* Particle Effects */}
@@ -109,14 +109,16 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
             animate={{
               y: [0, -1000],
               x: [0, Math.random() * 100 - 50],
-              opacity: [0, 0.5, 0],
+              opacity: [0, 0.6, 0],
             }}
             transition={{
               duration: 10 + Math.random() * 10,
               repeat: Infinity,
               delay: Math.random() * 5,
             }}
-            className="absolute w-1 h-1 bg-[#00A86B]/30 rounded-full"
+            className={`absolute w-1 h-1 rounded-full ${
+              i % 3 === 0 ? 'bg-purple-500/40' : i % 3 === 1 ? 'bg-orange-500/40' : 'bg-cyan-500/40'
+            }`}
             style={{
               left: `${Math.random() * 100}%`,
               top: '100%',
