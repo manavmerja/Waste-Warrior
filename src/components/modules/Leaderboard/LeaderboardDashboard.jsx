@@ -278,7 +278,7 @@ export default function LeaderboardDashboard() {
                   </TabsTrigger>
                 </TabsList>
 
-                // THIS IS THE CORRECTED CODE
+                
 <AnimatePresence mode="wait">
   <TabsContent key="residents" value="residents" className="mt-0">
     {renderLeaderboardList(residents)}
