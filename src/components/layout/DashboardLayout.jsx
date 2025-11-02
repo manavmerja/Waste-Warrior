@@ -38,7 +38,7 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-violet-700 via-indigo-800 to-indigo-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-emerald-400 via-sky-500 to-violet-500 flex items-center justify-center">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
@@ -62,7 +62,7 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-violet-700 via-indigo-800 to-indigo-900 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-400 via-sky-500 to-violet-500 relative overflow-hidden">
       {/* Animated Background Layer */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <motion.div
@@ -127,8 +127,8 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
         ))}
       </div>
 
-      {/* Top Navigation Header - Glassmorphism */}
-      <header className="sticky top-0 z-50 bg-white/10 backdrop-blur-lg border-b border-white/20 shadow-2xl">
+      {/* Top Navigation Header - White */}
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-lg border-b border-gray-200 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -136,7 +136,7 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
               onClick={() => onSectionChange('overview')}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="flex items-center space-x-2 text-white hover:text-green-400 transition-colors"
+              className="flex items-center space-x-2 text-gray-900 hover:text-[#00A86B] transition-colors"
             >
               <Recycle className="w-8 h-8" />
               <span className="text-xl font-bold hidden sm:inline">Waste Warrior</span>
@@ -151,13 +151,13 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="relative px-4 py-2 text-sm font-medium text-gray-200 hover:text-white transition-colors"
+                  className="relative px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
                 >
                   {link.label}
                   {activeSection === link.id && (
                     <motion.div
                       layoutId="activeTab"
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-green-400"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#00A86B]"
                       initial={false}
                       transition={{ type: "spring", stiffness: 500, damping: 30 }}
                     />
@@ -172,7 +172,7 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="relative p-2 text-gray-200 hover:text-white transition-colors"
+                className="relative p-2 text-gray-700 hover:text-gray-900 transition-colors"
                 onClick={() => onSectionChange('notifications')}
               >
                 <Bell className="w-5 h-5" />
@@ -193,15 +193,15 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-                  className="flex items-center space-x-2 p-1 hover:bg-white/10 rounded-lg transition-colors"
+                  className="flex items-center space-x-2 p-1 hover:bg-gray-100 rounded-lg transition-colors"
                 >
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={userProfile?.avatar_url} alt={userProfile?.full_name} />
-                    <AvatarFallback className="bg-green-500 text-white">
+                    <AvatarFallback className="bg-[#00A86B] text-white">
                       {userProfile?.full_name?.charAt(0) || 'U'}
                     </AvatarFallback>
                   </Avatar>
-                  <ChevronDown className={`w-4 h-4 text-gray-200 transition-transform ${showProfileDropdown ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-4 h-4 text-gray-700 transition-transform ${showProfileDropdown ? 'rotate-180' : ''}`} />
                 </motion.button>
 
                 {/* Dropdown Menu - Glassmorphism */}
@@ -212,11 +212,11 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute right-0 mt-2 w-64 bg-white/10 backdrop-blur-lg rounded-lg shadow-2xl border border-white/20 py-2 z-50"
+                      className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-2xl border border-gray-200 py-2 z-50"
                     >
-                      <div className="px-4 py-3 border-b border-white/20">
-                        <p className="text-sm font-semibold text-white">{userProfile?.full_name}</p>
-                        <p className="text-xs text-gray-300 truncate">{user.email}</p>
+                      <div className="px-4 py-3 border-b border-gray-200">
+                        <p className="text-sm font-semibold text-gray-900">{userProfile?.full_name}</p>
+                        <p className="text-xs text-gray-600 truncate">{user.email}</p>
                       </div>
                       
                       <button
@@ -224,7 +224,7 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
                           onSectionChange('profile');
                           setShowProfileDropdown(false);
                         }}
-                        className="w-full px-4 py-2 text-left text-sm text-gray-200 hover:bg-white/10 flex items-center space-x-2"
+                        className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
                       >
                         <User className="w-4 h-4" />
                         <span>My Profile</span>
@@ -232,7 +232,7 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
                       
                       <button
                         onClick={signOut}
-                        className="w-full px-4 py-2 text-left text-sm text-red-400 hover:bg-red-500/20 flex items-center space-x-2"
+                        className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center space-x-2"
                       >
                         <LogOut className="w-4 h-4" />
                         <span>Log Out</span>
@@ -249,7 +249,7 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
         </div>
       </header>
 
-      {/* Main Content with frosted glass cards */}
+      {/* Main Content with white cards */}
       <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {children}
       </main>

@@ -180,7 +180,7 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-8 h-8 border-4 border-white/30 border-t-white rounded-full"
+          className="w-8 h-8 border-4 border-indigo-200 border-t-indigo-600 rounded-full"
         />
       </div>
     );
@@ -195,50 +195,56 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
       transition={{ duration: 0.3 }}
       className="space-y-6"
     >
-      {/* Welcome Banner - Glassmorphism */}
-      <Card className="relative overflow-hidden border border-white/20 bg-white/10 backdrop-blur-lg text-white shadow-2xl">
-        <div 
-          className="absolute inset-0 opacity-10 bg-no-repeat bg-right-bottom"
-          style={{ 
-            backgroundImage: `url(${recyclingIllustration})`,
-            backgroundSize: '40%',
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-indigo-500/20" />
-        <CardContent className="relative p-8 md:p-12">
-          <div className="max-w-2xl">
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-4xl md:text-5xl font-bold mb-4 text-white"
+      {/* Welcome Banner - Gradient Card */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ scale: 1.01, y: -2 }}
+        className="relative overflow-hidden bg-gradient-to-r from-[#00A86B] to-[#4F46E5] rounded-2xl shadow-xl p-8 md:p-12"
+      >
+        {/* Background Image */}
+        <div className="absolute inset-0 opacity-20">
+          <img 
+            src={teamSpiritIllustration} 
+            alt="Team Spirit" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        
+        {/* Content */}
+        <div className="relative z-10">
+          <motion.h1 
+            className="text-4xl md:text-5xl font-bold text-white mb-4"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            Welcome back, {userProfile?.full_name?.split(' ')[0] || 'Warrior'}! 🌱
+          </motion.h1>
+          <motion.p 
+            className="text-2xl md:text-3xl text-white/90 mb-6"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            You have <span className="font-bold">{userProfile?.credits || 0}</span> Green Points
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <Button 
+              onClick={() => onSectionChange('report')}
+              size="lg"
+              className="bg-white text-[#00A86B] hover:bg-gray-100 font-semibold shadow-lg"
             >
-              Welcome back, {userProfile?.full_name?.split(' ')[0] || 'Warrior'}! 🌱
-            </motion.h1>
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-2xl md:text-3xl mb-6 text-gray-200"
-            >
-              You have <span className="font-bold text-green-300">{userProfile?.credits || 0}</span> Green Points
-            </motion.h2>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <Button 
-                size="lg"
-                onClick={() => onSectionChange('report')}
-                className="bg-green-500 hover:bg-green-600 text-white font-semibold shadow-lg"
-              >
-                <Camera className="mr-2 h-5 w-5" />
-                Report a Waste Issue
-              </Button>
-            </motion.div>
-          </div>
-        </CardContent>
-      </Card>
+              <Camera className="w-5 h-5 mr-2" />
+              Report a Waste Issue
+            </Button>
+          </motion.div>
+        </div>
+      </motion.div>
 
       {/* Stats Cards */}
       <motion.div 
@@ -254,10 +260,10 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
         }}
       >
         {[
-          { title: 'Total Reports', value: stats.totalReports, icon: FileText, iconColor: 'text-blue-400', gradient: 'from-blue-400 to-indigo-400' },
-          { title: 'Resolved', value: stats.resolvedReports, icon: CheckCircle, iconColor: 'text-green-400', gradient: 'from-green-400 to-emerald-400' },
-          { title: 'Pending', value: stats.pendingReports, icon: Clock, iconColor: 'text-yellow-400', gradient: 'from-yellow-400 to-orange-400' },
-          { title: 'Green Points', value: stats.totalCredits, icon: Coins, iconColor: 'text-purple-400', gradient: 'from-purple-400 to-pink-400' },
+          { title: 'Total Reports', value: stats.totalReports, icon: FileText, iconColor: 'text-blue-700', bgColor: 'bg-blue-100' },
+          { title: 'Resolved', value: stats.resolvedReports, icon: CheckCircle, iconColor: 'text-green-700', bgColor: 'bg-green-100' },
+          { title: 'Pending', value: stats.pendingReports, icon: Clock, iconColor: 'text-yellow-700', bgColor: 'bg-yellow-100' },
+          { title: 'Green Points', value: stats.totalCredits, icon: Coins, iconColor: 'text-purple-700', bgColor: 'bg-purple-100' },
         ].map((stat) => (
           <motion.div
             key={stat.title}
@@ -265,16 +271,16 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
               hidden: { opacity: 0, y: 20 },
               visible: { opacity: 1, y: 0 }
             }}
-            whileHover={{ scale: 1.03 }}
+            whileHover={{ scale: 1.02, y: -5 }}
           >
-            <Card className="bg-white/10 backdrop-blur-lg border border-white/20 shadow-2xl hover:shadow-3xl transition-all hover:bg-white/15">
+            <Card className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-300 font-medium">{stat.title}</p>
-                    <p className={`text-3xl font-bold bg-gradient-to-r bg-clip-text text-transparent ${stat.gradient} mt-2`}>{stat.value}</p>
+                    <p className="text-sm text-gray-600 font-medium">{stat.title}</p>
+                    <p className="text-3xl font-bold text-gray-900 mt-2">{stat.value}</p>
                   </div>
-                  <div className="p-3 rounded-full bg-white/10">
+                  <div className={`w-12 h-12 rounded-lg ${stat.bgColor} flex items-center justify-center`}>
                     <stat.icon className={`h-6 w-6 ${stat.iconColor}`} />
                   </div>
                 </div>
@@ -284,11 +290,11 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
         ))}
       </motion.div>
 
-      {/* Quick Actions & Activity Feeds - Glassmorphism */}
-      <Card className="bg-white/10 backdrop-blur-lg border border-white/20 shadow-2xl">
+      {/* Quick Actions */}
+      <Card className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow">
         <CardHeader>
-          <CardTitle className="flex items-center text-white">
-            <Zap className="mr-2 h-5 w-5 text-yellow-400" />
+          <CardTitle className="flex items-center text-gray-900">
+            <Zap className="mr-2 h-5 w-5 text-yellow-600" />
             Quick Actions
           </CardTitle>
         </CardHeader>
@@ -300,46 +306,43 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
               { icon: Gift, label: 'Rewards', action: 'credits', gradient: 'from-orange-400 to-red-500' },
               { icon: FileText, label: 'Learn', action: 'learning', gradient: 'from-teal-400 to-cyan-500' },
             ].map((action) => (
-              <motion.div
+              <motion.button
                 key={action.label}
+                onClick={() => onSectionChange(action.action)}
                 whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center space-y-3 p-6 bg-gray-50 rounded-xl hover:bg-gray-100 hover:shadow-md transition-all"
               >
-                <Button 
-                  className="h-auto flex-col space-y-3 p-6 border border-white/20 bg-white/5 hover:bg-white/10 hover:shadow-xl transition-all w-full text-white" 
-                  variant="outline"
-                  onClick={() => onSectionChange(action.action)}
-                >
-                  <div className={`p-3 rounded-full bg-gradient-to-br ${action.gradient}`}>
-                    <action.icon className="h-8 w-8 text-white" />
-                  </div>
-                  <span className="font-semibold">{action.label}</span>
-                </Button>
-              </motion.div>
+                <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${action.gradient} flex items-center justify-center shadow-md`}>
+                  <action.icon className="h-6 w-6 text-white" />
+                </div>
+                <span className="text-sm font-semibold text-gray-900">{action.label}</span>
+              </motion.button>
             ))}
           </div>
         </CardContent>
       </Card>
 
-      {/* Activity Tabs - Glassmorphism */}
-      <Card className="bg-white/10 backdrop-blur-lg border border-white/20 shadow-2xl">
+      {/* Activity Tabs */}
+      <Card className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow">
         <CardContent className="p-6">
           <Tabs defaultValue="reports">
-            <TabsList className="grid w-full grid-cols-2 bg-white/5 border border-white/10">
-              <TabsTrigger value="reports" className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-gray-300">Recent Reports</TabsTrigger>
-              <TabsTrigger value="notifications" className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-gray-300">Notifications</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-gray-100">
+              <TabsTrigger value="reports" className="data-[state=active]:bg-white data-[state=active]:text-gray-900 text-gray-700">Recent Reports</TabsTrigger>
+              <TabsTrigger value="notifications" className="data-[state=active]:bg-white data-[state=active]:text-gray-900 text-gray-700">Notifications</TabsTrigger>
             </TabsList>
-            <TabsContent value="reports" className="space-y-3">
+            <TabsContent value="reports" className="space-y-3 mt-4">
               {reports.length > 0 ? reports.map((report) => (
                 <motion.div 
                   key={report.id} 
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="flex items-center justify-between p-3 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-all"
+                  whileHover={{ scale: 1.02, x: 5 }}
+                  className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all"
                 >
                   <div className="flex-1">
-                    <h4 className="font-medium text-white text-sm">{report.title}</h4>
-                    <p className="text-xs text-gray-400">{new Date(report.created_at).toLocaleDateString()}</p>
+                    <h4 className="font-medium text-gray-900 text-sm">{report.title}</h4>
+                    <p className="text-xs text-gray-600">{new Date(report.created_at).toLocaleDateString()}</p>
                   </div>
                   <Badge className={
                     report.status === 'resolved' 
@@ -352,22 +355,29 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
                   </Badge>
                 </motion.div>
               )) : (
-                <p className="text-center text-gray-400 py-4">No reports yet. Start reporting waste issues!</p>
+                <div className="text-center py-8">
+                  <img src={recyclingIllustration} alt="No reports" className="w-32 h-32 mx-auto mb-4 opacity-50" />
+                  <p className="text-gray-600">No reports yet. Start reporting waste issues!</p>
+                </div>
               )}
             </TabsContent>
-            <TabsContent value="notifications">
+            <TabsContent value="notifications" className="mt-4">
               {notifications.length > 0 ? notifications.map((n) => (
                 <motion.div 
                   key={n.id} 
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="p-3 bg-white/5 border border-white/10 rounded-lg mb-2 hover:bg-white/10 transition-all"
+                  whileHover={{ scale: 1.02, x: 5 }}
+                  className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg mb-3 hover:from-blue-100 hover:to-indigo-100 transition-all"
                 >
-                  <h4 className="font-medium text-sm text-white">{n.title}</h4>
-                  <p className="text-xs text-gray-300">{n.message}</p>
+                  <h4 className="font-medium text-sm text-gray-900">{n.title}</h4>
+                  <p className="text-xs text-gray-700 mt-1">{n.message}</p>
                 </motion.div>
               )) : (
-                <p className="text-center text-gray-400 py-4">No new notifications</p>
+                <div className="text-center py-8">
+                  <Bell className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                  <p className="text-gray-600">No new notifications</p>
+                </div>
               )}
             </TabsContent>
           </Tabs>
