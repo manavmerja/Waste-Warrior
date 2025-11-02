@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -48,6 +49,8 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
     pendingReports: 0,
     totalCredits: 0,
   });
+
+  
 
   useEffect(() => {
     if (userProfile?.id) {

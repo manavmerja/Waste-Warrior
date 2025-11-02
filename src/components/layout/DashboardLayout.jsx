@@ -101,6 +101,8 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
           }}
           className="absolute bottom-20 left-1/3 w-[400px] h-[400px] bg-gradient-to-br from-orange-500/20 to-transparent rounded-full blur-3xl"
         />
+
+        
         
         {/* Particle Effects */}
         {[...Array(20)].map((_, i) => (
