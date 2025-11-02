@@ -35,6 +35,7 @@ import LearningModules from '@/components/features/LearningModules';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import wasteIllustration from '@/assets/waste-management-illustration.png';
 import teamSpiritIllustration from '@/assets/team-spirit-illustration.png';
+import recyclingIllustration from '@/assets/recycling-illustration.png';
 
 export default function ResidentDashboard({activeSection, onSectionChange}) {
   const { userProfile } = useAuth();
@@ -175,11 +176,11 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-64 bg-gradient-to-b from-violet-50 to-cyan-50">
+      <div className="flex items-center justify-center min-h-64">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full"
+          className="w-8 h-8 border-4 border-white/30 border-t-white rounded-full"
         />
       </div>
     );
@@ -194,21 +195,22 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
       transition={{ duration: 0.3 }}
       className="space-y-6"
     >
-      {/* Welcome Banner */}
-      <Card className="relative overflow-hidden border-none bg-gradient-to-r from-[#00A86B] to-[#4F46E5] text-white shadow-2xl">
+      {/* Welcome Banner - Glassmorphism */}
+      <Card className="relative overflow-hidden border border-white/20 bg-white/10 backdrop-blur-lg text-white shadow-2xl">
         <div 
-          className="absolute inset-0 opacity-20 bg-no-repeat bg-right-bottom"
+          className="absolute inset-0 opacity-10 bg-no-repeat bg-right-bottom"
           style={{ 
-            backgroundImage: `url(${teamSpiritIllustration})`,
-            backgroundSize: '50%',
+            backgroundImage: `url(${recyclingIllustration})`,
+            backgroundSize: '40%',
           }}
         />
+        <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-indigo-500/20" />
         <CardContent className="relative p-8 md:p-12">
           <div className="max-w-2xl">
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-4xl md:text-5xl font-bold mb-4"
+              className="text-4xl md:text-5xl font-bold mb-4 text-white"
             >
               Welcome back, {userProfile?.full_name?.split(' ')[0] || 'Warrior'}! 🌱
             </motion.h1>
@@ -216,9 +218,9 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-2xl md:text-3xl mb-6"
+              className="text-2xl md:text-3xl mb-6 text-gray-200"
             >
-              You have <span className="font-bold text-yellow-300">{userProfile?.credits || 0}</span> Green Points
+              You have <span className="font-bold text-green-300">{userProfile?.credits || 0}</span> Green Points
             </motion.h2>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -228,7 +230,7 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
               <Button 
                 size="lg"
                 onClick={() => onSectionChange('report')}
-                className="bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white font-semibold shadow-lg"
+                className="bg-green-500 hover:bg-green-600 text-white font-semibold shadow-lg"
               >
                 <Camera className="mr-2 h-5 w-5" />
                 Report a Waste Issue
@@ -252,10 +254,10 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
         }}
       >
         {[
-          { title: 'Total Reports', value: stats.totalReports, icon: FileText, iconBg: 'bg-blue-100', iconColor: 'text-blue-600', gradient: 'from-blue-500 to-indigo-500' },
-          { title: 'Resolved', value: stats.resolvedReports, icon: CheckCircle, iconBg: 'bg-green-100', iconColor: 'text-green-600', gradient: 'from-green-500 to-emerald-500' },
-          { title: 'Pending', value: stats.pendingReports, icon: Clock, iconBg: 'bg-yellow-100', iconColor: 'text-yellow-600', gradient: 'from-yellow-500 to-orange-500' },
-          { title: 'Green Points', value: stats.totalCredits, icon: Coins, iconBg: 'bg-purple-100', iconColor: 'text-purple-600', gradient: 'from-purple-500 to-pink-500' },
+          { title: 'Total Reports', value: stats.totalReports, icon: FileText, iconColor: 'text-blue-400', gradient: 'from-blue-400 to-indigo-400' },
+          { title: 'Resolved', value: stats.resolvedReports, icon: CheckCircle, iconColor: 'text-green-400', gradient: 'from-green-400 to-emerald-400' },
+          { title: 'Pending', value: stats.pendingReports, icon: Clock, iconColor: 'text-yellow-400', gradient: 'from-yellow-400 to-orange-400' },
+          { title: 'Green Points', value: stats.totalCredits, icon: Coins, iconColor: 'text-purple-400', gradient: 'from-purple-400 to-pink-400' },
         ].map((stat) => (
           <motion.div
             key={stat.title}
@@ -263,15 +265,16 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
               hidden: { opacity: 0, y: 20 },
               visible: { opacity: 1, y: 0 }
             }}
+            whileHover={{ scale: 1.03 }}
           >
-            <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
+            <Card className="bg-white/10 backdrop-blur-lg border border-white/20 shadow-2xl hover:shadow-3xl transition-all hover:bg-white/15">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600 font-medium">{stat.title}</p>
+                    <p className="text-sm text-gray-300 font-medium">{stat.title}</p>
                     <p className={`text-3xl font-bold bg-gradient-to-r bg-clip-text text-transparent ${stat.gradient} mt-2`}>{stat.value}</p>
                   </div>
-                  <div className={`p-3 rounded-full ${stat.iconBg}`}>
+                  <div className="p-3 rounded-full bg-white/10">
                     <stat.icon className={`h-6 w-6 ${stat.iconColor}`} />
                   </div>
                 </div>
@@ -281,21 +284,21 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
         ))}
       </motion.div>
 
-      {/* Quick Actions & Activity Feeds */}
-      <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
+      {/* Quick Actions & Activity Feeds - Glassmorphism */}
+      <Card className="bg-white/10 backdrop-blur-lg border border-white/20 shadow-2xl">
         <CardHeader>
-          <CardTitle className="flex items-center text-gray-900">
-            <Zap className="mr-2 h-5 w-5 text-[#F59E0B]" />
+          <CardTitle className="flex items-center text-white">
+            <Zap className="mr-2 h-5 w-5 text-yellow-400" />
             Quick Actions
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { icon: Camera, label: 'Report Waste', action: 'report', gradient: 'from-green-400 to-emerald-500', iconColor: 'text-green-600' },
-              { icon: MapPin, label: 'Find Points', action: 'map', gradient: 'from-indigo-400 to-purple-500', iconColor: 'text-indigo-600' },
-              { icon: Gift, label: 'Rewards', action: 'credits', gradient: 'from-orange-400 to-red-500', iconColor: 'text-orange-600' },
-              { icon: FileText, label: 'Learn', action: 'learning', gradient: 'from-teal-400 to-cyan-500', iconColor: 'text-teal-600' },
+              { icon: Camera, label: 'Report Waste', action: 'report', gradient: 'from-green-400 to-emerald-500' },
+              { icon: MapPin, label: 'Find Points', action: 'map', gradient: 'from-indigo-400 to-purple-500' },
+              { icon: Gift, label: 'Rewards', action: 'credits', gradient: 'from-orange-400 to-red-500' },
+              { icon: FileText, label: 'Learn', action: 'learning', gradient: 'from-teal-400 to-cyan-500' },
             ].map((action) => (
               <motion.div
                 key={action.label}
@@ -303,14 +306,14 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
                 whileTap={{ scale: 0.95 }}
               >
                 <Button 
-                  className="h-auto flex-col space-y-3 p-6 border-2 bg-gradient-to-br from-white to-gray-50 hover:shadow-lg transition-all w-full" 
+                  className="h-auto flex-col space-y-3 p-6 border border-white/20 bg-white/5 hover:bg-white/10 hover:shadow-xl transition-all w-full text-white" 
                   variant="outline"
                   onClick={() => onSectionChange(action.action)}
                 >
                   <div className={`p-3 rounded-full bg-gradient-to-br ${action.gradient}`}>
                     <action.icon className="h-8 w-8 text-white" />
                   </div>
-                  <span className="font-semibold text-gray-900">{action.label}</span>
+                  <span className="font-semibold">{action.label}</span>
                 </Button>
               </motion.div>
             ))}
@@ -318,13 +321,13 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
         </CardContent>
       </Card>
 
-      {/* Activity Tabs */}
-      <Card className="bg-white shadow-lg">
+      {/* Activity Tabs - Glassmorphism */}
+      <Card className="bg-white/10 backdrop-blur-lg border border-white/20 shadow-2xl">
         <CardContent className="p-6">
           <Tabs defaultValue="reports">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="reports">Recent Reports</TabsTrigger>
-              <TabsTrigger value="notifications">Notifications</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-white/5 border border-white/10">
+              <TabsTrigger value="reports" className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-gray-300">Recent Reports</TabsTrigger>
+              <TabsTrigger value="notifications" className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-gray-300">Notifications</TabsTrigger>
             </TabsList>
             <TabsContent value="reports" className="space-y-3">
               {reports.length > 0 ? reports.map((report) => (
@@ -332,24 +335,24 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
                   key={report.id} 
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="flex items-center justify-between p-3 bg-gradient-to-r from-white to-gray-50 rounded-lg hover:shadow-md transition-shadow"
+                  className="flex items-center justify-between p-3 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-all"
                 >
                   <div className="flex-1">
-                    <h4 className="font-medium text-gray-900 text-sm">{report.title}</h4>
-                    <p className="text-xs text-gray-500">{new Date(report.created_at).toLocaleDateString()}</p>
+                    <h4 className="font-medium text-white text-sm">{report.title}</h4>
+                    <p className="text-xs text-gray-400">{new Date(report.created_at).toLocaleDateString()}</p>
                   </div>
                   <Badge className={
                     report.status === 'resolved' 
-                      ? 'bg-green-500 hover:bg-green-600' 
+                      ? 'bg-green-500 hover:bg-green-600 text-white' 
                       : report.status === 'rejected'
-                      ? 'bg-red-500 hover:bg-red-600'
+                      ? 'bg-red-500 hover:bg-red-600 text-white'
                       : 'bg-yellow-400 hover:bg-yellow-500 text-gray-900'
                   }>
                     {report.status}
                   </Badge>
                 </motion.div>
               )) : (
-                <p className="text-center text-gray-500 py-4">No reports yet. Start reporting waste issues!</p>
+                <p className="text-center text-gray-400 py-4">No reports yet. Start reporting waste issues!</p>
               )}
             </TabsContent>
             <TabsContent value="notifications">
@@ -358,13 +361,13 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
                   key={n.id} 
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg mb-2 hover:shadow-md transition-shadow"
+                  className="p-3 bg-white/5 border border-white/10 rounded-lg mb-2 hover:bg-white/10 transition-all"
                 >
-                  <h4 className="font-medium text-sm text-gray-900">{n.title}</h4>
-                  <p className="text-xs text-gray-600">{n.message}</p>
+                  <h4 className="font-medium text-sm text-white">{n.title}</h4>
+                  <p className="text-xs text-gray-300">{n.message}</p>
                 </motion.div>
               )) : (
-                <p className="text-center text-gray-500 py-4">No new notifications</p>
+                <p className="text-center text-gray-400 py-4">No new notifications</p>
               )}
             </TabsContent>
           </Tabs>
