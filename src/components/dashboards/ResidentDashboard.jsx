@@ -294,7 +294,7 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
       {/* Quick Actions */}
       <Card
         className="text-white rounded-xl shadow-lg hover:shadow-xl transition-shadow border-none"
-        style={{ backgroundColor: '#02ae02ff', color: '#ffffff' }}
+        style={{ background: 'linear-gradient(to top, #004d00 0%, #007f00 50%, #32bc13ff 100%)', color: '#ffffff' }}
       >
         <CardHeader>
           <CardTitle className="flex items-center text-white">
