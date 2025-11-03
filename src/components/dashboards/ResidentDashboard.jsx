@@ -34,6 +34,7 @@ import { LeaderboardDashboard } from '@/components/modules/Leaderboard';
 import UserProfile from '@/components/features/UserProfile';
 import LearningModules from '@/components/features/LearningModules';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import ImpactPage from '@/pages/ImpactPage';
 import wasteIllustration from '@/assets/waste-management-illustration.png';
 import teamSpiritIllustration from '@/assets/waste-collection.jpg';
 import recyclingIllustration from '@/assets/recycling-illustration.png';
@@ -468,6 +469,19 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
             transition={{ duration: 0.3 }}
           >
             <LearningModules />
+          </motion.div>
+        );
+      case 'impact':
+        return (
+          <motion.div
+            key="impact"
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            transition={{ duration: 0.3 }}
+          >
+            <ImpactPage />
           </motion.div>
         );
       default:
