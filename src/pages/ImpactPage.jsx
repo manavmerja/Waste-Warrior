@@ -8,8 +8,16 @@ import {
   Coins, 
   Users, 
   MapPin,
-  Quote
+  Quote,
+  Award
 } from 'lucide-react';
+import { 
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 // Animation variants
 const containerVariants = {
@@ -134,34 +142,37 @@ const galleryItems = [
 const testimonials = [
   {
     id: 1,
-    text: "I love seeing my street clean! The app makes it so easy to report issues.",
-    author: "Priya S.",
-    location: "Ward 5"
-  },
-  {
-    id: 2,
-    text: "Amazing to see how quickly our community responds. We're making a real difference!",
+    text: "It's amazing to see how quickly our community responds. We're making a real difference!",
     author: "Rajesh M.",
     location: "Ward 3"
   },
   {
+    id: 2,
+    text: "I reported an overflowing bin in the morning, and it was cleaned by the afternoon. This app actually works!",
+    author: "Priya S.",
+    location: "Ward 10"
+  },
+  {
     id: 3,
-    text: "The gamification keeps me motivated. It's not just cleaning, it's building a better neighborhood!",
-    author: "Anita K.",
-    location: "Ward 7"
+    text: "Finally, a way to make our voices heard! It feels good to be part of the solution, not just the problem.",
+    author: "Amit K.",
+    location: "Resident"
+  },
+  {
+    id: 4,
+    text: "As a worker, getting 'Thank You' notes in the app is really motivating. Glad to be helping!",
+    author: "Team Worker",
+    location: "Team Alpha"
+  },
+  {
+    id: 5,
+    text: "My kids are now excited about spotting areas to clean up. We're earning points as a family!",
+    author: "Sunita P.",
+    location: "Resident"
   },
 ];
 
 export default function ImpactPage() {
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
-
-  // Rotate testimonials
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <motion.div
@@ -339,112 +350,109 @@ export default function ImpactPage() {
         </div>
       </motion.div>
 
-      {/* Hero Spotlights & Testimonials */}
+      {/* Hero of the Month */}
       <motion.div
-        variants={itemVariants}
-        whileInView={{ opacity: 1, y: 0 }}
-        initial={{ opacity: 0, y: 20 }}
+        variants={slideFromLeft}
+        whileInView="visible"
+        initial="hidden"
         viewport={{ once: true }}
       >
-        <Card className="bg-white shadow-lg">
+        <Card className="bg-gradient-to-r from-purple-50 to-indigo-50 shadow-lg border-2 border-purple-200">
           <CardContent className="p-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Column 1: Hero of the Month */}
-              <motion.div
-                variants={slideFromLeft}
-                whileInView="visible"
-                initial="hidden"
-                viewport={{ once: true }}
-                className="space-y-6"
-              >
-                <div className="space-y-3">
-                  <h3 className="text-2xl font-bold text-[#8B5CF6]">
-                    🏆 Hero of the Month
-                  </h3>
-                  <div className="flex items-start gap-4">
-                    <Avatar className="w-20 h-20 border-4 border-purple-200">
-                      <AvatarFallback className="bg-purple-100 text-purple-600 text-2xl font-bold">
-                        MM
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <h4 className="text-xl font-bold text-gray-900">Manav Merja</h4>
-                      <p className="text-gray-600 mt-2 leading-relaxed">
-                        Filed 30 resolved reports this month and inspired neighbors 
-                        to join the movement. Manav's dedication to keeping Ward 5 
-                        clean has made a visible difference in the community!
-                      </p>
-                      <div className="flex items-center gap-2 mt-3">
-                        <Badge variant="secondary" className="bg-purple-100 text-purple-700">
-                          30 Reports
-                        </Badge>
-                        <Badge variant="secondary" className="bg-green-100 text-green-700">
-                          850 Points
-                        </Badge>
-                      </div>
-                    </div>
-                  </div>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="bg-purple-100 p-3 rounded-full">
+                <Award className="w-8 h-8 text-purple-600" />
+              </div>
+              <h3 className="text-3xl font-bold text-purple-700">
+                Hero of the Month
+              </h3>
+            </div>
+            
+            <div className="flex items-start gap-6">
+              <Avatar className="w-24 h-24 border-4 border-purple-300 shadow-lg">
+                <AvatarFallback className="bg-purple-200 text-purple-700 text-3xl font-bold">
+                  MM
+                </AvatarFallback>
+              </Avatar>
+              
+              <div className="flex-1 space-y-4">
+                <div>
+                  <h4 className="text-2xl font-bold text-gray-900">Manav Merja</h4>
+                  <p className="text-sm text-purple-600 font-medium">Ward 5 Champion</p>
                 </div>
-              </motion.div>
-
-              {/* Column 2: Testimonials */}
-              <motion.div
-                variants={slideFromRight}
-                whileInView="visible"
-                initial="hidden"
-                viewport={{ once: true }}
-                className="space-y-4"
-              >
-                <h3 className="text-2xl font-bold text-gray-900">
-                  💬 What Our Community Says
-                </h3>
-                <div className="relative h-48">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={currentTestimonial}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.5 }}
-                      className="absolute inset-0"
-                    >
-                      <div className="bg-slate-100 rounded-lg p-6 h-full flex flex-col justify-between">
-                        <div className="space-y-3">
-                          <Quote className="w-8 h-8 text-indigo-400" />
-                          <p className="text-gray-700 text-lg leading-relaxed italic">
-                            "{testimonials[currentTestimonial].text}"
-                          </p>
-                        </div>
-                        <div className="flex items-center justify-between mt-4">
-                          <div>
-                            <p className="font-semibold text-gray-900">
-                              {testimonials[currentTestimonial].author}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                              {testimonials[currentTestimonial].location}
-                            </p>
-                          </div>
-                          <div className="flex gap-1">
-                            {testimonials.map((_, idx) => (
-                              <div
-                                key={idx}
-                                className={`h-2 w-2 rounded-full transition-all ${
-                                  idx === currentTestimonial
-                                    ? 'bg-indigo-600 w-6'
-                                    : 'bg-gray-300'
-                                }`}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  </AnimatePresence>
+                
+                <p className="text-gray-700 leading-relaxed">
+                  Filed 30 resolved reports this month and inspired neighbors 
+                  to join the movement. Manav's dedication to keeping Ward 5 
+                  clean has made a visible difference in the community!
+                </p>
+                
+                <div className="flex items-center gap-3">
+                  <Badge className="bg-purple-600 text-white hover:bg-purple-700 px-4 py-2 text-sm">
+                    30 Reports
+                  </Badge>
+                  <Badge className="bg-green-600 text-white hover:bg-green-700 px-4 py-2 text-sm">
+                    850 Points
+                  </Badge>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </CardContent>
         </Card>
+      </motion.div>
+
+      {/* What Our Community Says */}
+      <motion.div
+        variants={slideFromRight}
+        whileInView="visible"
+        initial="hidden"
+        viewport={{ once: true }}
+        className="space-y-6"
+      >
+        <div className="space-y-2">
+          <h2 className="text-3xl font-bold text-gray-900">💬 What Our Community Says</h2>
+          <p className="text-gray-600">
+            Hear from residents and workers making a difference
+          </p>
+        </div>
+
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-4">
+            {testimonials.map((testimonial, index) => (
+              <CarouselItem key={testimonial.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                <motion.div
+                  whileHover={{ scale: 1.02, y: -5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Card className="bg-white shadow-lg h-full">
+                    <CardContent className="p-6 flex flex-col h-full">
+                      <Quote className="w-8 h-8 text-indigo-400 mb-4" />
+                      <p className="text-gray-700 leading-relaxed italic flex-1 mb-4">
+                        "{testimonial.text}"
+                      </p>
+                      <div className="border-t pt-4">
+                        <p className="font-semibold text-gray-900">
+                          {testimonial.author}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          {testimonial.location}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="hidden md:flex" />
+          <CarouselNext className="hidden md:flex" />
+        </Carousel>
       </motion.div>
     </motion.div>
   );
