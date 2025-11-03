@@ -128,7 +128,8 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
       </div>
 
       {/* Top Navigation Header - White */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-lg border-b border-gray-200 shadow-lg">
+      <header className="sticky top-0 z-50 backdrop-blur-lg border-b border-gray-200 shadow-lg"
+      style={{background: 'linear-gradient(to top right, #009900 0%, #73e403ff 75%, #a9fa4cff 100%)'}}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -136,10 +137,12 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
               onClick={() => onSectionChange('overview')}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="flex items-center space-x-2 text-gray-900 hover:text-[#00A86B] transition-colors"
+              className="flex items-center space-x-2 text-[#C1E1C1] hover:text-[#00A86B] transition-colors"
+              // className="flex items-center space-x-2 text-[#006400] hover:text-emerald-700 transition-colors"
+              
             >
-              <Recycle className="w-8 h-8" />
-              <span className="text-xl font-bold hidden sm:inline">Waste Warrior</span>
+              <Recycle className="w-8 h-8 text-[#006400] hover:text-emerald-700" />
+              <span className="text-xl font-bold hidden sm:inline text-emerald-900">Waste Warrior</span>
             </motion.button>
 
             {/* Main Navigation Links */}
@@ -151,7 +154,7 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="relative px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                  className="relative px-4 py-2 text-sm font-medium text-black hover:text-white-900 transition-colors"
                 >
                   {link.label}
                   {activeSection === link.id && (

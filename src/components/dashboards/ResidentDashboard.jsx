@@ -34,7 +34,7 @@ import UserProfile from '@/components/features/UserProfile';
 import LearningModules from '@/components/features/LearningModules';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import wasteIllustration from '@/assets/waste-management-illustration.png';
-import teamSpiritIllustration from '@/assets/team-spirit-illustration.png';
+import teamSpiritIllustration from '@/assets/waste-collection.jpg';
 import recyclingIllustration from '@/assets/recycling-illustration.png';
 
 export default function ResidentDashboard({activeSection, onSectionChange}) {
@@ -200,10 +200,11 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ scale: 1.01, y: -2 }}
-        className="relative overflow-hidden bg-gradient-to-r from-[#00A86B] to-[#4F46E5] rounded-2xl shadow-xl p-8 md:p-12"
+        className="relative overflow-hidden bg-gradient-to-r from-[#00A86B] to-white rounded-2xl shadow-xl p-8 md:p-12"
+        // className="relative overflow-hidden bg-gradient-to- from-[#4F46E5] to-[#00A86B] rounded-2xl shadow-xl p-8 md:p-12"
       >
         {/* Background Image */}
-        <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0 opacity-50">
           <img 
             src={teamSpiritIllustration} 
             alt="Team Spirit" 
@@ -214,7 +215,7 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
         {/* Content */}
         <div className="relative z-10">
           <motion.h1 
-            className="text-4xl md:text-5xl font-bold text-white mb-4"
+            className="text-4xl md:text-5xl font-bold text-black mb-4"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
@@ -222,7 +223,7 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
             Welcome back, {userProfile?.full_name?.split(' ')[0] || 'Warrior'}! 🌱
           </motion.h1>
           <motion.p 
-            className="text-2xl md:text-3xl text-white/90 mb-6"
+            className="text-2xl md:text-3xl text-black mb-6"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
@@ -291,10 +292,13 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
       </motion.div>
 
       {/* Quick Actions */}
-      <Card className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+      <Card
+        className="text-white rounded-xl shadow-lg hover:shadow-xl transition-shadow border-none"
+        style={{ backgroundColor: '#02ae02ff', color: '#ffffff' }}
+      >
         <CardHeader>
-          <CardTitle className="flex items-center text-gray-900">
-            <Zap className="mr-2 h-5 w-5 text-yellow-600" />
+          <CardTitle className="flex items-center text-white">
+            <Zap className="mr-2 h-5 w-5 text-white" />
             Quick Actions
           </CardTitle>
         </CardHeader>
@@ -311,12 +315,12 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
                 onClick={() => onSectionChange(action.action)}
                 whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex flex-col items-center space-y-3 p-6 bg-gray-50 rounded-xl hover:bg-gray-100 hover:shadow-md transition-all"
+                className="flex flex-col items-center space-y-3 p-6 rounded-xl bg-white/10 hover:bg-white/20 hover:shadow-md transition-all"
               >
                 <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${action.gradient} flex items-center justify-center shadow-md`}>
                   <action.icon className="h-6 w-6 text-white" />
                 </div>
-                <span className="text-sm font-semibold text-gray-900">{action.label}</span>
+                <span className="text-sm font-semibold text-white">{action.label}</span>
               </motion.button>
             ))}
           </div>
