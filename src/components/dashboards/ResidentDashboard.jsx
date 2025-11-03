@@ -59,6 +59,7 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
 
   const fetchUserData = async () => {
     try {
+      
       // Fetch user's reports
       const { data: reportsData, error: reportsError } = await supabase
         .from('reports')
