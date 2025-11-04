@@ -1,8 +1,7 @@
 import { useAuth } from '@/hooks/useAuth';
 import { Navigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Recycle, Bell, User, LogOut, ChevronDown } from 'lucide-react';
+import { motion, AnimatePresence, useAnimationControls } from 'framer-motion'; import { Recycle, Bell, User, LogOut, ChevronDown } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { useState, useEffect } from 'react';
@@ -21,7 +20,7 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
       fetchNotificationCount();
     }
   }, [userProfile]);
-
+  const notificationControls = useAnimationControls();
   const fetchNotificationCount = async () => {
     try {
       const { count } = await supabase
@@ -29,11 +28,21 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
         .select('*', { count: 'exact', head: true })
         .eq('user_id', userProfile.id)
         .eq('is_read', false);
-      
+
       setUnreadNotifications(count || 0);
     } catch (error) {
       console.error('Error fetching notifications:', error);
     }
+  };
+  const handleNotificationClick = () => {
+    // Start the 'ring' animation
+    notificationControls.start({
+      rotate: [0, -15, 15, -15, 15, 0], // Keyframes for jiggle
+      transition: { duration: 0.4, times: [0, 0.2, 0.4, 0.6, 0.8, 1] }
+    });
+
+    // Navigate to the notifications section
+    onSectionChange('notifications');
   };
 
   if (loading) {
@@ -102,8 +111,8 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
           className="absolute bottom-20 left-1/3 w-[400px] h-[400px] bg-gradient-to-br from-orange-500/20 to-transparent rounded-full blur-3xl"
         />
 
-        
-        
+
+
         {/* Particle Effects */}
         {[...Array(20)].map((_, i) => (
           <motion.div
@@ -118,9 +127,8 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
               repeat: Infinity,
               delay: Math.random() * 5,
             }}
-            className={`absolute w-1 h-1 rounded-full ${
-              i % 3 === 0 ? 'bg-purple-500/40' : i % 3 === 1 ? 'bg-orange-500/40' : 'bg-cyan-500/40'
-            }`}
+            className={`absolute w-1 h-1 rounded-full ${i % 3 === 0 ? 'bg-purple-500/40' : i % 3 === 1 ? 'bg-orange-500/40' : 'bg-cyan-500/40'
+              }`}
             style={{
               left: `${Math.random() * 100}%`,
               top: '100%',
@@ -131,7 +139,7 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
 
       {/* Top Navigation Header - White */}
       <header className="sticky top-0 z-50 backdrop-blur-lg border-b border-gray-200 shadow-lg"
-      style={{background: 'linear-gradient(to top right, #009900 0%, #73e403ff 75%, #a9fa4cff 100%)'}}>
+        style={{ background: 'linear-gradient(to top right, #009900 0%, #73e403ff 75%, #a9fa4cff 100%)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -140,8 +148,8 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               className="flex items-center space-x-2 text-[#C1E1C1] hover:text-[#00A86B] transition-colors"
-              // className="flex items-center space-x-2 text-[#006400] hover:text-emerald-700 transition-colors"
-              
+            // className="flex items-center space-x-2 text-[#006400] hover:text-emerald-700 transition-colors"
+
             >
               <Recycle className="w-8 h-8 text-[#006400] hover:text-emerald-700" />
               <span className="text-xl font-bold hidden sm:inline text-emerald-900">Waste Warrior</span>
@@ -156,13 +164,20 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="relative px-4 py-2 text-sm font-medium text-black hover:text-white-900 transition-colors"
+                  className={`relative px-4 py-2 text-sm font-medium transition-colors
+  ${activeSection === link.id
+                      ? 'text-white font-bold' // Style for the ACTIVE link
+                      : 'text-black hover:text-white-900' // Style for INACTIVE links
+                    }
+`}
                 >
+
                   {link.label}
+                  {/* THIS IS THE HIGHLIGHT CODE */}
                   {activeSection === link.id && (
                     <motion.div
                       layoutId="activeTab"
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#00A86B]"
+                      className="absolute bottom-1 left-2 right-2 h-1 rounded-full bg-white"
                       initial={false}
                       transition={{ type: "spring", stiffness: 500, damping: 30 }}
                     />
@@ -177,8 +192,14 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="relative p-2 text-gray-700 hover:text-gray-900 transition-colors"
-                onClick={() => onSectionChange('notifications')}
+                className={`relative p-2 transition-colors
+${activeSection === 'notifications'
+                    ? 'text-white' // Active state: white icon
+                    : 'text-gray-700 hover:text-gray-900' // Inactive state
+                  }
+ `}
+                animate={notificationControls}
+                onClick={handleNotificationClick}
               >
                 <Bell className="w-5 h-5" />
                 {unreadNotifications > 0 && (
@@ -223,7 +244,7 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
                         <p className="text-sm font-semibold text-gray-900">{userProfile?.full_name}</p>
                         <p className="text-xs text-gray-600 truncate">{user.email}</p>
                       </div>
-                      
+
                       <button
                         onClick={() => {
                           onSectionChange('profile');
@@ -234,7 +255,7 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
                         <User className="w-4 h-4" />
                         <span>My Profile</span>
                       </button>
-                      
+
                       <button
                         onClick={signOut}
                         className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center space-x-2"

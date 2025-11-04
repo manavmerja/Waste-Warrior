@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Languages, Check } from 'lucide-react';
 
@@ -34,18 +34,18 @@ export default function LanguageSelector() {
         <Button
           variant="outline"
           size="sm"
-          className="gap-2 bg-background/80 backdrop-blur-sm border-border/50 hover:bg-accent/50"
+          className="gap-2 bg-white text-[#006400] hover:bg-gray-100 border border-gray-300"
         >
           <Languages className="h-4 w-4" />
           <span className="hidden sm:inline">{currentLanguage.nativeName}</span>
           <span className="sm:hidden">{currentLanguage.code.toUpperCase()}</span>
         </Button>
       </DropdownMenuTrigger>
-      
+
       <AnimatePresence>
         {isOpen && (
-          <DropdownMenuContent 
-            align="end" 
+          <DropdownMenuContent
+            align="end"
             className="w-48 bg-background/95 backdrop-blur-sm border-border/50"
             asChild
           >
