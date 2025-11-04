@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import LanguageSelector from '@/components/ui/language-selector';
+import NotificationDropdown from '@/components/layout/NotificationDropdown';
 import { useTranslation } from 'react-i18next';
 
 export default function DashboardLayout({ children, activeSection, onSectionChange }) {
@@ -14,6 +15,7 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
   const { t } = useTranslation();
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [unreadNotifications, setUnreadNotifications] = useState(0);
+  const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
 
   useEffect(() => {
     if (userProfile?.id) {
@@ -186,33 +188,29 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
               ))}
             </nav>
 
-            {/* Right Side Icons */}
-            <div className="flex items-center space-x-4">
-              {/* Notification Bell */}
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                className={`relative p-2 transition-colors
-${activeSection === 'notifications'
-                    ? 'text-white' // Active state: white icon
-                    : 'text-gray-700 hover:text-gray-900' // Inactive state
-                  }
- `}
-                animate={notificationControls}
-                onClick={handleNotificationClick}
-              >
-                <Bell className="w-5 h-5" />
-                {unreadNotifications > 0 && (
-                  <motion.span
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="absolute top-0 right-0 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold"
-                  >
-                    {unreadNotifications > 9 ? '9+' : unreadNotifications}
-                  </motion.span>
-                )}
-              </motion.button>
-
+           {/* Right Side Icons */}
+<div className="flex items-center space-x-4">
+  {/* Notification Bell */}
+  <motion.button
+    whileHover={{ scale: 1.1 }}
+    whileTap={{ scale: 0.95 }}
+    className="relative p-2 text-gray-700 hover:text-gray-900 transition-colors" // Removed activeSection logic
+    // onClick={handleNotificationClick} // Old onClick
+    onClick={() => setShowNotificationDropdown(!showNotificationDropdown)} // <-- 1. CHANGED: Toggles the dropdown
+    // animate={notificationControls} // Removed, as this was not defined
+  >
+    <Bell className="w-5 h-5" />
+    {unreadNotifications > 0 && (
+      <motion.span
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        className="absolute top-0 right-0 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold"
+      >
+        {unreadNotifications > 9 ? '9+' : unreadNotifications}
+      </motion.span>
+    )}
+  </motion.button>
+  
               {/* Profile Dropdown */}
               <div className="relative">
                 <motion.button
@@ -229,6 +227,25 @@ ${activeSection === 'notifications'
                   </Avatar>
                   <ChevronDown className={`w-4 h-4 text-gray-700 transition-transform ${showProfileDropdown ? 'rotate-180' : ''}`} />
                 </motion.button>
+
+                {/* Notification Dropdown Menu */}
+<AnimatePresence>
+  {showNotificationDropdown && (
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.2 }}
+      className="absolute right-0 mt-2 mr-16 w-80 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50"
+    >
+      {/* We will create this new component in the next step */}
+      <NotificationDropdown 
+        onClose={() => setShowNotificationDropdown(false)} 
+        setUnreadCount={setUnreadNotifications} 
+      />
+    </motion.div>
+  )}
+</AnimatePresence>
 
                 {/* Dropdown Menu - Glassmorphism */}
                 <AnimatePresence>
