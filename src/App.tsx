@@ -11,6 +11,8 @@ import AuthPage from "./components/auth/AuthPage";
 import DashboardPage from "./pages/DashboardPage";
 import NotFound from "./pages/NotFound";
 
+
+
 const queryClient = new QueryClient();
 
 function ProtectedRoute({ children }) {
