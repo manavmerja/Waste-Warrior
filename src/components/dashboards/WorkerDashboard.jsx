@@ -70,6 +70,8 @@ export default function WorkerDashboard({ activeSection, onSectionChange }) {
     }
   };
 
+  
+
   const subscribeToNotifications = () => {
     const channel = supabase
       .channel('worker-notifications')
