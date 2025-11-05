@@ -3,6 +3,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+// Images import
+import oBin1 from '../assets/overflowBin1(before).jpeg';
+import oBin2 from '../assets/overflowBin1(after).jpeg';
+import illDump1 from '../assets/illegalDump(before).png';
+import illDump2 from '../assets/illegalDump(after).png';
+import parkR1 from '../assets/parkRestore(before).jpg';
+import parkR2 from '../assets/parkRestore(after).jpg';
+import damBin from '../assets/damagedBins.jpg';
+import fixBin from '../assets/fixedBins.png';
+import streetB1 from '../assets/streetCorner(before).jpg';
+import streetB2 from '../assets/streetCorner(after).jpg';
+import commCl1 from '../assets/commClean(before).jpg';
+import commCl2 from '../assets/commClean(after).jpg';
 import { 
   CheckCircle, 
   Coins, 
@@ -100,6 +113,8 @@ const galleryItems = [
     location: "Ward 5",
     beforeDesc: "Waste overflowing onto sidewalk",
     afterDesc: "Clean and properly managed",
+    image_before: oBin1,
+    image_after: oBin2,
   },
   {
     id: 2,
@@ -107,6 +122,8 @@ const galleryItems = [
     location: "Ward 3",
     beforeDesc: "Large pile of construction waste",
     afterDesc: "Area restored and monitored",
+    image_before: illDump1,
+    image_after: illDump2,
   },
   {
     id: 3,
@@ -114,6 +131,8 @@ const galleryItems = [
     location: "Ward 7",
     beforeDesc: "Littered recreational area",
     afterDesc: "Beautiful community space",
+    image_before: parkR1,
+    image_after: parkR2,
   },
   {
     id: 4,
@@ -121,6 +140,8 @@ const galleryItems = [
     location: "Ward 2",
     beforeDesc: "Damaged and unusable bins",
     afterDesc: "Fully functional station",
+    image_before: damBin,
+    image_after: fixBin,
   },
   {
     id: 5,
@@ -128,6 +149,8 @@ const galleryItems = [
     location: "Ward 6",
     beforeDesc: "Accumulated garbage pile",
     afterDesc: "Pristine corner restored",
+    image_before: streetB1,
+    image_after: streetB2,
   },
   {
     id: 6,
@@ -135,6 +158,8 @@ const galleryItems = [
     location: "Ward 4",
     beforeDesc: "Neglected and overgrown",
     afterDesc: "Thriving green space",
+    image_before: commCl1,
+    image_after: commCl2,
   },
 ];
 
@@ -312,7 +337,8 @@ export default function ImpactPage() {
                       <p className="text-xs font-semibold text-gray-500 uppercase">Before</p>
                       <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
                         <div className="w-full h-full bg-gradient-to-br from-red-100 to-orange-100 flex items-center justify-center">
-                          <span className="text-4xl">🗑️</span>
+                          {/* <span className="text-4xl"></span> */}
+                          <span className="text-4xl"><img src={item.image_before}></img></span>
                         </div>
                       </div>
                       <p className="text-xs text-gray-600">{item.beforeDesc}</p>
@@ -321,7 +347,9 @@ export default function ImpactPage() {
                       <p className="text-xs font-semibold text-gray-500 uppercase">After</p>
                       <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
                         <div className="w-full h-full bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
-                          <span className="text-4xl">✨</span>
+                          <span className="text-4xl"><img src={item.image_after}></img></span>
+                          {/* <span className="text-4xl"><img src={overflowBin}></img></span> */}
+                          {/* <span className="text-4xl">...</span> */}
                         </div>
                       </div>
                       <p className="text-xs text-gray-600">{item.afterDesc}</p>
