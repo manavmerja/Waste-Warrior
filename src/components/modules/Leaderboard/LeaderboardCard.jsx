@@ -84,7 +84,7 @@ export default function LeaderboardCard({ user, rank, isCurrentUser, animationDe
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             <h4 className="font-bold text-foreground truncate text-lg">
-              {user.full_name || 'Anonymous Champion'}
+              {user.full_name || t('leaderboard.anonymousChampion')}
             </h4>
             {user.is_green_champion && (
               <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white gap-1 shadow-md">

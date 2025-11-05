@@ -64,12 +64,13 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
   }
 
   const navigationLinks = [
-    { id: 'overview', label: 'Overview' },
-    { id: 'report', label: 'Report Waste' },
-    { id: 'learning', label: 'Learning' },
-    { id: 'credits', label: 'Credits' },
-    { id: 'leaderboard', label: 'Leaderboard' },
-    { id: 'impact', label: 'Impact' },
+    { id: 'overview', label: t('dashboard.overview') },
+    { id: 'report', label: t('dashboard.reportWaste') },
+    { id: 'learning', label: t('dashboard.learning') },
+    { id: 'credits', label: t('dashboard.credits') },
+    // Leaderboard and Impact may be organized under other namespaces
+    { id: 'leaderboard', label: t('leaderboard.title') },
+    { id: 'impact', label: t('dashboard.impact') || 'Impact' },
   ];
 
   return (
@@ -270,7 +271,7 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
                         className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
                       >
                         <User className="w-4 h-4" />
-                        <span>My Profile</span>
+                        <span>{t('dashboard.profile')}</span>
                       </button>
 
                       <button
@@ -278,7 +279,7 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
                         className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center space-x-2"
                       >
                         <LogOut className="w-4 h-4" />
-                        <span>Log Out</span>
+                        <span>{t('common.logout')}</span>
                       </button>
                     </motion.div>
                   )}
