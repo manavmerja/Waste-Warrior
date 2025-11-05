@@ -12,14 +12,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Progress } from '@/components/ui/progress';
 import { 
   Truck, MapPin, CheckCircle, Clock, User, Bell, Award, BookOpen, 
-  Camera, Navigation, LogOut, BarChart3, Phone, Mail, HelpCircle, 
-  Home, ClipboardList, TrendingUp, Menu, X 
+  Camera, Navigation, BarChart3, Phone, Mail, HelpCircle, 
+  ClipboardList, TrendingUp 
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
-import LanguageSelector from '@/components/ui/language-selector';
 
-export default function WorkerDashboard() {
+export default function WorkerDashboard({ activeSection, onSectionChange }) {
   const { t } = useTranslation();
   const { user, userProfile, signOut } = useAuth();
   const [assignedReports, setAssignedReports] = useState([]);
@@ -27,8 +26,6 @@ export default function WorkerDashboard() {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [uploadingEvidence, setUploadingEvidence] = useState(null);
-  const [activeSection, setActiveSection] = useState('profile');
-  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
     if (user?.id) {
@@ -195,10 +192,6 @@ export default function WorkerDashboard() {
     fetchWorkerData();
   };
 
-  const handleLogout = async () => {
-    await signOut();
-    toast.success('Logged out successfully');
-  };
 
   const openInMaps = (lat, lng) => {
     window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, '_blank');
@@ -238,13 +231,6 @@ export default function WorkerDashboard() {
     ? Math.round((completedReports.length / assignedReports.length) * 100) 
     : 0;
 
-  const menuItems = [
-    { id: 'profile', label: t('worker.profile'), icon: User },
-    { id: 'pickups', label: t('worker.assignedPickups'), icon: ClipboardList },
-    { id: 'progress', label: t('worker.progress'), icon: TrendingUp },
-    { id: 'notifications', label: t('worker.notifications'), icon: Bell, badge: unreadNotifications },
-    { id: 'support', label: t('worker.support'), icon: HelpCircle },
-  ];
 
   if (loading) {
     return (
@@ -277,42 +263,37 @@ export default function WorkerDashboard() {
       animate={{ opacity: 1, x: 0 }}
       className="space-y-6"
     >
-      <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold text-foreground">{t('worker.profile')}</h2>
-        <LanguageSelector />
-      </div>
-
-      <Card>
+      <Card className="bg-white shadow-lg">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <User className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-gray-900">
+            <User className="h-5 w-5 text-indigo-600" />
             {t('worker.workerInfo')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <Label className="text-muted-foreground">{t('worker.name')}</Label>
-              <p className="text-lg font-medium">{userProfile?.full_name || 'N/A'}</p>
+              <Label className="text-gray-600">{t('worker.name')}</Label>
+              <p className="text-lg font-medium text-gray-900">{userProfile?.full_name || 'N/A'}</p>
             </div>
             <div>
-              <Label className="text-muted-foreground">{t('worker.workerId')}</Label>
-              <p className="text-lg font-mono">{workerProfile?.id?.slice(0, 8) || 'N/A'}</p>
+              <Label className="text-gray-600">{t('worker.workerId')}</Label>
+              <p className="text-lg font-mono text-gray-900">{workerProfile?.id?.slice(0, 8) || 'N/A'}</p>
             </div>
             <div>
-              <Label className="text-muted-foreground">{t('worker.email')}</Label>
-              <p className="text-lg">{userProfile?.email || 'N/A'}</p>
+              <Label className="text-gray-600">{t('worker.email')}</Label>
+              <p className="text-lg text-gray-900">{userProfile?.email || 'N/A'}</p>
             </div>
             <div>
-              <Label className="text-muted-foreground">{t('worker.phone')}</Label>
-              <p className="text-lg">{userProfile?.phone || 'N/A'}</p>
+              <Label className="text-gray-600">{t('worker.phone')}</Label>
+              <p className="text-lg text-gray-900">{userProfile?.phone || 'N/A'}</p>
             </div>
             <div>
-              <Label className="text-muted-foreground">{t('worker.language')}</Label>
-              <p className="text-lg capitalize">{userProfile?.language || 'English'}</p>
+              <Label className="text-gray-600">{t('worker.language')}</Label>
+              <p className="text-lg capitalize text-gray-900">{userProfile?.language || 'English'}</p>
             </div>
             <div>
-              <Label className="text-muted-foreground">{t('worker.status')}</Label>
+              <Label className="text-gray-600">{t('worker.status')}</Label>
               <Badge variant={workerProfile?.is_active ? 'default' : 'secondary'}>
                 {workerProfile?.is_active ? t('worker.active') : t('worker.inactive')}
               </Badge>
@@ -321,16 +302,16 @@ export default function WorkerDashboard() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="bg-white shadow-lg">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Award className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-gray-900">
+            <Award className="h-5 w-5 text-purple-600" />
             {t('worker.totalCredits')}
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-4xl font-bold text-primary">{userProfile?.credits || 0}</div>
-          <p className="text-sm text-muted-foreground mt-2">{t('worker.creditsEarned')}</p>
+          <div className="text-4xl font-bold text-purple-600">{userProfile?.credits || 0}</div>
+          <p className="text-sm text-gray-600 mt-2">{t('worker.creditsEarned')}</p>
         </CardContent>
       </Card>
     </motion.div>
@@ -342,39 +323,37 @@ export default function WorkerDashboard() {
       animate={{ opacity: 1, x: 0 }}
       className="space-y-6"
     >
-      <h2 className="text-3xl font-bold text-foreground">{t('worker.assignedPickups')}</h2>
-
       <div className="grid gap-4 md:grid-cols-3">
-        <Card>
+        <Card className="bg-white shadow-lg">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium">{t('worker.total')}</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-900">{t('worker.total')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{assignedReports.length}</div>
+            <div className="text-2xl font-bold text-gray-900">{assignedReports.length}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-white shadow-lg">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium">{t('worker.pending')}</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-900">{t('worker.pending')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-warning">{pendingReports.length}</div>
+            <div className="text-2xl font-bold text-yellow-600">{pendingReports.length}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-white shadow-lg">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium">{t('worker.completed')}</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-900">{t('worker.completed')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-success">{completedReports.length}</div>
+            <div className="text-2xl font-bold text-green-600">{completedReports.length}</div>
           </CardContent>
         </Card>
       </div>
 
-      <Card>
+      <Card className="bg-white shadow-lg">
         <CardHeader>
-          <CardTitle>{t('worker.pickupsList')}</CardTitle>
-          <CardDescription>{t('worker.pickupsDescription')}</CardDescription>
+          <CardTitle className="text-gray-900">{t('worker.pickupsList')}</CardTitle>
+          <CardDescription className="text-gray-600">{t('worker.pickupsDescription')}</CardDescription>
         </CardHeader>
         <CardContent>
           {assignedReports.length === 0 ? (
@@ -484,52 +463,50 @@ export default function WorkerDashboard() {
       animate={{ opacity: 1, x: 0 }}
       className="space-y-6"
     >
-      <h2 className="text-3xl font-bold text-foreground">{t('worker.progressTracker')}</h2>
-
       <div className="grid gap-4 md:grid-cols-2">
-        <Card>
+        <Card className="bg-white shadow-lg">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <BarChart3 className="h-5 w-5" />
+            <CardTitle className="flex items-center gap-2 text-gray-900">
+              <BarChart3 className="h-5 w-5 text-indigo-600" />
               {t('worker.completionRate')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="text-4xl font-bold">{completionRate}%</div>
+            <div className="text-4xl font-bold text-indigo-600">{completionRate}%</div>
             <Progress value={completionRate} className="h-3" />
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-gray-600">
               {completedReports.length} {t('worker.of')} {assignedReports.length} {t('worker.pickupsCompleted')}
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-white shadow-lg">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Clock className="h-5 w-5" />
+            <CardTitle className="flex items-center gap-2 text-gray-900">
+              <Clock className="h-5 w-5 text-indigo-600" />
               {t('worker.stats')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">{t('worker.todayPickups')}</span>
-              <span className="text-xl font-bold">{todayPickups.length}</span>
+              <span className="text-gray-600">{t('worker.todayPickups')}</span>
+              <span className="text-xl font-bold text-gray-900">{todayPickups.length}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">{t('worker.weeklyPickups')}</span>
-              <span className="text-xl font-bold">{weeklyPickups.length}</span>
+              <span className="text-gray-600">{t('worker.weeklyPickups')}</span>
+              <span className="text-xl font-bold text-gray-900">{weeklyPickups.length}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">{t('worker.pending')}</span>
-              <span className="text-xl font-bold text-warning">{pendingReports.length}</span>
+              <span className="text-gray-600">{t('worker.pending')}</span>
+              <span className="text-xl font-bold text-yellow-600">{pendingReports.length}</span>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <Card>
+      <Card className="bg-white shadow-lg">
         <CardHeader>
-          <CardTitle>{t('worker.recentActivity')}</CardTitle>
+          <CardTitle className="text-gray-900">{t('worker.recentActivity')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -560,17 +537,16 @@ export default function WorkerDashboard() {
       animate={{ opacity: 1, x: 0 }}
       className="space-y-6"
     >
-      <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold text-foreground">{t('worker.notifications')}</h2>
-        {unreadNotifications > 0 && (
+      {unreadNotifications > 0 && (
+        <div className="flex items-center justify-end">
           <Badge variant="destructive">{unreadNotifications} {t('worker.unread')}</Badge>
-        )}
-      </div>
+        </div>
+      )}
 
-      <Card>
+      <Card className="bg-white shadow-lg">
         <CardHeader>
-          <CardTitle>{t('worker.allNotifications')}</CardTitle>
-          <CardDescription>{t('worker.notificationsDescription')}</CardDescription>
+          <CardTitle className="text-gray-900">{t('worker.allNotifications')}</CardTitle>
+          <CardDescription className="text-gray-600">{t('worker.notificationsDescription')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
           {notifications.length === 0 ? (
@@ -616,15 +592,13 @@ export default function WorkerDashboard() {
       animate={{ opacity: 1, x: 0 }}
       className="space-y-6"
     >
-      <h2 className="text-3xl font-bold text-foreground">{t('worker.support')}</h2>
-
-      <Card>
+      <Card className="bg-white shadow-lg">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <HelpCircle className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-gray-900">
+            <HelpCircle className="h-5 w-5 text-indigo-600" />
             {t('worker.contactAdmin')}
           </CardTitle>
-          <CardDescription>{t('worker.supportDescription')}</CardDescription>
+          <CardDescription className="text-gray-600">{t('worker.supportDescription')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center gap-3 p-4 rounded-lg bg-muted">
@@ -644,10 +618,10 @@ export default function WorkerDashboard() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="bg-white shadow-lg">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <BookOpen className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-gray-900">
+            <BookOpen className="h-5 w-5 text-indigo-600" />
             {t('worker.guidelines')}
           </CardTitle>
         </CardHeader>
@@ -675,77 +649,8 @@ export default function WorkerDashboard() {
   );
 
   return (
-    <div className="flex min-h-screen bg-background">
-      {/* Sidebar */}
-      <motion.aside
-        initial={false}
-        animate={{ width: sidebarOpen ? 280 : 80 }}
-        className="bg-card border-r border-border sticky top-0 h-screen overflow-y-auto"
-      >
-        <div className="p-4">
-          <div className="flex items-center justify-between mb-8">
-            {sidebarOpen && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="flex items-center gap-2"
-              >
-                <Truck className="h-6 w-6 text-primary" />
-                <span className="font-bold text-lg">Waste Warrior</span>
-              </motion.div>
-            )}
-            <Button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              variant="ghost"
-              size="icon"
-              className="ml-auto"
-            >
-              {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
-          </div>
-
-          <nav className="space-y-2">
-            {menuItems.map((item) => (
-              <Button
-                key={item.id}
-                onClick={() => setActiveSection(item.id)}
-                variant={activeSection === item.id ? 'default' : 'ghost'}
-                className={`w-full justify-start ${!sidebarOpen && 'px-2'}`}
-              >
-                <item.icon className={`h-5 w-5 ${sidebarOpen && 'mr-3'}`} />
-                {sidebarOpen && (
-                  <>
-                    <span className="flex-1 text-left">{item.label}</span>
-                    {item.badge > 0 && (
-                      <Badge variant="destructive" className="ml-auto">
-                        {item.badge}
-                      </Badge>
-                    )}
-                  </>
-                )}
-              </Button>
-            ))}
-          </nav>
-
-          <div className="mt-8 pt-8 border-t">
-            <Button
-              onClick={handleLogout}
-              variant="destructive"
-              className={`w-full justify-start ${!sidebarOpen && 'px-2'}`}
-            >
-              <LogOut className={`h-5 w-5 ${sidebarOpen && 'mr-3'}`} />
-              {sidebarOpen && t('worker.logout')}
-            </Button>
-          </div>
-        </div>
-      </motion.aside>
-
-      {/* Main Content */}
-      <main className="flex-1 overflow-y-auto">
-        <div className="container max-w-7xl py-8 px-6">
-          {renderSection()}
-        </div>
-      </main>
-    </div>
+    <AnimatePresence mode="wait">
+      {renderSection()}
+    </AnimatePresence>
   );
 }
