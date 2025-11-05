@@ -225,7 +225,7 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
-            Welcome back, {userProfile?.full_name?.split(' ')[0] || 'Warrior'}! 🌱
+            {t('dashboard.welcome', { name: userProfile?.full_name?.split(' ')[0] || 'Warrior' })}
           </motion.h1>
           <motion.p 
             className="text-2xl md:text-3xl text-black mb-6"
@@ -233,7 +233,7 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
           >
-            You have <span className="font-bold">{userProfile?.credits || 0}</span> Green Points
+            {t('dashboard.youHave', { count: userProfile?.credits || 0, label: t('dashboard.greenPoints') })}
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -246,7 +246,7 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
               className="bg-white text-[#00A86B] hover:bg-gray-100 font-semibold shadow-lg"
             >
               <Camera className="w-5 h-5 mr-2" />
-              Report a Waste Issue
+              {t('dashboard.reportWasteAction')}
             </Button>
           </motion.div>
         </div>
@@ -265,11 +265,11 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
           }
         }}
       >
-        {[
-          { title: 'Total Reports', value: stats.totalReports, icon: FileText, iconColor: 'text-blue-700', bgColor: 'bg-blue-100' },
-          { title: 'Resolved', value: stats.resolvedReports, icon: CheckCircle, iconColor: 'text-green-700', bgColor: 'bg-green-100' },
-          { title: 'Pending', value: stats.pendingReports, icon: Clock, iconColor: 'text-yellow-700', bgColor: 'bg-yellow-100' },
-          { title: 'Green Points', value: stats.totalCredits, icon: Coins, iconColor: 'text-purple-700', bgColor: 'bg-purple-100' },
+          {[
+          { title: t('dashboard.reportsLookup'), value: stats.totalReports, icon: FileText, iconColor: 'text-blue-700', bgColor: 'bg-blue-100' },
+          { title: t('worker.completed') || 'Resolved', value: stats.resolvedReports, icon: CheckCircle, iconColor: 'text-green-700', bgColor: 'bg-green-100' },
+          { title: t('worker.pending') || 'Pending', value: stats.pendingReports, icon: Clock, iconColor: 'text-yellow-700', bgColor: 'bg-yellow-100' },
+          { title: t('dashboard.greenPoints'), value: stats.totalCredits, icon: Coins, iconColor: 'text-purple-700', bgColor: 'bg-purple-100' },
         ].map((stat) => (
           <motion.div
             key={stat.title}
@@ -304,16 +304,16 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
         <CardHeader>
           <CardTitle className="flex items-center text-white">
             <Zap className="mr-2 h-5 w-5 text-white" />
-            Quick Actions
+            {t('dashboard.quickActions')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {[
-              { icon: Camera, label: 'Report Waste', action: 'report', gradient: 'from-green-400 to-emerald-500' },
-              { icon: MapPin, label: 'Find Points', action: 'map', gradient: 'from-indigo-400 to-purple-500' },
-              { icon: Gift, label: 'Rewards', action: 'credits', gradient: 'from-orange-400 to-red-500' },
-              { icon: FileText, label: 'Learn', action: 'learning', gradient: 'from-teal-400 to-cyan-500' },
+              {[
+              { icon: Camera, label: t('dashboard.reportWaste'), action: 'report', gradient: 'from-green-400 to-emerald-500' },
+              { icon: MapPin, label: t('dashboard.findCollectionPoints'), action: 'map', gradient: 'from-indigo-400 to-purple-500' },
+              { icon: Gift, label: t('dashboard.redeemRewards'), action: 'credits', gradient: 'from-orange-400 to-red-500' },
+              { icon: FileText, label: t('dashboard.learning'), action: 'learning', gradient: 'from-teal-400 to-cyan-500' },
             ].map((action) => (
               <motion.button
                 key={action.label}
@@ -336,9 +336,9 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
       <Card className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow">
         <CardContent className="p-6">
           <Tabs defaultValue="reports">
-            <TabsList className="grid w-full grid-cols-2 bg-gray-100">
-              <TabsTrigger value="reports" className="data-[state=active]:bg-white data-[state=active]:text-gray-900 text-gray-700">Recent Reports</TabsTrigger>
-              <TabsTrigger value="notifications" className="data-[state=active]:bg-white data-[state=active]:text-gray-900 text-gray-700">Notifications</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 bg-gray-100">
+              <TabsTrigger value="reports" className="data-[state=active]:bg-white data-[state=active]:text-gray-900 text-gray-700">{t('dashboard.recentReports')}</TabsTrigger>
+              <TabsTrigger value="notifications" className="data-[state=active]:bg-white data-[state=active]:text-gray-900 text-gray-700">{t('dashboard.recentNotifications')}</TabsTrigger>
             </TabsList>
             <TabsContent value="reports" className="space-y-3 mt-4">
               {reports.length > 0 ? reports.map((report) => (
@@ -363,10 +363,10 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
                     {report.status}
                   </Badge>
                 </motion.div>
-              )) : (
+                )) : (
                 <div className="text-center py-8">
                   <img src={recyclingIllustration} alt="No reports" className="w-32 h-32 mx-auto mb-4 opacity-50" />
-                  <p className="text-gray-600">No reports yet. Start reporting waste issues!</p>
+                  <p className="text-gray-600">{t('dashboard.noReports')} {t('dashboard.startReporting')}</p>
                 </div>
               )}
             </TabsContent>
@@ -385,7 +385,7 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
               )) : (
                 <div className="text-center py-8">
                   <Bell className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-                  <p className="text-gray-600">No new notifications</p>
+                  <p className="text-gray-600">{t('dashboard.noNotifications')}</p>
                 </div>
               )}
             </TabsContent>

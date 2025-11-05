@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Trophy, Medal, Award, Users, TrendingUp } from 'lucide-react';
 
 export default function GreenChampionsLeaderboard() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [leaderboard, setLeaderboard] = useState([]);
   const [userRank, setUserRank] = useState(null);
@@ -175,7 +177,7 @@ export default function GreenChampionsLeaderboard() {
           <CardContent className="p-4 text-center">
             <TrendingUp className="h-8 w-8 text-primary mx-auto mb-2" />
             <div className="text-2xl font-bold">{stats.totalReports}</div>
-            <p className="text-sm text-muted-foreground">Total Reports</p>
+            <p className="text-sm text-muted-foreground">{t('leaderboard.totalReports')}</p>
           </CardContent>
         </Card>
         
@@ -183,7 +185,7 @@ export default function GreenChampionsLeaderboard() {
           <CardContent className="p-4 text-center">
             <Users className="h-8 w-8 text-primary mx-auto mb-2" />
             <div className="text-2xl font-bold">{stats.totalUsers}</div>
-            <p className="text-sm text-muted-foreground">Green Champions</p>
+            <p className="text-sm text-muted-foreground">{t('leaderboard.greenChampions')}</p>
           </CardContent>
         </Card>
         
@@ -191,7 +193,7 @@ export default function GreenChampionsLeaderboard() {
           <CardContent className="p-4 text-center">
             <Award className="h-8 w-8 text-primary mx-auto mb-2" />
             <div className="text-2xl font-bold">{stats.monthlyReports}</div>
-            <p className="text-sm text-muted-foreground">This Month</p>
+            <p className="text-sm text-muted-foreground">{t('leaderboard.thisMonth')}</p>
           </CardContent>
         </Card>
       </div>
@@ -201,10 +203,10 @@ export default function GreenChampionsLeaderboard() {
         <Card>
           <CardContent className="p-4">
             <div className="text-center">
-              <h3 className="font-semibold mb-2">Your Ranking</h3>
+              <h3 className="font-semibold mb-2">{t('leaderboard.yourRank')}</h3>
               <div className="flex items-center justify-center gap-2">
                 {getRankIcon(userRank)}
-                <span className="text-xl font-bold">Rank #{userRank}</span>
+                <span className="text-xl font-bold">{t('leaderboard.rank', { rank: userRank })}</span>
               </div>
             </div>
           </CardContent>
@@ -216,7 +218,7 @@ export default function GreenChampionsLeaderboard() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Trophy className="h-5 w-5 text-primary" />
-            Green Champions Leaderboard
+            {t('leaderboard.title')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -244,22 +246,22 @@ export default function GreenChampionsLeaderboard() {
                 {/* User Info */}
                 <div className="flex-1">
                   <h4 className="font-semibold">
-                    {champion.full_name || 'Anonymous Champion'}
+                    {champion.full_name || t('leaderboard.anonymousChampion')}
                   </h4>
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <span>{champion.reportsCount} reports</span>
-                    <span>{champion.monthlyReports} this month</span>
+                    <span>{champion.reportsCount} {t('leaderboard.reports')}</span>
+                    <span>{champion.monthlyReports} {t('leaderboard.thisMonthReports')}</span>
                   </div>
                 </div>
 
                 {/* Credits & Badge */}
                 <div className="text-right">
                   <div className="text-lg font-bold text-primary">
-                    {champion.credits} credits
+                    {champion.credits} {t('leaderboard.credits')}
                   </div>
                   {index < 3 && (
                     <Badge className={getRankBadgeColor(index + 1)}>
-                      {index === 0 ? 'Gold' : index === 1 ? 'Silver' : 'Bronze'} Champion
+                      {index === 0 ? t('leaderboard.goldChampion') : index === 1 ? t('leaderboard.silverChampion') : t('leaderboard.bronzeChampion')}
                     </Badge>
                   )}
                 </div>
@@ -269,7 +271,7 @@ export default function GreenChampionsLeaderboard() {
             {leaderboard.length === 0 && (
               <div className="text-center py-8 text-muted-foreground">
                 <Award className="h-16 w-16 mx-auto mb-4 opacity-50" />
-                <p>No champions yet! Be the first to start reporting waste issues.</p>
+                <p>{t('leaderboard.noChampions')}</p>
               </div>
             )}
           </div>

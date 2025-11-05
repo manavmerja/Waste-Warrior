@@ -24,6 +24,7 @@ import {
   Quote,
   Award
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { 
   Carousel,
   CarouselContent,
@@ -198,6 +199,7 @@ const testimonials = [
 ];
 
 export default function ImpactPage() {
+  const { t } = useTranslation();
 
   return (
     <motion.div
@@ -208,9 +210,9 @@ export default function ImpactPage() {
     >
       {/* Page Header */}
       <motion.div variants={itemVariants} className="space-y-2">
-        <h1 className="text-4xl font-bold text-gray-900">Community Impact</h1>
+        <h1 className="text-4xl font-bold text-gray-900">{t('impact.title') || 'Community Impact'}</h1>
         <p className="text-gray-600 text-lg">
-          See the collective achievements we've made together
+          {t('impact.subtitle') || "See the collective achievements we've made together"}
         </p>
       </motion.div>
 
@@ -232,7 +234,7 @@ export default function ImpactPage() {
               <div className="flex items-start justify-between">
                 <div className="space-y-2 flex-1">
                   <p className="text-sm text-gray-600 font-medium">
-                    Total Reports Resolved
+                    {t('impact.totalReportsResolved') || 'Total Reports Resolved'}
                   </p>
                   <p className="text-4xl font-bold text-green-600">
                     <AnimatedCounter target={1287} />
@@ -260,7 +262,7 @@ export default function ImpactPage() {
               <div className="flex items-start justify-between">
                 <div className="space-y-2 flex-1">
                   <p className="text-sm text-gray-600 font-medium">
-                    Total Green Points Awarded
+                    {t('impact.totalGreenPoints') || 'Total Green Points Awarded'}
                   </p>
                   <p className="text-4xl font-bold text-purple-600">
                     <AnimatedCounter target={85000} />
@@ -288,7 +290,7 @@ export default function ImpactPage() {
               <div className="flex items-start justify-between">
                 <div className="space-y-2 flex-1">
                   <p className="text-sm text-gray-600 font-medium">
-                    Active Neighborhoods
+                    {t('impact.activeNeighborhoods') || 'Active Neighborhoods'}
                   </p>
                   <p className="text-4xl font-bold text-indigo-600">
                     <AnimatedCounter target={42} />
@@ -312,9 +314,9 @@ export default function ImpactPage() {
         className="space-y-6"
       >
         <div className="space-y-2">
-          <h2 className="text-3xl font-bold text-gray-900">Our Community Impact</h2>
+          <h2 className="text-3xl font-bold text-gray-900">{t('impact.sectionTitle') || 'Our Community Impact'}</h2>
           <p className="text-gray-600">
-            Real transformations made possible by engaged citizens like you
+            {t('impact.sectionSubtitle') || 'Real transformations made possible by engaged citizens like you'}
           </p>
         </div>
 
@@ -334,7 +336,7 @@ export default function ImpactPage() {
                   {/* Image Section */}
                   <div className="grid grid-cols-2 gap-1 p-4">
                     <div className="space-y-1">
-                      <p className="text-xs font-semibold text-gray-500 uppercase">Before</p>
+                      <p className="text-xs font-semibold text-gray-500 uppercase">{t('impact.before') || 'Before'}</p>
                       <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
                         <div className="w-full h-full bg-gradient-to-br from-red-100 to-orange-100 flex items-center justify-center">
                           {/* <span className="text-4xl"></span> */}
@@ -344,7 +346,7 @@ export default function ImpactPage() {
                       <p className="text-xs text-gray-600">{item.beforeDesc}</p>
                     </div>
                     <div className="space-y-1">
-                      <p className="text-xs font-semibold text-gray-500 uppercase">After</p>
+                      <p className="text-xs font-semibold text-gray-500 uppercase">{t('impact.after') || 'After'}</p>
                       <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
                         <div className="w-full h-full bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
                           <span className="text-4xl"><img src={item.image_after}></img></span>
@@ -368,7 +370,7 @@ export default function ImpactPage() {
                       </div>
                     </div>
                     <Badge className="bg-[#00A86B] text-white hover:bg-[#00A86B]/90">
-                      Resolved! ✅
+                      {t('impact.resolvedBadge') || 'Resolved! ✅'}
                     </Badge>
                   </div>
                 </CardContent>
@@ -392,7 +394,7 @@ export default function ImpactPage() {
                 <Award className="w-8 h-8 text-purple-600" />
               </div>
               <h3 className="text-3xl font-bold text-purple-700">
-                Hero of the Month
+                {t('impact.heroTitle') || 'Hero of the Month'}
               </h3>
             </div>
             
@@ -406,21 +408,19 @@ export default function ImpactPage() {
               <div className="flex-1 space-y-4">
                 <div>
                   <h4 className="text-2xl font-bold text-gray-900">Manav Merja</h4>
-                  <p className="text-sm text-purple-600 font-medium">Ward 5 Champion</p>
+                  <p className="text-sm text-purple-600 font-medium">{t('impact.wardChampion') || 'Ward 5 Champion'}</p>
                 </div>
                 
                 <p className="text-gray-700 leading-relaxed">
-                  Filed 30 resolved reports this month and inspired neighbors 
-                  to join the movement. Manav's dedication to keeping Ward 5 
-                  clean has made a visible difference in the community!
+                  {t('impact.heroDescription') || "Filed 30 resolved reports this month and inspired neighbors to join the movement. Manav's dedication to keeping Ward 5 clean has made a visible difference in the community!"}
                 </p>
                 
                 <div className="flex items-center gap-3">
                   <Badge className="bg-purple-600 text-white hover:bg-purple-700 px-4 py-2 text-sm">
-                    30 Reports
+                    {t('impact.reportsBadge', { count: 30 }) || '30 Reports'}
                   </Badge>
                   <Badge className="bg-green-600 text-white hover:bg-green-700 px-4 py-2 text-sm">
-                    850 Points
+                    {t('impact.pointsBadge', { count: 850 }) || '850 Points'}
                   </Badge>
                 </div>
               </div>
@@ -438,9 +438,9 @@ export default function ImpactPage() {
         className="space-y-6"
       >
         <div className="space-y-2">
-          <h2 className="text-3xl font-bold text-gray-900">💬 What Our Community Says</h2>
+          <h2 className="text-3xl font-bold text-gray-900">💬 {t('impact.testimonialsTitle') || 'What Our Community Says'}</h2>
           <p className="text-gray-600">
-            Hear from residents and workers making a difference
+            {t('impact.testimonialsSubtitle') || 'Hear from residents and workers making a difference'}
           </p>
         </div>
 

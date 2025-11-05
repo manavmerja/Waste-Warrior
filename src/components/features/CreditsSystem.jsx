@@ -7,9 +7,11 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Coins, Gift, History, Loader2 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 export default function CreditsSystem() {
   const { user, userProfile } = useAuth();
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [redeemCode, setRedeemCode] = useState('');
   const [creditsHistory, setCreditsHistory] = useState([]);
@@ -57,8 +59,8 @@ export default function CreditsSystem() {
   const generateRedeemCode = async (creditsToRedeem) => {
     if (creditsToRedeem > userProfile?.credits) {
       toast({
-        title: "Insufficient credits",
-        description: "You don't have enough credits for this redemption",
+        title: t('credits.insufficient') || 'Insufficient credits',
+        description: t('credits.insufficientDesc') || "You don't have enough credits for this redemption",
         variant: "destructive"
       });
       return;
@@ -66,8 +68,8 @@ export default function CreditsSystem() {
 
     if (creditsToRedeem < 50) {
       toast({
-        title: "Minimum redemption",
-        description: "Minimum 50 credits required for redemption",
+        title: t('credits.minimum') || 'Minimum redemption',
+        description: t('credits.minimumDesc') || 'Minimum 50 credits required for redemption',
         variant: "destructive"
       });
       return;
@@ -110,8 +112,8 @@ export default function CreditsSystem() {
         });
 
       toast({
-        title: "Redeem code generated!",
-        description: `Your redeem code: ${code}. Save this code to use at participating stores.`
+        title: t('credits.redeemSuccessTitle') || 'Redeem code generated!',
+        description: t('credits.redeemSuccessDesc', { code }) || `Your redeem code: ${code}. Save this code to use at participating stores.`
       });
 
       // Refresh data
@@ -121,8 +123,8 @@ export default function CreditsSystem() {
     } catch (error) {
       console.error('Error generating redeem code:', error);
       toast({
-        title: "Error",
-        description: error.message || "Failed to generate redeem code",
+        title: t('common.error') || 'Error',
+        description: error.message || t('credits.redeemError') || "Failed to generate redeem code",
         variant: "destructive"
       });
     } finally {
@@ -156,7 +158,7 @@ export default function CreditsSystem() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Coins className="h-5 w-5 text-primary" />
-            My Credits
+            {t('credits.title')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -164,7 +166,7 @@ export default function CreditsSystem() {
             <div className="text-4xl font-bold text-primary mb-2">
               {userProfile?.credits || 0}
             </div>
-            <p className="text-muted-foreground">Credits available</p>
+            <p className="text-muted-foreground">{t('credits.available')}</p>
           </div>
         </CardContent>
       </Card>
@@ -174,12 +176,12 @@ export default function CreditsSystem() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Gift className="h-5 w-5 text-primary" />
-            Redeem Credits
+            {t('credits.redeem')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            Redeem your credits for discount coupons at participating stores. Minimum 50 credits required.
+            {t('credits.redeemDesc')}
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -189,8 +191,8 @@ export default function CreditsSystem() {
               variant="outline"
               className="flex flex-col h-auto py-4"
             >
-              <div className="font-semibold">50 Credits</div>
-              <div className="text-xs text-muted-foreground">₹10 off</div>
+              <div className="font-semibold">{t('credits.tier50')}</div>
+              <div className="text-xs text-muted-foreground">{t('credits.tier50Desc')}</div>
             </Button>
             
             <Button
@@ -199,8 +201,8 @@ export default function CreditsSystem() {
               variant="outline"
               className="flex flex-col h-auto py-4"
             >
-              <div className="font-semibold">100 Credits</div>
-              <div className="text-xs text-muted-foreground">₹25 off</div>
+              <div className="font-semibold">{t('credits.tier100')}</div>
+              <div className="text-xs text-muted-foreground">{t('credits.tier100Desc')}</div>
             </Button>
             
             <Button
@@ -209,15 +211,15 @@ export default function CreditsSystem() {
               variant="outline"
               className="flex flex-col h-auto py-4"
             >
-              <div className="font-semibold">200 Credits</div>
-              <div className="text-xs text-muted-foreground">₹60 off</div>
+              <div className="font-semibold">{t('credits.tier200')}</div>
+              <div className="text-xs text-muted-foreground">{t('credits.tier200Desc')}</div>
             </Button>
           </div>
 
           {loading && (
             <div className="flex items-center justify-center py-4">
               <Loader2 className="h-4 w-4 animate-spin mr-2" />
-              Generating redeem code...
+              {t('credits.generating')}
             </div>
           )}
         </CardContent>
@@ -228,14 +230,14 @@ export default function CreditsSystem() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <History className="h-5 w-5 text-primary" />
-            Recent Transactions
+            {t('credits.recentTransactions')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
             {creditsHistory.length === 0 ? (
               <p className="text-center text-muted-foreground py-4">
-                No transactions yet
+                {t('credits.noTransactions')}
               </p>
             ) : (
               creditsHistory.map((transaction) => (
@@ -259,13 +261,13 @@ export default function CreditsSystem() {
       {/* Redeem Codes */}
       <Card>
         <CardHeader>
-          <CardTitle>My Redeem Codes</CardTitle>
+          <CardTitle>{t('credits.myRedeemCodes')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
             {redeemHistory.length === 0 ? (
               <p className="text-center text-muted-foreground py-4">
-                No redeem codes yet
+                {t('credits.noRedeems')}
               </p>
             ) : (
               redeemHistory.map((redeem) => (

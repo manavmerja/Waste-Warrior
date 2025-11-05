@@ -69,8 +69,8 @@ export default function LeaderboardAdmin() {
     } catch (error) {
       console.error('Error fetching users:', error);
       toast({
-        title: "Error",
-        description: "Failed to fetch users",
+        title: t('common.error'),
+        description: t('leaderboard.failedFetchUsers'),
         variant: "destructive"
       });
     } finally {
@@ -97,8 +97,8 @@ export default function LeaderboardAdmin() {
       });
 
       toast({
-        title: "Success",
-        description: `Added ${pointsAmount} points to ${selectedUser.full_name}`
+        title: t('common.success'),
+        description: t('leaderboard.pointsAdded', { amount: pointsAmount, name: selectedUser.full_name })
       });
 
       fetchAllUsers();
@@ -108,8 +108,8 @@ export default function LeaderboardAdmin() {
     } catch (error) {
       console.error('Error adding points:', error);
       toast({
-        title: "Error",
-        description: "Failed to add points",
+        title: t('common.error'),
+        description: t('leaderboard.failedAddPoints'),
         variant: "destructive"
       });
     }
@@ -136,8 +136,8 @@ export default function LeaderboardAdmin() {
       });
 
       toast({
-        title: "Success",
-        description: `Deducted ${pointsAmount} points from ${selectedUser.full_name}`
+        title: t('common.success'),
+        description: t('leaderboard.pointsDeducted', { amount: pointsAmount, name: selectedUser.full_name })
       });
 
       fetchAllUsers();
@@ -147,15 +147,15 @@ export default function LeaderboardAdmin() {
     } catch (error) {
       console.error('Error deducting points:', error);
       toast({
-        title: "Error",
-        description: "Failed to deduct points",
+        title: t('common.error'),
+        description: t('leaderboard.failedDeductPoints'),
         variant: "destructive"
       });
     }
   };
 
   const handleResetLeaderboard = async () => {
-    if (!confirm('Are you sure you want to reset the entire leaderboard? This will set all user credits to 0.')) {
+    if (!confirm(t('leaderboard.resetConfirm'))) {
       return;
     }
 
@@ -168,8 +168,8 @@ export default function LeaderboardAdmin() {
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: "Leaderboard has been reset successfully",
+        title: t('common.success'),
+        description: t('leaderboard.leaderboardReset'),
         duration: 5000
       });
 
@@ -177,8 +177,8 @@ export default function LeaderboardAdmin() {
     } catch (error) {
       console.error('Error resetting leaderboard:', error);
       toast({
-        title: "Error",
-        description: "Failed to reset leaderboard",
+        title: t('common.error'),
+        description: t('leaderboard.failedResetLeaderboard'),
         variant: "destructive"
       });
     }
@@ -194,16 +194,16 @@ export default function LeaderboardAdmin() {
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: `Green Champion status ${!currentStatus ? 'granted' : 'removed'}`
+        title: t('common.success'),
+        description: !currentStatus ? t('leaderboard.championStatusGranted') : t('leaderboard.championStatusRemoved')
       });
 
       fetchAllUsers();
     } catch (error) {
       console.error('Error toggling champion status:', error);
       toast({
-        title: "Error",
-        description: "Failed to update champion status",
+        title: t('common.error'),
+        description: t('leaderboard.failedUpdateChampion'),
         variant: "destructive"
       });
     }
@@ -246,10 +246,10 @@ export default function LeaderboardAdmin() {
           <div>
             <h1 className="text-3xl md:text-4xl font-bold flex items-center gap-3">
               <Trophy className="h-10 w-10 text-primary" />
-              🧑‍💼 Leaderboard Management
+              🧑‍💼 {t('leaderboard.management')}
             </h1>
             <p className="text-muted-foreground mt-2 text-lg">
-              Manage points, badges, and leaderboard settings
+              {t('leaderboard.manageDesc')}
             </p>
           </div>
           
@@ -259,7 +259,7 @@ export default function LeaderboardAdmin() {
             className="gap-2 shadow-lg"
           >
             <RotateCcw className="h-4 w-4" />
-            Reset Leaderboard
+            {t('leaderboard.resetLeaderboard')}
           </Button>
         </motion.div>
 
@@ -274,7 +274,7 @@ export default function LeaderboardAdmin() {
             <CardContent className="p-6 text-center">
               <Users className="h-10 w-10 text-primary mx-auto mb-3" />
               <div className="text-3xl font-bold">{users.length}</div>
-              <p className="text-sm text-muted-foreground mt-1 font-medium">Total Users</p>
+              <p className="text-sm text-muted-foreground mt-1 font-medium">{t('leaderboard.totalUsers')}</p>
             </CardContent>
           </Card>
           
@@ -284,7 +284,7 @@ export default function LeaderboardAdmin() {
               <div className="text-3xl font-bold">
                 {users.filter(u => u.role === 'resident').length}
               </div>
-              <p className="text-sm text-muted-foreground mt-1 font-medium">Residents</p>
+              <p className="text-sm text-muted-foreground mt-1 font-medium">{t('leaderboard.residents')}</p>
             </CardContent>
           </Card>
           
@@ -294,7 +294,7 @@ export default function LeaderboardAdmin() {
               <div className="text-3xl font-bold">
                 {users.filter(u => u.role === 'worker').length}
               </div>
-              <p className="text-sm text-muted-foreground mt-1 font-medium">Workers</p>
+              <p className="text-sm text-muted-foreground mt-1 font-medium">{t('leaderboard.workers')}</p>
             </CardContent>
           </Card>
           
@@ -304,7 +304,7 @@ export default function LeaderboardAdmin() {
               <div className="text-3xl font-bold">
                 {users.filter(u => u.is_green_champion).length}
               </div>
-              <p className="text-sm text-muted-foreground mt-1 font-medium">Champions</p>
+              <p className="text-sm text-muted-foreground mt-1 font-medium">{t('leaderboard.champions')}</p>
             </CardContent>
           </Card>
         </motion.div>
@@ -312,15 +312,15 @@ export default function LeaderboardAdmin() {
         {/* Main Content */}
         <Card className="shadow-2xl">
           <CardHeader>
-            <CardTitle className="text-2xl">User Management</CardTitle>
+            <CardTitle className="text-2xl">{t('leaderboard.userManagement')}</CardTitle>
           </CardHeader>
           <CardContent>
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <TabsList className="grid w-full grid-cols-4 mb-8 h-12 bg-muted/50 p-1">
-                <TabsTrigger value="all" className="data-[state=active]:bg-background data-[state=active]:shadow-md">All Users</TabsTrigger>
-                <TabsTrigger value="residents" className="data-[state=active]:bg-background data-[state=active]:shadow-md">Residents</TabsTrigger>
-                <TabsTrigger value="workers" className="data-[state=active]:bg-background data-[state=active]:shadow-md">Workers</TabsTrigger>
-                <TabsTrigger value="champions" className="data-[state=active]:bg-background data-[state=active]:shadow-md">Champions</TabsTrigger>
+                <TabsTrigger value="all" className="data-[state=active]:bg-background data-[state=active]:shadow-md">{t('leaderboard.allUsers')}</TabsTrigger>
+                <TabsTrigger value="residents" className="data-[state=active]:bg-background data-[state=active]:shadow-md">{t('leaderboard.residents')}</TabsTrigger>
+                <TabsTrigger value="workers" className="data-[state=active]:bg-background data-[state=active]:shadow-md">{t('leaderboard.workers')}</TabsTrigger>
+                <TabsTrigger value="champions" className="data-[state=active]:bg-background data-[state=active]:shadow-md">{t('leaderboard.champions')}</TabsTrigger>
               </TabsList>
 
               <TabsContent value={activeTab} className="space-y-4">
@@ -350,13 +350,13 @@ export default function LeaderboardAdmin() {
                           {user.is_green_champion && (
                             <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white gap-1">
                               <Star className="h-3 w-3" />
-                              Champion
+                              {t('leaderboard.champion')}
                             </Badge>
                           )}
                         </div>
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                          <span className="font-medium">{user.reportsCount} reports</span>
-                          <span className="text-primary font-bold">{user.credits} points</span>
+                          <span className="font-medium">{user.reportsCount} {t('leaderboard.reports')}</span>
+                          <span className="text-primary font-bold">{user.credits} {t('leaderboard.points')}</span>
                         </div>
                       </div>
                     </div>
@@ -371,45 +371,45 @@ export default function LeaderboardAdmin() {
                             className="gap-2"
                           >
                             <Plus className="h-4 w-4" />
-                            <span className="hidden sm:inline">Manage Points</span>
+                            <span className="hidden sm:inline">{t('leaderboard.managePoints')}</span>
                           </Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-md">
                           <DialogHeader>
-                            <DialogTitle>Manage Points: {user.full_name}</DialogTitle>
+                            <DialogTitle>{t('leaderboard.managePoints')}: {user.full_name}</DialogTitle>
                             <DialogDescription>
-                              Award or deduct points for this user's contributions
+                              {t('leaderboard.managePointsDesc')}
                             </DialogDescription>
                           </DialogHeader>
                           <div className="space-y-4 pt-4">
                             <div>
-                              <Label className="text-base">Points Amount</Label>
+                              <Label className="text-base">{t('leaderboard.pointsAmount')}</Label>
                               <Input
                                 type="number"
                                 min="0"
                                 value={pointsAmount}
                                 onChange={(e) => setPointsAmount(parseInt(e.target.value) || 0)}
-                                placeholder="Enter points"
+                                placeholder={t('leaderboard.enterPoints')}
                                 className="mt-2"
                               />
                             </div>
                             <div>
-                              <Label className="text-base">Reason</Label>
+                              <Label className="text-base">{t('leaderboard.reason')}</Label>
                               <Input
                                 value={pointsReason}
                                 onChange={(e) => setPointsReason(e.target.value)}
-                                placeholder="e.g., Exceptional service"
+                                placeholder={t('leaderboard.reasonPlaceholder')}
                                 className="mt-2"
                               />
                             </div>
                             <div className="flex gap-2 pt-2">
                               <Button onClick={handleAddPoints} className="flex-1 gap-2">
                                 <Plus className="h-4 w-4" />
-                                Add Points
+                                {t('leaderboard.addPoints')}
                               </Button>
                               <Button onClick={handleDeductPoints} variant="destructive" className="flex-1 gap-2">
                                 <Minus className="h-4 w-4" />
-                                Deduct
+                                {t('leaderboard.deduct')}
                               </Button>
                             </div>
                           </div>
@@ -431,7 +431,7 @@ export default function LeaderboardAdmin() {
                 {filteredUsers.length === 0 && (
                   <div className="text-center py-16 text-muted-foreground">
                     <Users className="h-20 w-20 mx-auto mb-4 opacity-50" />
-                    <p className="text-lg">No users found in this category</p>
+                    <p className="text-lg">{t('leaderboard.noUsersFound')}</p>
                   </div>
                 )}
               </TabsContent>
@@ -449,7 +449,7 @@ export default function LeaderboardAdmin() {
           <div className="inline-block">
             <div className="h-1 w-full bg-gradient-to-r from-transparent via-primary to-transparent mb-3"></div>
             <p className="text-base text-muted-foreground italic">
-              💚 Together, we turn waste into worth.
+              💚 {t('leaderboard.footerQuote')}
             </p>
             <div className="h-1 w-full bg-gradient-to-r from-transparent via-secondary to-transparent mt-3"></div>
           </div>

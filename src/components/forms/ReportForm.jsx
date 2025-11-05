@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Camera, MapPin, Upload, Loader2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { toast } from '@/hooks/use-toast';
 
 export default function ReportForm({ onReportSubmitted }) {
@@ -22,6 +23,7 @@ export default function ReportForm({ onReportSubmitted }) {
   });
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previewUrls, setPreviewUrls] = useState([]);
+  const { t } = useTranslation();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -38,16 +40,16 @@ export default function ReportForm({ onReportSubmitted }) {
     const validFiles = files.filter(file => {
       if (!file.type.startsWith('image/')) {
         toast({
-          title: "Invalid file type",
-          description: `${file.name} is not an image file`,
+          title: t('common.error') || 'Invalid file type',
+          description: `${file.name} ${t('reportForm.invalidFile') || 'is not an image file'}`,
           variant: "destructive"
         });
         return false;
       }
       if (file.size > 5 * 1024 * 1024) { // 5MB limit
         toast({
-          title: "File too large",
-          description: `${file.name} exceeds 5MB limit`,
+          title: t('common.error') || 'File too large',
+          description: `${file.name} ${t('reportForm.fileTooLarge') || 'exceeds 5MB limit'}`,
           variant: "destructive"
         });
         return false;
@@ -57,8 +59,8 @@ export default function ReportForm({ onReportSubmitted }) {
 
     if (selectedFiles.length + validFiles.length > 3) {
       toast({
-        title: "Too many files",
-        description: "Maximum 3 images allowed per report",
+        title: t('common.error') || 'Too many files',
+        description: t('reportForm.maxFiles') || 'Maximum 3 images allowed per report',
         variant: "destructive"
       });
       return;
@@ -84,8 +86,8 @@ export default function ReportForm({ onReportSubmitted }) {
   const getCurrentLocation = () => {
     if (!navigator.geolocation) {
       toast({
-        title: "Location not supported",
-        description: "Your browser doesn't support geolocation",
+        title: t('common.error') || 'Location not supported',
+        description: t('reportForm.locationNotSupported') || "Your browser doesn't support geolocation",
         variant: "destructive"
       });
       return;
@@ -99,8 +101,8 @@ export default function ReportForm({ onReportSubmitted }) {
           location_lng: position.coords.longitude
         }));
         toast({
-          title: "Location captured",
-          description: "Current location has been added to your report"
+          title: t('reportForm.locationCaptured') || 'Location captured',
+          description: t('reportForm.locationCapturedDesc') || 'Current location has been added to your report'
         });
       },
       (error) => {
@@ -198,8 +200,8 @@ export default function ReportForm({ onReportSubmitted }) {
         .eq('id', user.id);
 
       toast({
-        title: "Report submitted!",
-        description: "Thank you for reporting waste. You earned 10 credits!"
+        title: t('reportForm.submittedTitle') || 'Report submitted!',
+        description: t('reportForm.submittedDesc') || 'Thank you for reporting waste. You earned 10 credits!'
       });
 
       // Reset form
@@ -218,8 +220,8 @@ export default function ReportForm({ onReportSubmitted }) {
     } catch (error) {
       console.error('Error submitting report:', error);
       toast({
-        title: "Error",
-        description: error.message || "Failed to submit report",
+        title: t('common.error') || 'Error',
+        description: error.message || t('reportForm.submitError') || "Failed to submit report",
         variant: "destructive"
       });
     } finally {
@@ -232,7 +234,7 @@ export default function ReportForm({ onReportSubmitted }) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Camera className="h-5 w-5 text-primary" />
-          Report Waste Issue
+          {t('reportForm.title')}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -349,10 +351,10 @@ export default function ReportForm({ onReportSubmitted }) {
             {loading || uploadingImages ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {uploadingImages ? 'Uploading images...' : 'Submitting report...'}
+                {uploadingImages ? t('reportForm.uploading') || 'Uploading images...' : t('reportForm.submitting') || 'Submitting report...'}
               </>
             ) : (
-              'Submit Report'
+              t('reportForm.submit') || 'Submit Report'
             )}
           </Button>
         </form>
