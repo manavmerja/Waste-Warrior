@@ -160,6 +160,3 @@ Output structure:
 - Dashboard UI design
 
 Make it clean, interactive, and friendly for municipal corporations.
-
-  </code></pre>
-</div>
