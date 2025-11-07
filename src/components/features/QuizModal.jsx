@@ -11,6 +11,8 @@ import { CheckCircle2, XCircle, Trophy, AlertCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
+
+
 export default function QuizModal({ module, onClose, onComplete }) {
   const { t } = useTranslation();
   const [questions, setQuestions] = useState([]);
