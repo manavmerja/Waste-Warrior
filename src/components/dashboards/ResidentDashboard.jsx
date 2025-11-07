@@ -32,8 +32,8 @@ import ReportForm from '@/components/forms/ReportForm';
 import CreditsSystem from '@/components/features/CreditsSystem';
 import { LeaderboardDashboard } from '@/components/modules/Leaderboard';
 import UserProfile from '@/components/features/UserProfile';
-import LearningModules from '@/components/features/LearningModules';
-import DashboardLayout from '@/components/layout/DashboardLayout';
+// ✅ CORRECT LINE
+import LearningPage from '@/pages/LearningPage.jsx';import DashboardLayout from '@/components/layout/DashboardLayout';
 import ImpactPage from '@/pages/ImpactPage';
 import wasteIllustration from '@/assets/waste-management-illustration.png';
 import teamSpiritIllustration from '@/assets/waste-collection.jpg';
@@ -468,7 +468,7 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
             exit="exit"
             transition={{ duration: 0.3 }}
           >
-            <LearningModules />
+            <LearningPage />
           </motion.div>
         );
       case 'impact':
