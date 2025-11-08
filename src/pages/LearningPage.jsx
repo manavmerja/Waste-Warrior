@@ -31,7 +31,7 @@ export default function LearningPage() {
 
   const fetchLearningData = async () => {
     try {
-      setLoading(true);
+      // setLoading(true);
 
       // Fetch modules based on user role
       const { data: modulesData, error: modulesError } = await supabase

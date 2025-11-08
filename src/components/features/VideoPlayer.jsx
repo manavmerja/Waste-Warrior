@@ -56,7 +56,7 @@ export default function VideoPlayer({ module, onClose, onComplete }) {
         <div className="space-y-4">
           {/* Video Player */}
           <div className="relative aspect-video rounded-lg overflow-hidden bg-black">
-            <video
+            {/* <video
               ref={videoRef}
               src={module.video_url}
               controls
@@ -64,7 +64,16 @@ export default function VideoPlayer({ module, onClose, onComplete }) {
               controlsList="nodownload"
             >
               Your browser does not support the video tag.
-            </video>
+            </video> */}
+            <iframe
+              // ref={videoRef}
+              src={module.video_url}
+              // controls
+              className="w-full h-full"
+              // controlsList="nodownload"
+            >
+              Your browser does not support the video tag.
+            </iframe>
           </div>
 
           {/* Progress Bar */}
