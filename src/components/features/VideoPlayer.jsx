@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -6,39 +6,13 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { X, CheckCircle2 } from 'lucide-react';
 
+import ReactPlayer from 'react-player';
+
 export default function VideoPlayer({ module, onClose, onComplete }) {
   const { t } = useTranslation();
   const [watchProgress, setWatchProgress] = useState(0);
   const [canComplete, setCanComplete] = useState(false);
   const videoRef = useRef(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const handleTimeUpdate = () => {
-      const progress = (video.currentTime / video.duration) * 100;
-      setWatchProgress(progress);
-
-      // Allow completion when user reaches 90% of the video
-      if (progress >= 90) {
-        setCanComplete(true);
-      }
-    };
-
-    const handleEnded = () => {
-      setCanComplete(true);
-      setWatchProgress(100);
-    };
-
-    video.addEventListener('timeupdate', handleTimeUpdate);
-    video.addEventListener('ended', handleEnded);
-
-    return () => {
-      video.removeEventListener('timeupdate', handleTimeUpdate);
-      video.removeEventListener('ended', handleEnded);
-    };
-  }, []);
 
   const handleComplete = () => {
     onComplete();
@@ -54,18 +28,29 @@ export default function VideoPlayer({ module, onClose, onComplete }) {
         </DialogHeader>
 
         <div className="space-y-4">
-          {/* Video Player */}
-          <div className="relative aspect-video rounded-lg overflow-hidden bg-black">
-            <video
-              ref={videoRef}
-              src={module.video_url}
-              controls
-              className="w-full h-full"
-              controlsList="nodownload"
-            >
-              Your browser does not support the video tag.
-            </video>
-          </div>
+         {/* Video Player */}
+<div className="relative aspect-video rounded-lg overflow-hidden bg-black">
+  <ReactPlayer
+    ref={videoRef}
+    url={module.video_url} // Use the 'url' prop
+    controls={true}         // Show player controls
+    width="100%"
+    height="100%"
+    className="absolute top-0 left-0"
+    onProgress={(progress) => {
+      // progress.played is a fraction from 0 to 1
+      const percent = progress.played * 100;
+      setWatchProgress(percent);
+      if (percent >= 90) {
+        setCanComplete(true);
+      }
+    }}
+    onEnded={() => {
+      setCanComplete(true);
+      setWatchProgress(100);
+    }}
+  />
+</div>
 
           {/* Progress Bar */}
           <div className="space-y-2">
