@@ -1,6 +1,6 @@
 // src/pages/DashboardPage.jsx
 
-import { useState } from 'react'; // <-- Step 1: Import useState
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import ResidentDashboard from '@/components/dashboards/ResidentDashboard';
@@ -9,12 +9,70 @@ import WorkerDashboard from '@/components/dashboards/WorkerDashboard';
 import ScrapDealerDashboard from '@/components/dashboards/ScrapDealerDashboard';
 import { Card, CardContent } from '@/components/ui/card';
 import { Users } from 'lucide-react';
-import { motion } from 'framer-motion'; // Import motion for loading animation if needed
+import { motion } from 'framer-motion';
+
+// --- DEFINE NAVIGATION LINKS FOR EACH ROLE ---
+const residentNavLinks = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'report', label: 'Report Waste' },
+  { id: 'learning', label: 'Learning' },
+  { id: 'credits', label: 'Credits' },
+  { id: 'leaderboard', label: 'Green Champions Leaderboard' },
+  { id: 'impact', label: 'Impact' },
+];
+
+const workerNavLinks = [
+  { id: 'pickups', label: 'Assigned Pickups' },
+  { id: 'progress', label: 'Progress Tracker' },
+  { id: 'notifications', label: 'Notifications' },
+  { id: 'support', label: 'Support & Help' },
+  // 'Profile' is handled by the dropdown, so we don't need it here
+];
+
+// --- (You can add Admin and ScrapDealer links here later) ---
+const adminNavLinks = [
+  // ... (e.g., { id: 'admin_overview', label: 'Admin Overview' }) ...
+];
+const scrapDealerNavLinks = [
+  // ... (e.g., { id: 'market', label: 'Scrap Market' }) ...
+];
+
 
 export default function DashboardPage() {
   const { userProfile } = useAuth();
-  // Step 2: Initialize the activeSection state here
-  const [activeSection, setActiveSection] = useState('overview');
+
+  // --- DETERMINE LINKS AND DEFAULT SECTION BASED ON ROLE ---
+  let navigationLinks = residentNavLinks; // Default to resident links
+  let defaultSection = 'overview';
+
+  if (userProfile?.role === 'worker') {
+    navigationLinks = workerNavLinks;
+    defaultSection = 'pickups';
+  } else if (userProfile?.role === 'admin') {
+    // navigationLinks = adminNavLinks; // Uncomment when ready
+    // defaultSection = 'admin_overview';
+    navigationLinks = residentNavLinks; // Fallback for now
+  } else if (userProfile?.role === 'scrap_dealer') {
+    // navigationLinks = scrapDealerNavLinks; // Uncomment when ready
+    // defaultSection = 'dealer_overview';
+    navigationLinks = residentNavLinks; // Fallback for now
+  }
+  
+  // --- INITIALIZE STATE ---
+  const [activeSection, setActiveSection] = useState(defaultSection);
+
+  // This effect ensures that when the userProfile loads,
+  // the state updates to the correct default section.
+  useEffect(() => {
+    if (userProfile?.role) {
+      if (userProfile.role === 'worker') {
+        setActiveSection('pickups');
+      } else if (userProfile.role === 'resident') {
+        setActiveSection('overview');
+      }
+      // ... (add other roles later)
+    }
+  }, [userProfile?.role]); // This runs only when the role changes/loads
 
   const renderDashboard = () => {
     if (!userProfile) {
@@ -30,19 +88,16 @@ export default function DashboardPage() {
       );
     }
 
-    // Step 4: Pass activeSection and setActiveSection down to the specific dashboard
+    // Pass activeSection and onSectionChange down to the specific dashboard
     switch (userProfile.role) {
       case 'resident':
         return <ResidentDashboard activeSection={activeSection} onSectionChange={setActiveSection} />;
       case 'worker':
-        // Assuming WorkerDashboard might also need these props
         return <WorkerDashboard activeSection={activeSection} onSectionChange={setActiveSection} />;
       case 'admin':
-        // Assuming AdminDashboard might also need these props
         return <AdminDashboard activeSection={activeSection} onSectionChange={setActiveSection} />;
       case 'scrap_dealer':
-         // Assuming ScrapDealerDashboard might also need these props
-        return <ScrapDealerDashboard activeSection={activeSection} onSectionChange={setActiveSection} />;
+         return <ScrapDealerDashboard activeSection={activeSection} onSectionChange={setActiveSection} />;
       default:
         return (
           <Card>
@@ -57,9 +112,13 @@ export default function DashboardPage() {
     }
   };
 
-  // Step 3: Pass activeSection and setActiveSection down to DashboardLayout
+  // --- PASS THE 'navLinks' PROP TO THE LAYOUT ---
   return (
-    <DashboardLayout activeSection={activeSection} onSectionChange={setActiveSection}>
+    <DashboardLayout 
+      activeSection={activeSection} 
+      onSectionChange={setActiveSection}
+      navLinks={navigationLinks} // <-- This prop now sends the correct links
+    >
       {renderDashboard()}
     </DashboardLayout>
   );
