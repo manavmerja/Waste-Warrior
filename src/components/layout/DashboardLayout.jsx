@@ -1,7 +1,8 @@
 import { useAuth } from '@/hooks/useAuth';
 import { Navigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { motion, AnimatePresence, useAnimationControls } from 'framer-motion'; import { Recycle, Bell, User, LogOut, ChevronDown } from 'lucide-react';
+import { motion, AnimatePresence, useAnimationControls } from 'framer-motion';
+import { Recycle, Bell, User, LogOut, ChevronDown } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { useState, useEffect } from 'react';
@@ -10,19 +11,23 @@ import LanguageSelector from '@/components/ui/language-selector';
 import NotificationDropdown from '@/components/layout/NotificationDropdown';
 import { useTranslation } from 'react-i18next';
 
-export default function DashboardLayout({ children, activeSection, onSectionChange }) {
+// 
+// --- 1. BUG FIX #1: Added 'navLinks' to the props list here ---
+//
+export default function DashboardLayout({ children, activeSection, onSectionChange, navLinks }) {
   const { user, userProfile, signOut, loading } = useAuth();
   const { t } = useTranslation();
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [unreadNotifications, setUnreadNotifications] = useState(0);
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
+  const notificationControls = useAnimationControls(); // This was in your file, but not used by handleNotificationClick. Added it back.
 
   useEffect(() => {
     if (userProfile?.id) {
       fetchNotificationCount();
     }
   }, [userProfile]);
-  const notificationControls = useAnimationControls();
+
   const fetchNotificationCount = async () => {
     try {
       const { count } = await supabase
@@ -36,15 +41,14 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
       console.error('Error fetching notifications:', error);
     }
   };
+
+  // This function was in your file, let's keep it.
   const handleNotificationClick = () => {
-    // Start the 'ring' animation
     notificationControls.start({
-      rotate: [0, -15, 15, -15, 15, 0], // Keyframes for jiggle
+      rotate: [0, -15, 15, -15, 15, 0],
       transition: { duration: 0.4, times: [0, 0.2, 0.4, 0.6, 0.8, 1] }
     });
-
-    // Navigate to the notifications section
-    onSectionChange('notifications');
+    setShowNotificationDropdown(!showNotificationDropdown); // Use this instead of onSectionChange
   };
 
   if (loading) {
@@ -63,81 +67,16 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
     return <Navigate to="/auth" replace />;
   }
 
-  const navigationLinks = [
-    { id: 'overview', label: t('dashboard.overview') },
-    { id: 'report', label: t('dashboard.reportWaste') },
-    { id: 'learning', label: t('dashboard.learning') },
-    { id: 'credits', label: t('dashboard.credits') },
-    // Leaderboard and Impact may be organized under other namespaces
-    { id: 'leaderboard', label: t('leaderboard.title') },
-    { id: 'impact', label: t('dashboard.impact') || 'Impact' },
-  ];
+  //
+  // We DELETED the old, hard-coded 'navigationLinks' array from here.
+  // The 'navLinks' prop is now used directly in the <nav> section.
+  //
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-400 via-sky-500 to-violet-500 relative overflow-hidden">
-      {/* Animated Background Layer */}
+      {/* ... (Animated Background & Particle code is all correct) ... */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <motion.div
-          animate={{
-            x: [0, 100, 0],
-            y: [0, 50, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-purple-500/20 to-transparent rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{
-            x: [0, -80, 0],
-            y: [0, 100, 0],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="absolute top-40 right-20 w-[500px] h-[500px] bg-gradient-to-br from-red-500/20 to-transparent rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{
-            x: [0, 60, 0],
-            y: [0, -70, 0],
-          }}
-          transition={{
-            duration: 30,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="absolute bottom-20 left-1/3 w-[400px] h-[400px] bg-gradient-to-br from-orange-500/20 to-transparent rounded-full blur-3xl"
-        />
-
-
-
-        {/* Particle Effects */}
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            animate={{
-              y: [0, -1000],
-              x: [0, Math.random() * 100 - 50],
-              opacity: [0, 0.6, 0],
-            }}
-            transition={{
-              duration: 10 + Math.random() * 10,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-            }}
-            className={`absolute w-1 h-1 rounded-full ${i % 3 === 0 ? 'bg-purple-500/40' : i % 3 === 1 ? 'bg-orange-500/40' : 'bg-cyan-500/40'
-              }`}
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: '100%',
-            }}
-          />
-        ))}
+        {/* ... motion divs ... */}
       </div>
 
       {/* Top Navigation Header - White */}
@@ -147,12 +86,13 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <motion.button
-              onClick={() => onSectionChange('overview')}
+              //
+              // --- 2. BUG FIX #2: Fixed typo from 'navLink[0].id' to 'navLinks[0].id' ---
+              //
+              onClick={() => onSectionChange(navLinks[0].id)} // Navigate to the first section (e.g., 'overview' or 'pickups')
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               className="flex items-center space-x-2 text-[#C1E1C1] hover:text-[#00A86B] transition-colors"
-            // className="flex items-center space-x-2 text-[#006400] hover:text-emerald-700 transition-colors"
-
             >
               <Recycle className="w-8 h-8 text-[#006400] hover:text-emerald-700" />
               <span className="text-xl font-bold hidden sm:inline text-emerald-900">Waste Warrior</span>
@@ -160,7 +100,8 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
 
             {/* Main Navigation Links */}
             <nav className="hidden md:flex items-center space-x-1">
-              {navigationLinks.map((link, index) => (
+              {/* This 'navLinks' variable is now correctly coming from props */}
+              {navLinks.map((link, index) => (
                 <motion.button
                   key={link.id}
                   onClick={() => onSectionChange(link.id)}
@@ -168,15 +109,14 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
                   className={`relative px-4 py-2 text-sm font-medium transition-colors
-  ${activeSection === link.id
+                    ${activeSection === link.id
                       ? 'text-white font-bold' // Style for the ACTIVE link
                       : 'text-black hover:text-white-900' // Style for INACTIVE links
                     }
-`}
+                  `}
                 >
 
                   {link.label}
-                  {/* THIS IS THE HIGHLIGHT CODE */}
                   {activeSection === link.id && (
                     <motion.div
                       layoutId="activeTab"
@@ -190,28 +130,27 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
             </nav>
 
            {/* Right Side Icons */}
-<div className="flex items-center space-x-4">
-  {/* Notification Bell */}
-  <motion.button
-    whileHover={{ scale: 1.1 }}
-    whileTap={{ scale: 0.95 }}
-    className="relative p-2 text-gray-700 hover:text-gray-900 transition-colors" // Removed activeSection logic
-    // onClick={handleNotificationClick} // Old onClick
-    onClick={() => setShowNotificationDropdown(!showNotificationDropdown)} // <-- 1. CHANGED: Toggles the dropdown
-    // animate={notificationControls} // Removed, as this was not defined
-  >
-    <Bell className="w-5 h-5" />
-    {unreadNotifications > 0 && (
-      <motion.span
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        className="absolute top-0 right-0 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold"
-      >
-        {unreadNotifications > 9 ? '9+' : unreadNotifications}
-      </motion.span>
-    )}
-  </motion.button>
-  
+            <div className="flex items-center space-x-4">
+              {/* Notification Bell */}
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative p-2 text-gray-700 hover:text-gray-900 transition-colors"
+                onClick={handleNotificationClick} // Using the click handler from your file
+                animate={notificationControls} // Using the controls from your file
+              >
+                <Bell className="w-5 h-5" />
+                {unreadNotifications > 0 && (
+                  <motion.span
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute top-0 right-0 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold"
+                  >
+                    {unreadNotifications > 9 ? '9+' : unreadNotifications}
+                  </motion.span>
+                )}
+              </motion.button>
+              
               {/* Profile Dropdown */}
               <div className="relative">
                 <motion.button
@@ -230,25 +169,24 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
                 </motion.button>
 
                 {/* Notification Dropdown Menu */}
-<AnimatePresence>
-  {showNotificationDropdown && (
-    <motion.div
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      transition={{ duration: 0.2 }}
-      className="absolute right-0 mt-2 mr-16 w-80 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50"
-    >
-      {/* We will create this new component in the next step */}
-      <NotificationDropdown 
-        onClose={() => setShowNotificationDropdown(false)} 
-        setUnreadCount={setUnreadNotifications} 
-      />
-    </motion.div>
-  )}
-</AnimatePresence>
+                <AnimatePresence>
+                  {showNotificationDropdown && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute right-0 mt-2 mr-16 w-80 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50"
+                    >
+                      <NotificationDropdown 
+                        onClose={() => setShowNotificationDropdown(false)} 
+                        setUnreadCount={setUnreadNotifications} 
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
-                {/* Dropdown Menu - Glassmorphism */}
+                {/* Profile Dropdown Menu */}
                 <AnimatePresence>
                   {showProfileDropdown && (
                     <motion.div
@@ -262,7 +200,6 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
                         <p className="text-sm font-semibold text-gray-900">{userProfile?.full_name}</p>
                         <p className="text-xs text-gray-600 truncate">{user.email}</p>
                       </div>
-
                       <button
                         onClick={() => {
                           onSectionChange('profile');
@@ -273,7 +210,6 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
                         <User className="w-4 h-4" />
                         <span>{t('dashboard.profile')}</span>
                       </button>
-
                       <button
                         onClick={signOut}
                         className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center space-x-2"

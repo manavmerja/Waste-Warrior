@@ -41,7 +41,7 @@ export default function WorkerDashboard({ activeSection, onSectionChange }) {
       const [reportsRes, profileRes, notificationsRes] = await Promise.all([
         supabase
           .from('reports')
-          .select('*, users(full_name, email)')
+          .select('*, users:user_id(full_name, email)') // <-- THIS LINE IS FIXED
           .eq('assigned_worker_id', user.id)
           .order('created_at', { ascending: false }),
         supabase
