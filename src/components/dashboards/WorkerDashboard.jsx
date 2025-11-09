@@ -18,6 +18,7 @@ import {
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 
+
 export default function WorkerDashboard({ activeSection, onSectionChange }) {
   const { t } = useTranslation();
   const { user, userProfile, signOut } = useAuth();
@@ -69,8 +70,6 @@ export default function WorkerDashboard({ activeSection, onSectionChange }) {
       setLoading(false);
     }
   };
-
-  
 
   const subscribeToNotifications = () => {
     const channel = supabase
