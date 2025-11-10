@@ -85,7 +85,7 @@ export default function ScrapDealerDashboard({ activeSection, onSectionChange })
         .from('scrap_dealers')
         .select('*')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       
@@ -145,7 +145,7 @@ export default function ScrapDealerDashboard({ activeSection, onSectionChange })
         .from('users')
         .select('credits')
         .eq('id', user.id)
-        .single();
+        .maybeSingle();
 
       const pendingCount = allPickups?.filter(p => p.status === 'accepted').length || 0;
 

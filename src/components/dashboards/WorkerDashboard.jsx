@@ -49,7 +49,7 @@ export default function WorkerDashboard({ activeSection, onSectionChange }) {
           .from('workers')
           .select('*')
           .eq('user_id', user.id)
-          .single(),
+          .maybeSingle(),
         supabase
           .from('worker_notifications')
           .select('*')

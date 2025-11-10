@@ -33,7 +33,7 @@ import CreditsSystem from '@/components/features/CreditsSystem';
 import { LeaderboardDashboard } from '@/components/modules/Leaderboard';
 import UserProfile from '@/components/features/UserProfile';
 // ✅ CORRECT LINE
-import LearningPage from '@/pages/LearningPage.jsx';import DashboardLayout from '@/components/layout/DashboardLayout';
+import LearningPage from '@/pages/LearningPage.jsx';
 import ImpactPage from '@/pages/ImpactPage';
 import wasteIllustration from '@/assets/waste-management-illustration.png';
 import teamSpiritIllustration from '@/assets/waste-collection.jpg';
