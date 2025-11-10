@@ -82,6 +82,7 @@ export default function ScrapDealerDashboard({ activeSection, onSectionChange })
 
     try {
       const { data, error } = await supabase
+
         .from('scrap_dealers')
         .select('*')
         .eq('user_id', user.id)
@@ -141,6 +142,7 @@ export default function ScrapDealerDashboard({ activeSection, onSectionChange })
         .eq('status', 'completed')
         .gte('completed_at', `${today}T00:00:00`);
 
+
       const { data: userCredits } = await supabase
         .from('users')
         .select('credits')
@@ -165,6 +167,7 @@ export default function ScrapDealerDashboard({ activeSection, onSectionChange })
     try {
       const { error } = await supabase
         .from('scrap_pickup_requests')
+
         .update({
           status: 'accepted',
           dealer_id: dealerProfile.id,
@@ -205,6 +208,7 @@ export default function ScrapDealerDashboard({ activeSection, onSectionChange })
         title: t('common.success'),
         description: t('dealer.pickupCompleted'),
       });
+      
 
       fetchRequests();
       fetchStats();
