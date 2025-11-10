@@ -29,13 +29,19 @@ const workerNavLinks = [
   // 'Profile' is handled by the dropdown, so we don't need it here
 ];
 
+const scrapDealerNavLinks = [
+  { id: 'dashboard', label: 'Dashboard' },
+  { id: 'pickups', label: 'Available Pickups' },
+  { id: 'rates', label: 'Rates & Services' },
+  { id: 'history', label: 'History' },
+  // 'Profile' will be in the user dropdown
+];
+
 // --- (You can add Admin and ScrapDealer links here later) ---
 const adminNavLinks = [
   // ... (e.g., { id: 'admin_overview', label: 'Admin Overview' }) ...
 ];
-const scrapDealerNavLinks = [
-  // ... (e.g., { id: 'market', label: 'Scrap Market' }) ...
-];
+
 
 
 export default function DashboardPage() {
@@ -53,9 +59,8 @@ export default function DashboardPage() {
     // defaultSection = 'admin_overview';
     navigationLinks = residentNavLinks; // Fallback for now
   } else if (userProfile?.role === 'scrap_dealer') {
-    // navigationLinks = scrapDealerNavLinks; // Uncomment when ready
-    // defaultSection = 'dealer_overview';
-    navigationLinks = residentNavLinks; // Fallback for now
+     navigationLinks = scrapDealerNavLinks; // Uncomment when ready
+     defaultSection = 'dashboard';
   }
   
   // --- INITIALIZE STATE ---
@@ -70,7 +75,9 @@ export default function DashboardPage() {
       } else if (userProfile.role === 'resident') {
         setActiveSection('overview');
       }
-      // ... (add other roles later)
+      else if (userProfile.role === 'scrap_dealer') { 
+        setActiveSection('dashboard');
+      }
     }
   }, [userProfile?.role]); // This runs only when the role changes/loads
 
