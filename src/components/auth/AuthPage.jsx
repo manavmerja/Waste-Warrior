@@ -12,7 +12,6 @@ import WasteWarriorLogo from '@/assets/waste-warrior.jpg'; // <-- CHANGE 1: NAYA
 const roleOptions = [
   { value: 'resident', label: 'Resident', icon: Users, description: 'Report waste and earn rewards' },
   { value: 'worker', label: 'Waste Worker', icon: Truck, description: 'Collect and manage waste' },
-  { value: 'scrap_dealer', label: 'Scrap Dealer', icon: Recycle, description: 'Purchase recyclable materials' },
   { value: 'admin', label: 'Administrator', icon: Shield, description: 'Manage the system' }
 ];
 

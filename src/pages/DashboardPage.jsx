@@ -6,7 +6,6 @@ import DashboardLayout from '@/components/layout/DashboardLayout';
 import ResidentDashboard from '@/components/dashboards/ResidentDashboard';
 import AdminDashboard from '@/components/dashboards/AdminDashboard';
 import WorkerDashboard from '@/components/dashboards/WorkerDashboard';
-import ScrapDealerDashboard from '@/components/dashboards/ScrapDealerDashboard';
 import { Card, CardContent } from '@/components/ui/card';
 import { Users } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -27,14 +26,6 @@ const workerNavLinks = [
   { id: 'notifications', label: 'Notifications' },
   { id: 'support', label: 'Support & Help' },
   // 'Profile' is handled by the dropdown, so we don't need it here
-];
-
-const scrapDealerNavLinks = [
-  { id: 'dashboard', label: 'Dashboard' },
-  { id: 'pickups', label: 'Available Pickups' },
-  { id: 'rates', label: 'Rates & Services' },
-  { id: 'history', label: 'History' },
-  // 'Profile' will be in the user dropdown
 ];
 
 // --- (You can add Admin and ScrapDealer links here later) ---
@@ -58,9 +49,6 @@ export default function DashboardPage() {
     // navigationLinks = adminNavLinks; // Uncomment when ready
     // defaultSection = 'admin_overview';
     navigationLinks = residentNavLinks; // Fallback for now
-  } else if (userProfile?.role === 'scrap_dealer') {
-     navigationLinks = scrapDealerNavLinks; // Uncomment when ready
-     defaultSection = 'dashboard';
   }
   
   // --- INITIALIZE STATE ---
@@ -103,8 +91,7 @@ export default function DashboardPage() {
         return <WorkerDashboard activeSection={activeSection} onSectionChange={setActiveSection} />;
       case 'admin':
         return <AdminDashboard activeSection={activeSection} onSectionChange={setActiveSection} />;
-      case 'scrap_dealer':
-         return <ScrapDealerDashboard activeSection={activeSection} onSectionChange={setActiveSection} />;
+        
       default:
         return (
           <Card>

@@ -25,6 +25,9 @@ dist-ssr
 *.sln
 *.sw?
 
+supabase
+.env 
+
 
 # Optional npm cache directory
 .npm
