@@ -8,6 +8,7 @@ CREATE TYPE public.report_status AS ENUM ('pending', 'assigned', 'in_progress', 
 CREATE TYPE public.notification_type AS ENUM ('report_update', 'credit_award', 'kit_distribution', 'worker_assignment', 'system');
 
 -- Create users table (extends Supabase auth.users)
+
 CREATE TABLE public.users (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   email TEXT UNIQUE NOT NULL,
