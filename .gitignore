@@ -10,6 +10,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+supabase
 dist
 dist-ssr
 *.local
@@ -25,9 +26,7 @@ dist-ssr
 *.sln
 *.sw?
 
-supabase
-.env 
-
 
 # Optional npm cache directory
 .npm
+.env
