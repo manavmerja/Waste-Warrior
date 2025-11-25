@@ -143,7 +143,7 @@ This project is the result of hard work and collaboration for **Smart India Hack
 
 | Name | Role | GitHub |
 | :--- | :--- | :--- |
-| **Manav Merja** | **👑 Project Lead & Full Stack Developer**<br>*(Architecture, Backend, Frontend, API)* | [Profile](https://github.com/manavmerja) |
+| **Manav Merja** | ** Project Lead & Full Stack Developer**<br>*(Architecture, Backend, Frontend, API)* | [Profile](https://github.com/manavmerja) |
 | **Bhargav Rakhodiya**| **Frontend Developer**<br>*(UI Implementation & Design)* | [Profile](https://github.com/bhargavrakholiya123) |
 | **Ayaan Mansuri** | **Security Analyst & Developer**<br>*(App Security, Bug Fixes & Testing)* | [Profile](https://github.com/artemis-rv) |
 | **Gunja Bhatt** | **Junior Developer**<br>*(Backend Support & Localization)* | [Profile](https://github.com/gunjaa122006) |
