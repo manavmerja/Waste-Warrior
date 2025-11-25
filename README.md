@@ -46,15 +46,17 @@ The core philosophy is **Gamification**: We turn the mundane task of waste segre
 
 ## 📸 Screenshots
 
-| **Interactive Dashboard** | **Gamified Learning** |
-|:---:|:---:|
-| ![Dashboard](docs/images/dashboard.jpg) | ![Learning](docs/images/learning.jpg) |
-| *Real-time stats and quick actions* | *Video modules and quizzes* |
+Here is a glimpse of the Waste Warrior platform in action.
 
-| **Leaderboard** | **Impact Tracking** |
-|:---:|:---:|
-| ![Leaderboard](docs/images/leaderboard.jpg) | ![Impact](docs/images/impact.jpg) |
-| *Compete with neighbors* | *Before & After gallery* |
+| **Project Overview** | **Community & Hero** | **Interactive Actions** |
+|:---:|:---:|:---:|
+| ![Overview](public/overview.jpg) | ![Community Hero](public/community-hero.jpg) | ![Dashboard](public/dashboard.jpg) |
+| *A complete bird's-eye view of activities* | *Hero of the Month & Testimonials* | *Real-time stats and quick reporting* |
+
+| **Gamified Learning** | **Leaderboard** | **Impact Tracking** |
+|:---:|:---:|:---:|
+| ![Learning](public/learning.jpg) | ![Leaderboard](public/leaderboard.jpg) | ![Impact](public/impact.jpg) |
+| *Video modules and quizzes* | *Compete with neighbors* | *Before & After gallery* |
 
 ---
 
