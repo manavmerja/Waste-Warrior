@@ -1,177 +1,168 @@
-# ♻️ Waste Warrior: Wastes Management System
+<div align="center">
+  <img src="src/assets/waste-warrior.jpg" alt="Waste Warrior Logo" width="120" height="120" />
+  
+  # ♻️ Waste Warrior
+  
+  **Building cleaner communities together through smart waste management, gamification, and real-time tracking.**
+  
+  ### 🚀 Built for Smart India Hackathon 2025 (SIH 2025)
 
-Welcome to the official repository for **Waste Warrior**, a complete digital scrap management platform designed for the **Smart India Hackathon (SIH)**. This project connects residents, workers, and administrators in an eco-friendly ecosystem to promote efficient waste management and recycling.
+  [![React](https://img.shields.io/badge/React-18.0-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
+  [![Vite](https://img.shields.io/badge/Vite-4.0-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
+  [![Supabase](https://img.shields.io/badge/Supabase-Backend-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com/)
+  [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.0-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+  [![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
----
-
-## 🧩 Project Overview
-
-Waste Warrior is a unified web platform designed to manage waste collection, track recycling, distribute rewards, and rank participants on a leaderboard. The core idea is to encourage recycling and waste segregation by rewarding users (residents and workers) through an engaging, points-based leaderboard system.
-
----
-
-## ⚙️ Core Modules & Features
-
-Our platform is built with distinct modules for each user role:
-
-**🏠 Resident Dashboard:**
-* Request scrap pickups.
-* Track collection status in real-time.
-* View earned points and leaderboard rank.
-* Upload proofs of recycling (images).
-* Multi-language support (English, Hindi, Gujarati, Tamil).
-
-**👷 Worker Dashboard:**
-* Accept or decline pickup requests.
-* Update progress on collections.
-* View performance and leaderboard ranking.
-* Earn points for completing pickups.
-
-**🧑‍💼 Admin Dashboard:**
-* Manage user points (add/deduct).
-* Oversee the monthly leaderboard reset.
-* Assign "Green Champion" badges to top performers.
-* View audit logs and system reports.
-
-**🏆 Leaderboard Module:**
-* Displays Top 3 performers with Gold, Silver, and Bronze effects.
-* Features real-time data updates using Supabase.
-* Includes a motivational banner and confetti animations for achievements.
+  [View Demo](#) · [Report Bug](issues) · [Request Feature](issues)
+</div>
 
 ---
 
-## 🧠 Tech Stack
+## 📖 About The Project
 
-This project is built with a modern and powerful tech stack:
+**Waste Warrior** is a comprehensive digital ecosystem designed to revolutionize urban waste management. Created for **SIH 2025**, this platform connects Residents and Waste Workers with Administrators to make recycling efficient, rewarding, and transparent.
 
-* **Frontend:** React.js, TypeScript, Vite
-* **UI Library:** ShadCN, Tailwind CSS, Radix UI
-* **Animations:** Framer Motion
-* **Backend & Database:** Supabase (Auth, Realtime Database, Storage)
-* **Map Integration:** Mapbox
-* **Translations:** react-i18next
-* **Charts & Analytics:** Recharts
-* **Notifications:** Sonner (Toast)
-* **Routing:** React Router DOM
+The core philosophy is **Gamification**: We turn the mundane task of waste segregation into a rewarding experience where users earn "Green Points," unlock badges, and compete on community leaderboards.
+
+### 🌟 Key Features
+
+#### 🏠 For Residents
+* **Smart Reporting:** Report waste issues with geo-tagged photos and AI-assisted categorization.
+* **Gamified Learning:** Interactive modules with quizzes to learn about waste segregation.
+* **Rewards System:** Earn 'Green Points' for every verified action and redeem them for real-world benefits.
+* **Impact Tracking:** Visual dashboard to see your personal contribution to the environment.
+
+#### 👷 For Waste Workers
+* **Task Management:** View assigned pickups and optimize daily routes.
+* **Verification:** Verify waste segregation at the source and approve/reject reports.
+* **Progress Tracking:** Track daily completions and earnings.
+
+#### 🧑‍💼 For Administrators
+* **System Oversight:** Monitor overall system health and user activities.
+* **User Management:** Manage resident and worker accounts.
+* **Analytics:** View reports and analytics on waste collection and recycling.
 
 ---
 
-## 🚀 Getting Started Locally
+## 📸 Screenshots
 
-If you want to run this project on your local machine, follow these simple steps.
+| **Interactive Dashboard** | **Gamified Learning** |
+|:---:|:---:|
+| ![Dashboard](docs/images/dashboard.jpg) | ![Learning](docs/images/learning.jpg) |
+| *Real-time stats and quick actions* | *Video modules and quizzes* |
 
-**Prerequisites:**
-* Node.js and npm installed on your system.
+| **Leaderboard** | **Impact Tracking** |
+|:---:|:---:|
+| ![Leaderboard](docs/images/leaderboard.jpg) | ![Impact](docs/images/impact.jpg) |
+| *Compete with neighbors* | *Before & After gallery* |
 
-**Installation:**
-1.  **Clone the repository:**
-    ```sh
+---
+
+## 🛠️ Tech Stack
+
+This project is built using the latest web technologies for performance and scalability.
+
+* **Frontend Framework:** [React.js](https://reactjs.org/) with [TypeScript](https://www.typescriptlang.org/)
+* **Build Tool:** [Vite](https://vitejs.dev/)
+* **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+* **UI Components:** [ShadCN UI](https://ui.shadcn.com/) & [Radix UI](https://www.radix-ui.com/)
+* **Animations:** [Framer Motion](https://www.framer.com/motion/) (for smooth transitions and gamification effects)
+* **Backend & Auth:** [Supabase](https://supabase.com/) (PostgreSQL, Authentication, Storage, Realtime)
+* **State Management:** React Query (TanStack Query)
+* **Maps:** Map Integration for location tracking
+* **Internationalization:** `react-i18next` (Multi-language support)
+
+---
+
+## 🚀 Getting Started
+
+Follow these instructions to set up the project locally on your machine.
+
+### Prerequisites
+
+* Node.js (v16 or higher)
+* npm or bun
+
+### Installation
+
+1.  **Clone the repository**
+    ```bash
     git clone [https://github.com/manavmerja/Waste-Warrior.git](https://github.com/manavmerja/Waste-Warrior.git)
-    ```
-
-2.  **Navigate to the project directory:**
-    ```sh
     cd Waste-Warrior
     ```
 
-3.  **Install the necessary dependencies:**
-    ```sh
+2.  **Install dependencies**
+    ```bash
     npm install
+    # or
+    bun install
     ```
 
-4.  **Start the development server:**
-    ```sh
+3.  **Configure Environment Variables**
+    * Create a `.env` file in the root directory.
+    * Copy the contents from `.env.example` (if available) or add your Supabase credentials:
+    ```env
+    VITE_SUPABASE_URL=your_supabase_project_url
+    VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+    ```
+
+4.  **Start the Development Server**
+    ```bash
     npm run dev
     ```
-    The application will now be running locally, usually at `http://localhost:5173`.
+
+5.  Open `http://localhost:5173` in your browser.
 
 ---
 
-## 🛡️ Our Branch Protection Workflow
+## 🤝 How to Contribute
 
-To keep our project stable and organized, the `main` branch is **protected**. This means no one can push code directly to it. All changes must be reviewed and approved by at least one other team member.
+We welcome contributions from the open-source community! Whether it's fixing a bug, adding a feature, or improving documentation.
 
-### Why do we do this?
-
-Think of the `main` branch as the master blueprint of our project. It should **always** be working. By requiring reviews (Pull Requests), we can catch bugs early, improve code quality, and make sure everyone understands the changes being made.
-
-### Your Step-by-Step Workflow
-
-When you want to add a new feature or fix a bug, follow these steps every time:
-
-1.  **Get the Latest Code:** Before you start, make sure your local `main` branch is up-to-date.
-    ```sh
-    git pull origin main
-    ```
-
-2.  **Create a New Branch:** Create a new branch for your specific task. Name it something descriptive.
-    ```sh
-    # Example for a new feature
-    git checkout -b feature/resident-dashboard
-
-    # Example for a bug fix
-    git checkout -b fix/login-button-color
-    ```
-
-3.  **Write Your Code:** Make all your code changes on this new branch.
-
-4.  **Commit and Push Your Branch:** Save your work and push your new branch (not `main`!) to GitHub.
-    ```sh
-    git add .
-    git commit -m "Add feature: Created the basic layout for the resident dashboard"
-    git push origin feature/resident-dashboard
-    ```
-
-5.  **Create a Pull Request (PR):** Go to the GitHub repository. You will see a prompt to create a Pull Request from your new branch. Fill out the details and create the PR.
-
-6.  **Ask for a Review:** Ask a teammate to review your code. They can leave comments or request changes.
-
-7.  **Merge the PR:** Once your PR is approved by at least **TWO** teammates, you can merge it into the `main` branch. Your changes are now part of the main project!
+1.  **Fork the Project** (Click the 'Fork' button at the top right)
+2.  **Create your Feature Branch** (`git checkout -b feature/AmazingFeature`)
+3.  **Commit your Changes** (`git commit -m 'Add some AmazingFeature'`)
+4.  **Push to the Branch** (`git push origin feature/AmazingFeature`)
+5.  **Open a Pull Request**
 
 ---
 
-## 💾 How Our Database Works (Supabase & .env)
+## 🛡️ Security
 
-Our project uses a single, shared Supabase database. To connect to it, you need secret keys, which are managed in a special `.env` file.
-
-### What is the .env file?
-
-The `.env` file is a private file where we store our secret keys (like the database URL and password). When you run `npm run dev`, our code automatically reads the keys from this file and uses them to connect to the Supabase database.
-
-### Your Setup Steps:
-
-Good news! The `.env` file has **already been placed in the project's root directory**. The only step you need to take after cloning the project is to install the dependencies by running `npm install`. The project will then be ready to connect to our shared database automatically.
-
-> **⚠️ Important Warning:** We are all using the **same live database**. Any data you add, delete, or change (like creating a test user) will be instantly visible to everyone on the team. Please be careful and communicate with the team before making major data changes.
+If you discover a security vulnerability within this project, please send an e-mail to the project maintainer instead of creating a public issue.
 
 ---
 
-## 🔄 Keeping Your Code Up-to-Date
+## 👥 Team & Contributors
 
-If a teammate has pushed new changes to GitHub, you will need to pull those changes to your local machine to stay in sync.
+This project is the result of hard work and collaboration for **Smart India Hackathon 2025**.
 
-1.  **Navigate into your project directory in the terminal:**
-    ```sh
-    cd Waste-Warrior
-    ```
+### 🌟 Core Team
 
-2.  **Pull the latest changes from GitHub:**
-    ```sh
-    git pull origin main
-    ```
-    This command fetches all the new code and merges it into your local project.
+| Name | Role | GitHub |
+| :--- | :--- | :--- |
+| **Manav Merja** | **👑 Project Lead & Full Stack Developer**<br>*(Architecture, Backend, Frontend, API)* | [Profile](https://github.com/manavmerja) |
+| **Bhargav Rakhodiya**| **Frontend Developer**<br>*(UI Implementation & Design)* | [Profile](https://github.com/bhargavrakholiya123) |
+| **Ayaan Mansuri** | **Security Analyst & Developer**<br>*(App Security, Bug Fixes & Testing)* | [Profile](https://github.com/artemis-rv) |
+| **Gunja Bhatt** | **Junior Developer**<br>*(Backend Support & Localization)* | [Profile](https://github.com/gunjaa122006) |
+
+### 🤝 Contributors & Support
+
+| Name | Contribution | GitHub |
+| :--- | :--- | :--- |
+| **Harsh Joshi** | **Team Member**<br>*(Documentation & Research)* | [Profile](https://github.com/harsh-joshi1234-hb) |
+| **Param Vadhadiya** | **Team Member**<br>*(Testing & Analysis)* | [Profile](https://github.com/Paramvadhadiya500) |
+
+### 🌟 Project Mentor
+* **Nilesh Dubey** - *Guidance & Technical Strategy*
 
 ---
 
----
+## 📄 License
 
-## 💬 A Final Note for the Team
+Distributed under the MIT License. See `LICENSE` for more information.
 
-If you have any doubts or don't understand something, **always ask questions before making a mistake.** Clear communication is the key to our success. We're all here to help each other.
-
----
-
-## 👥 Made By
-
-This project is proudly developed by the **Waste Warrior Team**.
-testing merge
+<div align="center">
+  <br />
+  <i>Let's make our planet cleaner, one step at a time! 🌍</i>
+</div>
