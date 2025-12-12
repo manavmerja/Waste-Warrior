@@ -29,3 +29,5 @@ dist-ssr
 
 .npm
 .env
+
+config.toml
