@@ -1,105 +1,62 @@
-import { useState, useRef, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { motion } from 'framer-motion';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { X, CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, X, PlayCircle } from 'lucide-react';
 
 export default function VideoPlayer({ module, onClose, onComplete }) {
-  const { t } = useTranslation();
-  const [watchProgress, setWatchProgress] = useState(0);
-  const [canComplete, setCanComplete] = useState(false);
-  const videoRef = useRef(null);
 
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const handleTimeUpdate = () => {
-      const progress = (video.currentTime / video.duration) * 100;
-      setWatchProgress(progress);
-
-      // Allow completion when user reaches 90% of the video
-      if (progress >= 90) {
-        setCanComplete(true);
-      }
-    };
-
-    const handleEnded = () => {
-      setCanComplete(true);
-      setWatchProgress(100);
-    };
-
-    video.addEventListener('timeupdate', handleTimeUpdate);
-    video.addEventListener('ended', handleEnded);
-
-    return () => {
-      video.removeEventListener('timeupdate', handleTimeUpdate);
-      video.removeEventListener('ended', handleEnded);
-    };
-  }, []);
-
-  const handleComplete = () => {
-    onComplete();
-    onClose();
+  const handleMarkComplete = () => {
+    // Sidha complete mark karo aur quiz kholo
+    onComplete(); 
   };
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-auto">
-        <DialogHeader>
-          <DialogTitle>{module.title}</DialogTitle>
-          <DialogDescription>{module.description}</DialogDescription>
-        </DialogHeader>
-
-        <div className="space-y-4">
-          {/* Video Player */}
-          <div className="relative aspect-video rounded-lg overflow-hidden bg-black">
-            <video
-              ref={videoRef}
-              src={module.video_url}
-              controls
-              className="w-full h-full"
-              controlsList="nodownload"
-            >
-              Your browser does not support the video tag.
-            </video>
+      <DialogContent className="max-w-4xl p-0 overflow-hidden bg-black text-white border-gray-800">
+        
+        {/* Header */}
+        <div className="p-4 bg-gray-900 border-b border-gray-800 flex justify-between items-center">
+          <div>
+            <DialogTitle className="text-lg font-semibold text-white">{module.title}</DialogTitle>
+            <DialogDescription className="text-gray-400 text-xs mt-1">
+              Watch the video below to understand the topic.
+            </DialogDescription>
           </div>
-
-          {/* Progress Bar */}
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">{t('learning.progress')}</span>
-              <span className="font-medium">{Math.round(watchProgress)}%</span>
-            </div>
-            <Progress value={watchProgress} className="h-2" />
-            {!canComplete && (
-              <p className="text-xs text-muted-foreground">
-                Watch at least 90% of the video to mark as complete
-              </p>
-            )}
-          </div>
-
-          {/* Actions */}
-          <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={onClose}>
-              {t('common.close')}
-            </Button>
-            {canComplete && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Button onClick={handleComplete}>
-                  <CheckCircle2 className="mr-2 h-4 w-4" />
-                  {t('learning.markComplete')}
-                </Button>
-              </motion.div>
-            )}
-          </div>
+          <Button variant="ghost" size="icon" onClick={onClose} className="text-gray-400 hover:text-white">
+            <X className="w-5 h-5" />
+          </Button>
         </div>
+
+        {/* YOUTUBE IFRAME (Simple & Stable) */}
+        <div className="relative aspect-video bg-black w-full">
+          <iframe 
+            width="100%" 
+            height="100%" 
+            src={`${module.video_url}?autoplay=0&rel=0`} 
+            title="YouTube video player" 
+            frameBorder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowFullScreen
+            className="w-full h-full"
+          ></iframe>
+        </div>
+
+        {/* Footer Controls (No Progress Bar, Just Action) */}
+        <div className="p-6 bg-gray-900 border-t border-gray-800 flex justify-between items-center">
+          
+          <p className="text-sm text-gray-400">
+            <PlayCircle className="inline w-4 h-4 mr-1 text-emerald-500" />
+            Video loaded successfully
+          </p>
+
+          {/* Button is ALWAYS Enabled */}
+          <Button 
+            onClick={handleMarkComplete} 
+            className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-lg shadow-emerald-900/20"
+          >
+            I'm Ready for the Quiz <CheckCircle2 className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+
       </DialogContent>
     </Dialog>
   );

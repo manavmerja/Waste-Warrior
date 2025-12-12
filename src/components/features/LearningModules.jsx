@@ -1,325 +1,260 @@
 import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { PlayCircle, CheckCircle2, Award, Download } from 'lucide-react';
+import { PlayCircle, CheckCircle2, ArrowRight, BookOpen } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import VideoPlayer from './VideoPlayer';
+import QuizModal from './QuizModal';
 import CertificateGenerator from './CertificateGenerator';
 
 export default function LearningModules() {
-  const { t } = useTranslation();
   const { userProfile } = useAuth();
-  const { toast } = useToast();
+  
   const [modules, setModules] = useState([]);
   const [userProgress, setUserProgress] = useState([]);
-  const [selectedModule, setSelectedModule] = useState(null);
-  const [certificate, setCertificate] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  const [activeModuleForVideo, setActiveModuleForVideo] = useState(null);
+  const [activeModuleForQuiz, setActiveModuleForQuiz] = useState(null);
+  const [certificate, setCertificate] = useState(null);
 
   useEffect(() => {
-    fetchModulesAndProgress();
+    if (userProfile) {
+      fetchData();
+    }
   }, [userProfile]);
 
-  const fetchModulesAndProgress = async () => {
+  const fetchData = async () => {
     try {
       setLoading(true);
-      
-      // Fetch learning modules
-      const { data: modulesData, error: modulesError } = await supabase
+      const { data: modulesData } = await supabase
         .from('learning_modules')
         .select('*')
         .order('order_index', { ascending: true });
 
-      if (modulesError) throw modulesError;
-
-      // Fetch user progress
-      const { data: progressData, error: progressError } = await supabase
+      const { data: progressData } = await supabase
         .from('user_learning_progress')
         .select('*')
         .eq('user_id', userProfile.id);
 
-      if (progressError) throw progressError;
-
-      // Fetch certificate if exists
       const { data: certData } = await supabase
         .from('certifications')
         .select('*')
         .eq('user_id', userProfile.id)
-        .order('created_at', { ascending: false })
-        .limit(1)
         .single();
 
       setModules(modulesData || []);
       setUserProgress(progressData || []);
       setCertificate(certData);
+
     } catch (error) {
-      console.error('Error fetching learning data:', error);
-      toast({
-        title: t('common.error'),
-        description: error.message,
-        variant: 'destructive',
-      });
+      console.error('Error:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const getModuleProgress = (moduleId) => {
-    return userProgress.find(p => p.module_id === moduleId) || null;
+  const getProgress = (moduleId) => {
+    return userProgress.find(p => p.module_id === moduleId);
   };
 
-  const calculateOverallProgress = () => {
-    if (modules.length === 0) return 0;
-    const completedModules = userProgress.filter(p => p.is_completed).length;
-    return Math.round((completedModules / modules.length) * 100);
-  };
-
-  const handleModuleComplete = async (moduleId) => {
+  const handleVideoComplete = async (moduleId) => {
     try {
-      const progress = getModuleProgress(moduleId);
+      const { error } = await supabase
+        .from('user_learning_progress')
+        .upsert({
+          user_id: userProfile.id,
+          module_id: moduleId,
+          is_video_watched: true,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'user_id, module_id' });
+
+      if (error) throw error;
+      toast.success("Video completed! Quiz unlocked.");
       
-      if (progress) {
-        // Update existing progress
-        const { error } = await supabase
-          .from('user_learning_progress')
-          .update({
-            is_completed: true,
-            progress_percentage: 100,
-            completed_at: new Date().toISOString(),
-          })
-          .eq('id', progress.id);
-
-        if (error) throw error;
-      } else {
-        // Create new progress
-        const { error } = await supabase
-          .from('user_learning_progress')
-          .insert({
-            user_id: userProfile.id,
-            module_id: moduleId,
-            is_completed: true,
-            progress_percentage: 100,
-            completed_at: new Date().toISOString(),
-          });
-
-        if (error) throw error;
-      }
-
-      toast({
-        title: t('common.success'),
-        description: t('learning.markComplete'),
-      });
-
-      // Refresh progress
-      await fetchModulesAndProgress();
+      await fetchData();
+      setActiveModuleForVideo(null);
       
-      // Check if all modules completed
-      checkForCertificate();
+      const module = modules.find(m => m.id === moduleId);
+      setActiveModuleForQuiz(module);
+
     } catch (error) {
-      console.error('Error marking module complete:', error);
-      toast({
-        title: t('common.error'),
-        description: error.message,
-        variant: 'destructive',
-      });
+      toast.error("Error saving progress");
+    }
+  };
+
+  const handleQuizPass = async (moduleId, score) => {
+    try {
+      const { error } = await supabase
+        .from('user_learning_progress')
+        .upsert({
+          user_id: userProfile.id,
+          module_id: moduleId,
+          is_video_watched: true,
+          quiz_score: score,
+          is_completed: true,
+          completed_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'user_id, module_id' });
+
+      if (error) throw error;
+
+      toast.success(`Module Completed! Score: ${score}%`);
+      setActiveModuleForQuiz(null);
+      await fetchData();
+      
+      checkForCertificate();
+
+    } catch (error) {
+      console.error(error);
+      toast.error("Error saving quiz result");
     }
   };
 
   const checkForCertificate = async () => {
-    const completedModules = userProgress.filter(p => p.is_completed).length;
-    const requiredModules = modules.filter(m => m.is_required).length;
-
-    if (completedModules >= requiredModules && !certificate) {
-      // Generate certificate
-      try {
-        const { data, error } = await supabase
-          .from('certifications')
-          .insert({
-            user_id: userProfile.id,
-          })
-          .select()
-          .single();
-
-        if (error) throw error;
-
-        setCertificate(data);
-        toast({
-          title: '🎉 ' + t('learning.certifiedWarrior'),
-          description: t('learning.downloadCertificate'),
-        });
-      } catch (error) {
-        console.error('Error generating certificate:', error);
-      }
-    }
+     if (modules.length > 0 && userProgress.filter(p => p.is_completed).length === modules.length && !certificate) {
+         try {
+            const { data, error } = await supabase.from('certifications').insert({ user_id: userProfile.id }).select().single();
+            if(!error) setCertificate(data);
+         } catch(e) {}
+     }
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">{t('common.loading')}</p>
-        </div>
-      </div>
-    );
+    return <div className="p-8 text-center text-gray-500">Loading...</div>;
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header with Progress */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
+    <div className="space-y-8 animate-in fade-in duration-500">
+      
+      {/* --- HERO SECTION FIXED --- */}
+      {/* Added Inline Style for Background Color */}
+      <div 
+        className="relative overflow-hidden rounded-3xl p-8 text-white shadow-xl"
+        style={{ background: 'linear-gradient(to right, #059669, #0d9488)' }} 
       >
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle>{t('learning.title')}</CardTitle>
-                <CardDescription>{t('learning.subtitle')}</CardDescription>
-              </div>
-              {certificate && (
-                <Badge variant="secondary" className="flex items-center gap-2">
-                  <Award className="h-4 w-4" />
-                  {t('learning.certifiedWarrior')}
-                </Badge>
-              )}
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">{t('learning.progress')}</span>
-                <span className="font-medium">{calculateOverallProgress()}%</span>
-              </div>
-              <Progress value={calculateOverallProgress()} className="h-2" />
-              <p className="text-xs text-muted-foreground">
-                {t('learning.modulesCompleted', {
-                  completed: userProgress.filter(p => p.is_completed).length,
-                  total: modules.length,
-                })}
-              </p>
-            </div>
+        <div className="absolute top-0 right-0 -mt-10 -mr-10 h-64 w-64 rounded-full bg-white/10 blur-3xl"></div>
+        
+        <div className="relative z-10 flex flex-col items-start gap-4">
+          <div>
+            <h1 className="text-3xl font-bold mb-2 flex items-center gap-2 text-white">
+              Learning Hub 🎓
+              {certificate && <Badge className="bg-yellow-400 text-black hover:bg-yellow-500">Certified</Badge>}
+            </h1>
+            <p className="text-emerald-50 max-w-2xl text-lg">
+              Watch videos, take quizzes, and earn your certificate. Become a certified Waste Warrior!
+            </p>
+          </div>
 
-            {certificate && (
-              <div className="mt-4">
-                <CertificateGenerator 
-                  userName={userProfile.full_name}
-                  completionDate={certificate.issued_at}
-                />
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </motion.div>
+          {certificate && (
+            <div className="mt-2">
+              <CertificateGenerator 
+                userName={userProfile.full_name} 
+                completionDate={certificate.issued_at} 
+              />
+            </div>
+          )}
+        </div>
+      </div>
 
-      {/* Video Player Modal */}
+      {/* --- MODULES GRID --- */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {modules.map((module, index) => {
+          const progress = getProgress(module.id);
+          const isCompleted = progress?.is_completed;
+          const isVideoWatched = progress?.is_video_watched;
+          
+          return (
+            <motion.div
+              key={module.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+            >
+              <Card className={`h-full border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col ${isCompleted ? 'bg-emerald-50/50 border-emerald-100' : 'bg-white'}`}>
+                
+                {/* Thumbnail */}
+                <div className="relative aspect-video bg-gray-100 rounded-t-xl overflow-hidden group">
+                  <img 
+                    src={module.thumbnail_url} 
+                    alt={module.title} 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                    {isCompleted ? (
+                      <div className="bg-emerald-500 rounded-full p-3 shadow-lg"><CheckCircle2 className="w-8 h-8 text-white" /></div>
+                    ) : (
+                      <div className="bg-white/90 rounded-full p-3 shadow-lg group-hover:scale-110 transition-transform"><PlayCircle className="w-8 h-8 text-emerald-600" /></div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Content */}
+                <CardHeader className="pb-2">
+                   <CardTitle className="text-lg line-clamp-1 text-gray-800">{module.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="pb-4 flex-grow">
+                   <p className="text-sm text-gray-500 line-clamp-2 mb-4">{module.description}</p>
+                   {/* Status Indicator */}
+                   <div className="flex items-center gap-2 text-sm">
+                      <Badge variant={isCompleted ? "success" : "secondary"} className={isCompleted ? "bg-emerald-100 text-emerald-700" : "bg-gray-100 text-gray-600"}>
+                        {isCompleted ? 'Completed' : isVideoWatched ? 'Quiz Pending' : 'Not Started'}
+                      </Badge>
+                      <span className="text-gray-400 text-xs">• {module.duration_minutes} mins</span>
+                   </div>
+                </CardContent>
+
+                <CardFooter className="pt-0">
+                  {isCompleted ? (
+                    <Button variant="outline" className="w-full border-emerald-200 text-emerald-700 hover:bg-emerald-50" disabled>
+                      <CheckCircle2 className="w-4 h-4 mr-2" /> Done
+                    </Button>
+                  ) : (
+                    <Button 
+                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-200"
+                      onClick={() => {
+                        if (isVideoWatched && !isCompleted) {
+                           setActiveModuleForQuiz(module);
+                        } else {
+                           setActiveModuleForVideo(module);
+                        }
+                      }}
+                    >
+                      {isVideoWatched ? "Take Quiz" : "Start Learning"} <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  )}
+                </CardFooter>
+
+              </Card>
+            </motion.div>
+          );
+        })}
+      </div>
+
       <AnimatePresence>
-        {selectedModule && (
-          <VideoPlayer
-            module={selectedModule}
-            onClose={() => setSelectedModule(null)}
-            onComplete={() => handleModuleComplete(selectedModule.id)}
+        {activeModuleForVideo && (
+          <VideoPlayer 
+            module={activeModuleForVideo} 
+            onClose={() => setActiveModuleForVideo(null)}
+            onComplete={() => handleVideoComplete(activeModuleForVideo.id)}
           />
         )}
       </AnimatePresence>
 
-      {/* Modules Grid */}
-      {modules.length === 0 ? (
-        <Card>
-          <CardContent className="py-12 text-center">
-            <PlayCircle className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-            <p className="text-muted-foreground">{t('learning.noModules')}</p>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {modules.map((module, index) => {
-            const progress = getModuleProgress(module.id);
-            const isCompleted = progress?.is_completed || false;
+      <AnimatePresence>
+        {activeModuleForQuiz && (
+          <QuizModal 
+            module={activeModuleForQuiz}
+            onClose={() => setActiveModuleForQuiz(null)}
+            onComplete={(score) => handleQuizPass(activeModuleForQuiz.id, score)}
+          />
+        )}
+      </AnimatePresence>
 
-            return (
-              <motion.div
-                key={module.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-              >
-                <Card className="h-full hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-start justify-between gap-2">
-                      <CardTitle className="text-lg line-clamp-2">
-                        {module.title}
-                      </CardTitle>
-                      {isCompleted && (
-                        <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0" />
-                      )}
-                    </div>
-                    <CardDescription className="line-clamp-2">
-                      {module.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {module.thumbnail_url && (
-                      <div className="relative aspect-video rounded-lg overflow-hidden bg-muted">
-                        <img
-                          src={module.thumbnail_url}
-                          alt={module.title}
-                          className="object-cover w-full h-full"
-                        />
-                        <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                          <PlayCircle className="h-12 w-12 text-white" />
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">
-                        {t('learning.duration', { minutes: module.duration_minutes || 5 })}
-                      </span>
-                      {progress && !isCompleted && (
-                        <span className="text-primary font-medium">
-                          {progress.progress_percentage}%
-                        </span>
-                      )}
-                    </div>
-
-                    <Button
-                      className="w-full"
-                      variant={isCompleted ? 'outline' : 'default'}
-                      onClick={() => setSelectedModule(module)}
-                    >
-                      {isCompleted ? (
-                        <>
-                          <CheckCircle2 className="mr-2 h-4 w-4" />
-                          {t('learning.completed')}
-                        </>
-                      ) : progress ? (
-                        <>
-                          <PlayCircle className="mr-2 h-4 w-4" />
-                          {t('learning.continueModule')}
-                        </>
-                      ) : (
-                        <>
-                          <PlayCircle className="mr-2 h-4 w-4" />
-                          {t('learning.startModule')}
-                        </>
-                      )}
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            );
-          })}
-        </div>
-      )}
     </div>
   );
 }

@@ -191,301 +191,210 @@ export default function ResidentDashboard({activeSection, onSectionChange}) {
     );
   }
 
-  const renderOverviewSection = () => (
+const renderOverviewSection = () => (
     <motion.div
       key="overview"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="space-y-6"
+      className="space-y-8"
     >
-      {/* Welcome Banner - Gradient Card */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        whileHover={{ scale: 1.01, y: -2 }}
-        className="relative overflow-hidden bg-gradient-to-r from-[#00A86B] to-white rounded-2xl shadow-xl p-8 md:p-12"
-        // className="relative overflow-hidden bg-gradient-to- from-[#4F46E5] to-[#00A86B] rounded-2xl shadow-xl p-8 md:p-12"
-      >
-        {/* Background Image */}
-        <div className="absolute inset-0 opacity-50">
-          <img 
-            src={teamSpiritIllustration} 
-            alt="Team Spirit" 
-            className="w-full h-full object-cover"
-          />
-        </div>
+      {/* --- HERO SECTION --- */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         
-        {/* Content */}
-        <div className="relative z-10">
-          <motion.h1 
-            className="text-4xl md:text-5xl font-bold text-black mb-4"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            {t('dashboard.welcome', { name: userProfile?.full_name?.split(' ')[0] || 'Warrior' })}
-          </motion.h1>
-          <motion.p 
-            className="text-2xl md:text-3xl text-black mb-6"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            {t('dashboard.youHave', { count: userProfile?.credits || 0, label: t('dashboard.greenPoints') })}
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
+        {/* Card 1: Welcome - FIXED BUTTON TEXT COLOR */}
+        <div 
+          className="md:col-span-1 rounded-2xl p-6 shadow-md relative overflow-hidden flex flex-col justify-between min-h-[180px]"
+          style={{ backgroundColor: '#15803d', color: 'white' }} 
+        >
+          <div className="relative z-10">
+            <h1 className="text-2xl font-bold mb-2 text-white">
+              Welcome, {userProfile?.full_name?.split(' ')[0] || 'Warrior'}! 👋
+            </h1>
+            <p className="text-green-50 text-sm mb-6 opacity-90">
+              Ready to make an impact today?
+            </p>
+            
+            {/* 👇 YAHAN CHANGE KIYA HAI: Added style={{ color: ... }} */}
             <Button 
               onClick={() => onSectionChange('report')}
-              size="lg"
-              className="bg-white text-[#00A86B] hover:bg-gray-100 font-semibold shadow-lg"
+              className="w-full bg-white hover:bg-green-50 font-bold border-none"
+              style={{ color: '#15803d' }} // <--- MAGIC FIX: Text ab Dark Green dikhega
             >
-              <Camera className="w-5 h-5 mr-2" />
-              {t('dashboard.reportWasteAction')}
+              <Camera className="w-4 h-4 mr-2" />
+              Report Waste
             </Button>
-          </motion.div>
-        </div>
-      </motion.div>
-
-      {/* Stats Cards */}
-      <motion.div 
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
-        initial="hidden"
-        animate="visible"
-        variants={{
-          visible: {
-            transition: {
-              staggerChildren: 0.1
-            }
-          }
-        }}
-      >
-          {[
-          { title: t('dashboard.reportsLookup'), value: stats.totalReports, icon: FileText, iconColor: 'text-blue-700', bgColor: 'bg-blue-100' },
-          { title: t('worker.completed') || 'Resolved', value: stats.resolvedReports, icon: CheckCircle, iconColor: 'text-green-700', bgColor: 'bg-green-100' },
-          { title: t('worker.pending') || 'Pending', value: stats.pendingReports, icon: Clock, iconColor: 'text-yellow-700', bgColor: 'bg-yellow-100' },
-          { title: t('dashboard.greenPoints'), value: stats.totalCredits, icon: Coins, iconColor: 'text-purple-700', bgColor: 'bg-purple-100' },
-        ].map((stat) => (
-          <motion.div
-            key={stat.title}
-            variants={{
-              hidden: { opacity: 0, y: 20 },
-              visible: { opacity: 1, y: 0 }
-            }}
-            whileHover={{ scale: 1.02, y: -5 }}
-          >
-            <Card className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-gray-600 font-medium">{stat.title}</p>
-                    <p className="text-3xl font-bold text-gray-900 mt-2">{stat.value}</p>
-                  </div>
-                  <div className={`w-12 h-12 rounded-lg ${stat.bgColor} flex items-center justify-center`}>
-                    <stat.icon className={`h-6 w-6 ${stat.iconColor}`} />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        ))}
-      </motion.div>
-
-      {/* Quick Actions */}
-      <Card
-        className="text-white rounded-xl shadow-lg hover:shadow-xl transition-shadow border-none"
-        style={{ background: 'linear-gradient(to top, #004d00 0%, #007f00 50%, #32bc13ff 100%)', color: '#ffffff' }}
-      >
-        <CardHeader>
-          <CardTitle className="flex items-center text-white">
-            <Zap className="mr-2 h-5 w-5 text-white" />
-            {t('dashboard.quickActions')}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[
-              { icon: Camera, label: t('dashboard.reportWaste'), action: 'report', gradient: 'from-green-400 to-emerald-500' },
-              { icon: MapPin, label: t('dashboard.findCollectionPoints'), action: 'map', gradient: 'from-indigo-400 to-purple-500' },
-              { icon: Gift, label: t('dashboard.redeemRewards'), action: 'credits', gradient: 'from-orange-400 to-red-500' },
-              { icon: FileText, label: t('dashboard.learning'), action: 'learning', gradient: 'from-teal-400 to-cyan-500' },
-            ].map((action) => (
-              <motion.button
-                key={action.label}
-                onClick={() => onSectionChange(action.action)}
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex flex-col items-center space-y-3 p-6 rounded-xl bg-white/10 hover:bg-white/20 hover:shadow-md transition-all"
-              >
-                <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${action.gradient} flex items-center justify-center shadow-md`}>
-                  <action.icon className="h-6 w-6 text-white" />
-                </div>
-                <span className="text-sm font-semibold text-white">{action.label}</span>
-              </motion.button>
-            ))}
           </div>
-        </CardContent>
-      </Card>
+        </div>
 
-      {/* Activity Tabs */}
-      <Card className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow">
-        <CardContent className="p-6">
-          <Tabs defaultValue="reports">
-              <TabsList className="grid w-full grid-cols-2 bg-gray-100">
-              <TabsTrigger value="reports" className="data-[state=active]:bg-white data-[state=active]:text-gray-900 text-gray-700">{t('dashboard.recentReports')}</TabsTrigger>
-              <TabsTrigger value="notifications" className="data-[state=active]:bg-white data-[state=active]:text-gray-900 text-gray-700">{t('dashboard.recentNotifications')}</TabsTrigger>
-            </TabsList>
-            <TabsContent value="reports" className="space-y-3 mt-4">
-              {reports.length > 0 ? reports.map((report) => (
-                <motion.div 
-                  key={report.id} 
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  whileHover={{ scale: 1.02, x: 5 }}
-                  className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all"
+        {/* Card 2: Green Points */}
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center">
+           <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3">
+              <Coins className="w-6 h-6 text-green-600" />
+           </div>
+           <h2 className="text-3xl font-bold text-gray-900">{stats.totalCredits}</h2>
+           <p className="text-gray-500 text-sm font-medium">Green Points</p>
+        </div>
+
+        {/* Card 3: Global Rank */}
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center">
+           <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3">
+              <TrendingUp className="w-6 h-6 text-blue-600" />
+           </div>
+           <h2 className="text-3xl font-bold text-gray-900">#{userProfile?.rank || "12"}</h2>
+           <p className="text-gray-500 text-sm font-medium">Global Rank</p>
+        </div>
+      </div>
+
+      {/* --- STATS ROW --- */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {[
+          { title: "Reports Filed", value: stats.totalReports, icon: FileText, color: "#2563eb", bg: "#eff6ff" },
+          { title: "Resolved", value: stats.resolvedReports, icon: CheckCircle, color: "#059669", bg: "#ecfdf5" },
+          { title: "Pending", value: stats.pendingReports, icon: Clock, color: "#ea580c", bg: "#fff7ed" },
+        ].map((stat, index) => (
+          <div key={index} className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex items-center justify-between">
+            <div>
+              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">{stat.title}</p>
+              <h3 className="text-2xl font-bold text-gray-900">{stat.value}</h3>
+            </div>
+            <div className="p-3 rounded-lg" style={{ backgroundColor: stat.bg }}>
+              <stat.icon className="w-5 h-5" style={{ color: stat.color }} />
+            </div>
+          </div>
+        ))}
+      </div>
+    {/* --- QUICK ACTIONS (Updated: Map removed, Impact added) --- */}
+      <div>
+        <h2 className="text-lg font-bold text-gray-900 mb-3">Quick Actions</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { icon: Camera, label: 'Report', action: 'report', color: 'text-green-600', bg: 'bg-green-50' },
+            // 👇 CHANGED: MapPin -> TrendingUp, Label: 'Impact', Action: 'impact'
+            { icon: TrendingUp, label: 'Impact', action: 'impact', color: 'text-blue-600', bg: 'bg-blue-50' },
+            { icon: Gift, label: 'Redeem', action: 'credits', color: 'text-purple-600', bg: 'bg-purple-50' },
+            { icon: FileText, label: 'Learn', action: 'learning', color: 'text-orange-600', bg: 'bg-orange-50' },
+          ].map((action) => (
+            <div
+              key={action.label}
+              onClick={() => onSectionChange(action.action)}
+              className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm hover:shadow-md cursor-pointer flex flex-col items-center justify-center gap-2 text-center transition-all"
+            >
+              <div className={`w-10 h-10 rounded-full ${action.bg} flex items-center justify-center`}>
+                <action.icon className={`w-5 h-5 ${action.color}`} />
+              </div>
+              <span className="font-semibold text-gray-700 text-sm">{action.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      {/* --- RECENT ACTIVITY --- */}
+      <div>
+        <h2 className="text-lg font-bold text-gray-900 mb-3">Recent Activity</h2>
+        <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+          <Tabs defaultValue="reports" className="w-full">
+            <div className="border-b border-gray-100 px-4 pt-2">
+              <TabsList 
+                className="w-full justify-start bg-transparent p-0 h-auto" 
+                style={{ display: 'flex', gap: '30px' }}
+              >
+                <TabsTrigger 
+                  value="reports" 
+                  className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-green-600 data-[state=active]:text-green-700 text-gray-500 rounded-none px-0 pb-3 font-medium"
                 >
-                  <div className="flex-1">
-                    <h4 className="font-medium text-gray-900 text-sm">{report.title}</h4>
-                    <p className="text-xs text-gray-600">{new Date(report.created_at).toLocaleDateString()}</p>
+                  Recent Reports
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="notifications" 
+                  className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-green-600 data-[state=active]:text-green-700 text-gray-500 rounded-none px-0 pb-3 font-medium"
+                >
+                  Recent Notifications
+                </TabsTrigger>
+              </TabsList>
+            </div>
+
+            <div className="p-4 min-h-[200px]">
+              <TabsContent value="reports" className="mt-0 space-y-2">
+                {reports.length > 0 ? reports.map((report) => (
+                  <div key={report.id} className="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-gray-50">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-2 h-2 rounded-full ${report.status === 'resolved' ? 'bg-green-500' : 'bg-orange-500'}`} />
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">{report.title || "Waste Report"}</p>
+                        <p className="text-xs text-gray-500">{new Date(report.created_at).toLocaleDateString()}</p>
+                      </div>
+                    </div>
+                    <Badge variant="outline" className={`capitalize ${getStatusColor(report.status)} border-0`}>
+                      {report.status}
+                    </Badge>
                   </div>
-                  <Badge className={
-                    report.status === 'resolved' 
-                      ? 'bg-green-500 hover:bg-green-600 text-white' 
-                      : report.status === 'rejected'
-                      ? 'bg-red-500 hover:bg-red-600 text-white'
-                      : 'bg-yellow-400 hover:bg-yellow-500 text-gray-900'
-                  }>
-                    {report.status}
-                  </Badge>
-                </motion.div>
                 )) : (
-                <div className="text-center py-8">
-                  <img src={recyclingIllustration} alt="No reports" className="w-32 h-32 mx-auto mb-4 opacity-50" />
-                  <p className="text-gray-600">{t('dashboard.noReports')} {t('dashboard.startReporting')}</p>
-                </div>
-              )}
-            </TabsContent>
-            <TabsContent value="notifications" className="mt-4">
-              {notifications.length > 0 ? notifications.map((n) => (
-                <motion.div 
-                  key={n.id} 
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  whileHover={{ scale: 1.02, x: 5 }}
-                  className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg mb-3 hover:from-blue-100 hover:to-indigo-100 transition-all"
-                >
-                  <h4 className="font-medium text-sm text-gray-900">{n.title}</h4>
-                  <p className="text-xs text-gray-700 mt-1">{n.message}</p>
-                </motion.div>
-              )) : (
-                <div className="text-center py-8">
-                  <Bell className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-                  <p className="text-gray-600">{t('dashboard.noNotifications')}</p>
-                </div>
-              )}
-            </TabsContent>
+                  <p className="text-center text-gray-400 py-8 text-sm">No recent reports found.</p>
+                )}
+              </TabsContent>
+
+              <TabsContent value="notifications" className="mt-0 space-y-2">
+                {notifications.length > 0 ? notifications.map((n) => (
+                  <div key={n.id} className="flex gap-3 p-3 rounded-lg bg-blue-50/50">
+                     <Bell className="w-4 h-4 text-blue-500 mt-0.5" />
+                     <div>
+                        <p className="text-sm text-gray-800">{n.message}</p>
+                        <p className="text-xs text-gray-400 mt-1">{new Date(n.created_at).toLocaleDateString()}</p>
+                     </div>
+                  </div>
+                )) : (
+                  <p className="text-center text-gray-400 py-8 text-sm">No new notifications.</p>
+                )}
+              </TabsContent>
+            </div>
           </Tabs>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </motion.div>
   );
 
+  // --- MISSING LOGIC RESTORED ---
   const renderActiveSection = () => {
-    const sectionVariants = {
-      hidden: { opacity: 0, x: 20 },
-      visible: { opacity: 1, x: 0 },
-      exit: { opacity: 0, x: -20 }
-    };
-
     switch (activeSection) {
       case 'overview':
         return renderOverviewSection();
-      
       case 'report':
         return (
           <motion.div
             key="report"
-            variants={sectionVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
           >
-            <ReportForm onReportSubmitted={fetchUserData} />
-          </motion.div>
-        );
-      case 'credits':
-        return (
-          <motion.div
-            key="credits"
-            variants={sectionVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={{ duration: 0.3 }}
-          >
-            <CreditsSystem />
-          </motion.div>
-        );
-      case 'leaderboard':
-        return (
-          <motion.div
-            key="leaderboard"
-            variants={sectionVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={{ duration: 0.3 }}
-          >
-            <LeaderboardDashboard />
-          </motion.div>
-        );
-      case 'profile':
-        return (
-          <motion.div
-            key="profile"
-            variants={sectionVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={{ duration: 0.3 }}
-          >
-            <UserProfile />
+            <Button 
+              variant="ghost" 
+              onClick={() => onSectionChange('overview')}
+              className="mb-4 pl-0 hover:pl-2 transition-all"
+            >
+              ← Back to Overview
+            </Button>
+            <ReportForm onSubmitSuccess={() => {
+              fetchUserData();
+              onSectionChange('overview');
+            }} />
           </motion.div>
         );
       case 'learning':
         return (
-          <motion.div
-            key="learning"
-            variants={sectionVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={{ duration: 0.3 }}
-          >
-            <LearningPage />
+          <motion.div key="learning" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+             <LearningPage />
           </motion.div>
         );
+      case 'credits':
+        return <CreditsSystem userProfile={userProfile} />;
+      case 'leaderboard':
+        return <LeaderboardDashboard />;
       case 'impact':
-        return (
-          <motion.div
-            key="impact"
-            variants={sectionVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={{ duration: 0.3 }}
-          >
-            <ImpactPage />
-          </motion.div>
-        );
+        return <ImpactPage />;
       default:
-        return null;
+        return renderOverviewSection();
     }
   };
 
