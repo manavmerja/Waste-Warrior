@@ -1,8 +1,7 @@
 import { useAuth } from '@/hooks/useAuth';
 import { Navigate } from 'react-router-dom';
 import { motion, AnimatePresence, useAnimationControls } from 'framer-motion';
-import { Recycle, Bell, User, LogOut, ChevronDown, Menu, X } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Recycle, Bell, LogOut, Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import LanguageSelector from '@/components/ui/language-selector';
@@ -12,7 +11,8 @@ import { useTranslation } from 'react-i18next';
 export default function DashboardLayout({ children, activeSection, onSectionChange, navLinks }) {
   const { user, userProfile, signOut, loading } = useAuth();
   const { t } = useTranslation();
-  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  // Profile dropdown state ab zaroorat nahi hai, par purana logic break na ho isliye rakh sakte hain ya hata sakte hain.
+  // Main unused variables hata raha hoon safai ke liye.
   const [unreadNotifications, setUnreadNotifications] = useState(0);
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
   
@@ -27,10 +27,8 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
     }
   }, [userProfile]);
 
-  // LOGIC: Screen resize hote hi menu band ho jaye agar desktop mode aa jaye
   useEffect(() => {
     const handleResize = () => {
-      // Agar screen 768px (MD) se badi hai, toh sidebar band kar do
       if (window.innerWidth >= 768) { 
         setIsMobileMenuOpen(false);
       }
@@ -90,12 +88,6 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
             
             {/* Left Side: Logo & Mobile Toggle */}
             <div className="flex items-center">
-              
-              {/* --- HAMBURGER MENU ICON --- */}
-              {/* md:hidden = "Medium screen aur usse upar HIDDEN raho" */}
-              {/* block = "Chhote screen par dikho" */}
-              {/* Mobile Menu Button - Fixed: Hidden on Desktop (md:hidden) */}
-             {/* Mobile Menu Button - CHANGED to lg:hidden */}
               <button 
                 onClick={() => setIsMobileMenuOpen(true)}
                 className="lg:hidden p-2 rounded-md text-white hover:bg-white/20 mr-2 transition-colors"
@@ -117,8 +109,6 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
             </div>
 
             {/* --- DESKTOP NAVIGATION LINKS --- */}
-            {/* hidden = "Chhote screen par GAYAB raho" */}
-            {/* md:flex = "Medium screen aur usse upar FLEX (dikho)" */}
             <nav className="hidden md:flex items-center space-x-1">
               {navLinks.map((link, index) => (
                 <motion.button
@@ -161,24 +151,14 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
                 )}
               </motion.button>
               
-              {/* Profile Dropdown */}
+              {/* Profile Dropdown Container (ONLY used for Notification dropdown positioning now) */}
               <div className="relative">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-                  className="flex items-center space-x-2 p-1 hover:bg-white/20 rounded-full transition-colors border border-white/20"
-                >
-                  <Avatar className="h-8 w-8 ring-2 ring-white/30">
-                    <AvatarImage src={userProfile?.avatar_url} alt={userProfile?.full_name} />
-                    <AvatarFallback className="bg-emerald-800 text-white text-xs">
-                      {userProfile?.full_name?.charAt(0) || 'U'}
-                    </AvatarFallback>
-                  </Avatar>
-                  <ChevronDown className={`w-4 h-4 text-green-50 hidden md:block transition-transform ${showProfileDropdown ? 'rotate-180' : ''}`} />
-                </motion.button>
+                
+                {/* MAINE YAHAN SE PROFILE BUTTON AUR PROFILE DROPDOWN HATA DIYA HAI.
+                   Ab yahan sirf Notification Dropdown ka logic bacha hai jo 'absolute' position lega.
+                */}
 
-                {/* Dropdowns logic remains same */}
+                {/* Notification Dropdown */}
                 <AnimatePresence>
                   {showNotificationDropdown && (
                     <motion.div
@@ -194,39 +174,6 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
                     </motion.div>
                   )}
                 </AnimatePresence>
-
-                <AnimatePresence>
-                  {showProfileDropdown && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50 text-gray-800"
-                    >
-                      <div className="px-4 py-3 border-b border-gray-100 bg-gray-50/50">
-                        <p className="text-sm font-semibold text-gray-900">{userProfile?.full_name}</p>
-                        <p className="text-xs text-gray-500 truncate">{user.email}</p>
-                      </div>
-                      <button
-                        onClick={() => {
-                          onSectionChange('profile');
-                          setShowProfileDropdown(false);
-                        }}
-                        className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center space-x-2"
-                      >
-                        <User className="w-4 h-4" />
-                        <span>{t('dashboard.profile')}</span>
-                      </button>
-                      <button
-                        onClick={signOut}
-                        className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center space-x-2"
-                      >
-                        <LogOut className="w-4 h-4" />
-                        <span>{t('common.logout')}</span>
-                      </button>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
               </div>
             </div>
           </div>
@@ -234,7 +181,7 @@ export default function DashboardLayout({ children, activeSection, onSectionChan
       </header>
       {/* --- HEADER END --- */}
 
-      {/* --- MOBILE SIDEBAR DRAWER (md:hidden ensures it NEVER shows on desktop) --- */}
+      {/* --- MOBILE SIDEBAR DRAWER --- */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>

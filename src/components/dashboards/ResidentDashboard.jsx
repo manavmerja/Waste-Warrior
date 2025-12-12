@@ -210,7 +210,7 @@ const renderOverviewSection = () => (
         >
           <div className="relative z-10">
             <h1 className="text-2xl font-bold mb-2 text-white">
-              Welcome, {userProfile?.full_name?.split(' ')[0] || 'Warrior'}! 👋
+              Welcome, {userProfile?.full_name?.split(' ')[0] || 'Warrior'}! 
             </h1>
             <p className="text-green-50 text-sm mb-6 opacity-90">
               Ready to make an impact today?
