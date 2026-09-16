@@ -166,5 +166,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 <div align="center">
   <br />
-  <i>Let's make our planet cleaner, one step at a time! 🌍</i>
+  <i>Let's make our planet cleaner, one step at a time!</i>
 </div>
