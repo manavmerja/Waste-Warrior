@@ -5,7 +5,7 @@
   
   **Building cleaner communities together through smart waste management, gamification, and real-time tracking.**
   
-  ### 🚀 Built for Smart India Hackathon 2025 (SIH 2025)
+  ###  Built for Smart India Hackathon 2025 (SIH 2025)
 
   [![React](https://img.shields.io/badge/React-18.0-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
   [![Vite](https://img.shields.io/badge/Vite-4.0-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
