@@ -135,7 +135,7 @@ If you discover a security vulnerability within this project, please send an e-m
 
 ---
 
-## 👥 Team & Contributors
+##  Team & Contributors
 
 This project is the result of hard work and collaboration for **Smart India Hackathon 2025**.
 
