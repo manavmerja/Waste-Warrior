@@ -160,7 +160,7 @@ This project is the result of hard work and collaboration for **Smart India Hack
 
 ---
 
-## 📄 License
+## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
