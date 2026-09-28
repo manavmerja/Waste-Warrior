@@ -139,7 +139,7 @@ If you discover a security vulnerability within this project, please send an e-m
 
 This project is the result of hard work and collaboration for **Smart India Hackathon 2025**.
 
-### 🌟 Core Team
+###  Core Team
 
 | Name | Role | GitHub |
 | :--- | :--- | :--- |
